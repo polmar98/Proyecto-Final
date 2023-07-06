@@ -8,3 +8,4 @@ Colaboradores:
 - Ivan Trejo
 - German Montenegro
 - Cristian Molina
+- Lucas Aonzo
