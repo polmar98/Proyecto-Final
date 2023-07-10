@@ -4,7 +4,6 @@ const paisSchema = new Schema ({
       codigo: {
          type: String,
          required: true,
-         unique: true,
          minLength: 2,
       },
       nombre: {
