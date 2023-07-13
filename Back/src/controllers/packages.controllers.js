@@ -1,9 +1,11 @@
-const addPackages = (req, res) => {
+const addPackages = () => {
     //aqui se crearan paquetes nuevos
 };
 
-const viewPackages = (req, res) => {
+const viewPackages = () => {
     //aqui se deben devolver los paquetes disponibles
+    const result = {paquete: "Paquetes Turisticos"}
+    return result;
 };
 
-module.exports = { addPackages };
+module.exports = { addPackages, viewPackages };
