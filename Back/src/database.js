@@ -1,12 +1,16 @@
-import { connect } from 'mongoose';
+require('dotenv').config();
+const { Sequelize } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const {DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_BASE} = process.env;
+//const Model1 = require("./models/model1.js");
 
-(async () => {
-   try {
-      const db = await connect("mongodb://localhost/wanderlust");
-      console.log("Db Connected to", db.connection.name);
-   } catch (error) {
-      console.log("Error de conexion a la Bd");
-   }
-})();
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
+  { logging: false, native: false }
+);
 
-//comentario
+module.exports = {
+    conn: sequelize,     
+};
+  
