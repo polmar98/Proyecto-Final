@@ -1,9 +1,6 @@
-import { Router } from 'express';
-const { grabarPais, listarPaises, listarPaisById, grabacionMasiva } = require ('../controllers/paises.controllers');
+const {Router} = require('express');
 const router = Router();
+const {getCities} = require('../controllers/cities.controllers');
 
-router.post('/countries/add', grabarPais);
-router.post('/countries/masiva', grabacionMasiva);
-router.get('/paises', listarPaises);
-router.get('/paises/:id', listarPaisById);
-export default router;
+router.get('/citys', getCities);
+module.exports = router;
