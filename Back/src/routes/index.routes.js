@@ -1,6 +1,8 @@
 const {Router} = require('express');
-const router = Router();
-const {getCities} = require('../controllers/cities.controllers');
+const handlersPackages = require('../handlers/packages.handlers')
 
-router.get('/citys', getCities);
+const router = Router();
+
+router.use('/packages', handlersPackages);
+
 module.exports = router;
