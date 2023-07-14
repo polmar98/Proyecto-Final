@@ -1,7 +1,65 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function NavBar() {
-  return <div>NavBar</div>;
+  return (
+    <div className="mt-0 items-center flex-1 logo">
+      <ul className="flex flex-row flex-2 justify-center">
+        <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+          <Link
+            className="text-lg text-white fontPoppins hover:fontPoppinsB"
+            to="/"
+          >
+            Home
+          </Link>
+        </li>
+        <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+          <Link
+            className="text-lg text-white fontPoppins hover:fontPoppinsB"
+            to="/search"
+          >
+            Discover
+          </Link>
+        </li>
+        <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+          <Link
+            className="text-lg text-white fontPoppins hover:fontPoppinsB"
+            to="/about"
+          >
+            About
+          </Link>
+        </li>
+        <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+          <Link
+            className="text-lg text-white fontPoppins hover:fontPoppinsB"
+            to="/contact"
+          >
+            Contact
+          </Link>
+        </li>
+      </ul>
+
+      <div>
+        <ul className="flex flex-row justify-end">
+          <li className="p-2 mr-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+            <Link
+              className="text-lg text-white fontPoppins hover:fontPoppinsB "
+              to="/login"
+            >
+              Log In
+            </Link>
+          </li>
+          <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
+            <Link
+              className="text-lg text-white fontPoppins hover:fontPoppinsB"
+              to="/login"
+            >
+              Sign Up
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export default NavBar;
