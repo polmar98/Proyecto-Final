@@ -32,35 +32,56 @@ module.exports = (sequelize) => {
      totalLimit: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        default: 100,
+        defaultValue: 100,
      },
      bookings: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        default: 0,
+        defaultValue: 0,
      },
      standarPrice: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.DECIMAL,
         allowNull: false,
-        default: 0,
+        defaultValue: 0,
      },
      promotionPrice: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.DECIMAL,
         allowNull: false,
-        default: 0,       
+        defaultValue: 0,       
      },
      duration: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        default: 0,        
+        defaultValue: 0,        
      },
      originCity: {
         type: DataTypes.INTEGER,
         allowNull: false,
      },
+     idAirline: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+     },
+     outboundFlight: {
+        type: DataTypes.STRING,
+        allowNull: false,
+     },
+     returnFlight: {
+        type: DataTypes.STRING,
+        allowNull: false,
+     },
+     image: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+     },
+     qualification: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        defaultValue: 0,
+     },
      active: {
         type: DataTypes.BOOLEAN,
-        default: true,
+        defaultValue: true,
      }  
   },{ timestamps: false });
 };

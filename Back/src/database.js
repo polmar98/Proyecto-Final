@@ -19,6 +19,8 @@ PackageModel(sequelize);
 const {TypePackage, CityPackage, Package} = sequelize.models;
 
 Package.hasMany(CityPackage, {foreignKey: 'idPackage', sourceKey: 'id'});
+CityPackage.belongsTo(Package, {foreignKey: 'idPackage', targetKey: 'id'});
+
 Package.belongsTo(TypePackage, {foreignKey: 'idTypePacket', sourceKey: 'id'});
 
 module.exports = {
