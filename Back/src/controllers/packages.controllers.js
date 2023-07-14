@@ -1,4 +1,4 @@
-const {TypePackage, Package, CityPackage} = require('../database');
+const {TypePackage, Package, CityPackage, City} = require('../database');
 
 const addPackages = async(objeto) => {
     const {idTypePackage, title, description,
@@ -38,10 +38,43 @@ const addPackages = async(objeto) => {
     //complementar la grabacion de actividades del paquete
 };
 
-const viewPackages = () => {
+//esta funcion devuelve el array de paquetes mapeados
+const mapList = (array) => array.map((result) => {
+    return {
+        id: result.id,
+        idTypePackage: result.idTypePackage,
+        title: result.title,
+        description: result.description,
+        initialDate: result.initialDate,
+        finalDate: result.finalDate,
+        totalLimit: result.totalLimit,
+        standarPrice: result.standarPrice,
+        promotionPrice: result.promotionPrice,
+        duration: result.duration,
+        image: result.image,
+        cities: [],
+      }
+ });
+
+ //esta funcion devuelve un array mapeado de las ciudades del paquete
+ const mapCities = (array) => array.map((element) => {
+    return {
+        idCity: element.idCity,
+        idHotel: element.idHotel,
+    }
+ });
+
+ const viewPackages = async() => {
     //aqui se deben devolver los paquetes disponibles
-    const result = {paquete: "Paquetes Turisticos"}
-    return result;
+    const paquetes = await Package.findAll({ where: {active: true}});
+
+    let lista = mapList(paquetes);
+    lista.forEach(async(ele) => {
+        const ciudades = await CityPackage.findAll({where: {idPackage: ele.id}});
+        const xciudades = mapCities(ciudades);
+        ele.cities = xciudades;
+    });
+    return lista;
 };
 
 module.exports = { addPackages, viewPackages };
