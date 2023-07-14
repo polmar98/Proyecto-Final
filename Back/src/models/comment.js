@@ -16,5 +16,9 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: DataTypes.NOW,
       },
+      id_user: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
   },{timestamps:false});
 };

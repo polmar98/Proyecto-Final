@@ -7,6 +7,10 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    perfil: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -29,5 +33,6 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    
   },{timestamps:false});
 };
