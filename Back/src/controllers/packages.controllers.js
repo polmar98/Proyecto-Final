@@ -20,10 +20,19 @@ const addPackages = async(objeto) => {
                         originCity, idAirline, outboundFlight,
                         returnFlight, image, qualification};
 
+    let packageCreated = await Package.create(newPackage); 
 
-    let packageCreated = await Package.create(newPackage);  
+    //agregamos los registros de las ciudades con su hotel a visitar
+    cities.forEach( async(element) => {
+        await CityPackage.create({idCity: element.idCity, idHotel: element.idHotel, idPackage: packageCreated.id });
+    }); 
     
-    return newPackage;
+    //agregamos las actividades del paquete
+    activitys.forEach( async(ele) => {
+        
+    })
+
+    return packageCreated;
     //complementar la grabacion de cities con su hotel
 
     //complementar la grabacion de actividades del paquete
