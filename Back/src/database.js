@@ -7,18 +7,21 @@ const TypePackageModel = require("./models/TypePackage");
 const PackageModel = require("./models/Package");
 const CityPackageModel = require("./models/CityPackage");
 const AirlineModel = require("./models/Airline");
+const CityModels = require("./models/City");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
   { logging: false, native: false }
 );
 
+
 TypePackageModel(sequelize);
 CityPackageModel(sequelize);
 PackageModel(sequelize);
 AirlineModel(sequelize);
+CityModels(sequelize);
 
-const {TypePackage, CityPackage, Package, Airline} = sequelize.models;
+const {TypePackage, CityPackage, Package, Airline, City} = sequelize.models;
 
 Package.hasMany(CityPackage, {foreignKey: 'idPackage', sourceKey: 'id'});
 CityPackage.belongsTo(Package, {foreignKey: 'idPackage', targetKey: 'id'});
@@ -34,6 +37,8 @@ module.exports = {
     CityPackage,
     Airline,
     Package,
-    conn: sequelize,     
+    City,
+    conn: sequelize, 
+
 };
   

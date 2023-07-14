@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const {TypePackage} = require('../database');
 
 const addTypePackages = (name) => {
@@ -18,9 +19,10 @@ const mapList = (array) => array.map((result) => {
    }
 });
 
+
 const getTypePackages = async(query1) => {
     //este metodo devuelve la lista de tipos de paquetes
-    
+ 
     let array = [];
     if(!query1 || query1.length === 0) {
         array = await TypePackage.findAll();
@@ -29,6 +31,9 @@ const getTypePackages = async(query1) => {
     };
     const resultado = mapList(array);
     return resultado;
+
+
 };
+
 
 module.exports = { addTypePackages, getTypePackages };
