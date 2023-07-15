@@ -5,8 +5,7 @@ module.exports = (sequelize) => {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncremente: true,
-            unique: true,
+            autoIncrement: true,
         },
         name:{
             type: DataTypes.STRING,
@@ -14,19 +13,21 @@ module.exports = (sequelize) => {
         },
         calification: {
             type: DataTypes.DECIMAL,
+            defaultValue: 0,
             allowNull: false,
         },
         stars:{
             type: DataTypes.DECIMAL,
+            defaultValue: 0,
             allowNull: false,
         },
         details: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true,
         },
         available: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
+            defaultValue: true,
         }
 
     },{ timestamps: false })

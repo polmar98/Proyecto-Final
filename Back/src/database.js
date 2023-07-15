@@ -43,11 +43,10 @@ const {TypePackage, CityPackage,
 Package.hasMany(CityPackage, {foreignKey: 'idPackage', sourceKey: 'id'});
 CityPackage.belongsTo(Package, {foreignKey: 'idPackage', targetKey: 'id'});
 
-Package.belongsTo(TypePackage, {foreignKey: 'idTypePacket', targetKey: 'id'});
-//TypePackage.belongsTo(Package, {foreignKey: 'idTypePacket', targetKey: 'id'});
+Package.belongsTo(TypePackage, {foreignKey: 'idTypePackage', targetKey: 'id'});
 
-Package.hasOne(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
-Airline.belongsToMany(Package, {through: 'package_airline'});
+Package.belongsTo(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
+//Airline.belongsToMany(Package, {through: 'package_airline'});
 
 Country.hasMany(City, {foreignKey: 'idCountry', sourceKey: 'id'});
 City.belongsTo(Country, {foreignKey: 'idCountry', targetKey: 'id'});
