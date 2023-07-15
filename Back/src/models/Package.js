@@ -9,10 +9,6 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true
      },
-     idTypePackage: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-     },
      title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -57,10 +53,6 @@ module.exports = (sequelize) => {
      originCity: {
         type: DataTypes.INTEGER,
         allowNull: false,
-     },
-     idAirline: {
-        type: DataTypes.INTEGER,
-        allowNull: false
      },
      outboundFlight: {
         type: DataTypes.STRING,
