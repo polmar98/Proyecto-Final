@@ -1,5 +1,5 @@
 import "./App.css";
-import ViajeForm from "./Views/Admin.jsx";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./Views/FormLogin.jsx";
 import Home from "./Views/Home";
 import Detail from "./Views/Detail";

@@ -10,7 +10,7 @@ function NavBar() {
           <ul className="flex flex-row justify-center">
             <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB"
+                className="text-m text-white fontPoppins hover:fontPoppinsB"
                 to="/"
               >
                 Home
@@ -18,7 +18,7 @@ function NavBar() {
             </li>
             <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB"
+                className="text-m text-white fontPoppins hover:fontPoppinsB"
                 to="/search"
               >
                 Discover
@@ -26,7 +26,7 @@ function NavBar() {
             </li>
             <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB"
+                className="text-m text-white fontPoppins hover:fontPoppinsB"
                 to="/about"
               >
                 About
@@ -34,7 +34,7 @@ function NavBar() {
             </li>
             <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB"
+                className="text-m text-white fontPoppins hover:fontPoppinsB"
                 to="/contact"
               >
                 Contact
@@ -46,7 +46,7 @@ function NavBar() {
           <ul className="flex flex-row justify-end">
             <li className="p-2 mr-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB "
+                className="text-m text-white fontPoppins hover:fontPoppinsB "
                 to="/login"
               >
                 Log In
@@ -54,7 +54,7 @@ function NavBar() {
             </li>
             <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
               <Link
-                className="text-lg text-white fontPoppins hover:fontPoppinsB"
+                className="text-m text-black fontPoppins hover:fontPoppinsB rounded bg-white p-1 mt-1  "
                 to="/login"
               >
                 Sign Up

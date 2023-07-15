@@ -1,10 +1,11 @@
 import React from "react";
 import NavBar from "../Components/NavBar";
 import SearchBar from "../Components/SearchBar";
+import ContFilter from "../Components/ContFilter";
 
 function Home() {
   return (
-    <div className=" h-screen bg-img portada">
+    <div className=" bg-local h-screen bg-img portada">
       <div>
         <NavBar />
       </div>
@@ -12,7 +13,7 @@ function Home() {
         <SearchBar />
       </div>
       <div className=" mt-[1000px] items-center flex justify-center">
-        fesfesf
+        <ContFilter />
       </div>
     </div>
   );
