@@ -12,8 +12,8 @@ function Home() {
       <div className="items-center flex justify-center mt-56">
         <SearchBar />
       </div>
-      <div className=" mt-[1000px] items-center flex justify-center">
-        fesfesf
+      <div className=" mt-[450px] items-center flex justify-center">
+        <ContFilter />
       </div>
     </div>
   );
