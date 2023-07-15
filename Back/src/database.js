@@ -13,7 +13,7 @@ const ContinentModels = require('./models/Continent');
 const HotelModels = require('./models/Hotel');
 const ActivityModels = require('./models/Activity');
 const UserModels = require('./models/User');
-const CommentModels = require('./models/Comment');
+const CommentModels = require('./models/comment');
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
