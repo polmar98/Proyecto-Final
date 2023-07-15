@@ -28,6 +28,6 @@ server.use(routes);
 // Syncing all the models at once.
 conn.sync({ alter: true }).then(() => {
     server.listen(3002, () => {
-      console.log('Server on port 3002'); // eslint-disable-line no-console
+      console.log('Server on port 3002'); 
     });
 });

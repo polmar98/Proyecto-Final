@@ -7,8 +7,8 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    perfil: {
-      type: DataTypes.STRING,
+    profile: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {
@@ -32,6 +32,10 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
+    },
+    locked: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     
   },{timestamps:false});

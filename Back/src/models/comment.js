@@ -6,19 +6,15 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
-      Testimonio: {
+    },
+    testimony: {
         type: DataTypes.TEXT,
         allowNull: false,
-      },
-      Fecha: {
+    },
+    date: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
-      },
-      id_user: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+    },
   },{timestamps:false});
 };
