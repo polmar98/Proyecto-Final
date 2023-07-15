@@ -8,24 +8,20 @@ module.exports = (sequelize) => {
             autoIncremente: true,
             unique: true,
         },
-        idPackage:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         details:{
             type: DataTypes.TEXT,
             allowNull: false,
         },
         duration: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DECIMAL,
             allowNull: false,
         },
         price:{
-            type: DataTypes.FLOAT,
+            type: DataTypes.DECIMAL,
             allowNull: false,
         },
         calification: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.DECIMAL,
             allowNull: false
         },
         available: {

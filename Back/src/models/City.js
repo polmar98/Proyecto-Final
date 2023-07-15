@@ -21,11 +21,6 @@ module.exports = (sequelize) => {
           type: DataTypes.DECIMAL,
           allowNull: false,
         },
-  
-        idCountry: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
       },
       { timestamps: false }
     );
