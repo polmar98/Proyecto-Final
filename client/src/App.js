@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./Views/Home";
+import ViajeForm from "./Views/Admin.jsx";
 import LoginPage from "./Views/FormLogin.jsx";
 
 function App() {
