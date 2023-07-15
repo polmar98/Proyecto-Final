@@ -69,27 +69,39 @@ function ContFilter() {
               ? filtrados.map((paq) => (
                   <div key={paq.Id} className="m-2 rounded shadow-2xl p-2">
                     <img
-                      className="rounded"
+                      className="rounded w-[280px] h-[150px]"
                       src={paq.Alojamiento[0].Imagenes[0].Url}
                       alt=""
                     />
-                    <h1>{paq.Ciudad}</h1>
-                    <h1>{paq.Titulo}</h1>
+                    <h1 className="fontPoppinsB text-left m-1">{paq.Titulo}</h1>
 
-                    <h1>{paq.Duracion} days for trip</h1>
+                    <h1 className="fontPoppins text-sm text-left m-1">
+                      {paq.Ciudad}
+                    </h1>
+
+                    <h1 className="fontPoppins text-right m-1 text-xs">
+                      {paq.Duracion} days for trip
+                    </h1>
                   </div>
                 ))
               : paquetes.slice(0, 6).map((paq1) => (
                   <div key={paq1.Id} className="m-2 rounded shadow-2xl p-2">
                     <img
-                      className="rounded"
+                      className="rounded w-[280px] h-[150px]"
                       src={paq1.Alojamiento[0].Imagenes[0].Url}
                       alt=""
                     />
-                    <h1>{paq1.Ciudad}</h1>
-                    <h1>{paq1.Titulo}</h1>
+                    <h1 className=" fontPoppinsB text-left m-1">
+                      {paq1.Titulo}
+                    </h1>
 
-                    <h1>{paq1.Duracion} days for trip</h1>
+                    <h1 className=" fontPoppins text-sm text-left m-1">
+                      {paq1.Ciudad}
+                    </h1>
+
+                    <h1 className="fontPoppins text-right m-1 text-xs">
+                      {paq1.Duracion} days for trip
+                    </h1>
                   </div>
                 ))}
           </div>
