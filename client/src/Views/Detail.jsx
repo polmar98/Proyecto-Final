@@ -22,7 +22,8 @@ function Detail() {
         tour.Imagenes.map((el, index) =>
           <div key={index} className="inline-flex m-1">
             <img src={el.Url} alt="Img not found" className="w-[400px] h-[300px] rounded-lg"/>
-          </div>)
+          </div>
+          )
       }
 
       <Flights />
