@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-
+import { useSelector } from "react-redux";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
 
@@ -10,6 +10,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const packages = useSelector((state) => state.packages.packagesList);
+  console.log(packages);
   return (
     <div className="flex h-screen">
       {/* Columna Izquierda */}

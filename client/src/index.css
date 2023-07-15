@@ -19,7 +19,7 @@ code {
 @layer base {
   .portada {
     background-image: url(./assets/Background.png);
-    background-size: cover;
+    background-size: 100vw 100vh;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }

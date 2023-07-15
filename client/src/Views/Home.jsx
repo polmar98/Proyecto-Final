@@ -13,7 +13,7 @@ function Home() {
         <SearchBar />
       </div>
       <div className=" mt-[1000px] items-center flex justify-center">
-        <ContFilter />
+        fesfesf
       </div>
     </div>
   );
