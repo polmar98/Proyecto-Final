@@ -30,9 +30,9 @@ router.post("/", async (req, res) => {
   router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const continent = await getCountriesById(id);
-        continent
-        ? res.status(200).json(continent)
+        const country = await getCountriesById(id);
+        country
+        ? res.status(200).json(country)
         : res.status(404).json("País no existe")
       } catch (error) {
         res.status(500).json({ message: error.message });
