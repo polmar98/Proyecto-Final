@@ -1,35 +1,43 @@
 const { Router } = require('express');
+const {createCountry, getCountries, getCountriesById, deleteCountry} = require("../controllers/countries.controllers");
 
 
 const router = Router();
 
-router.post('/', async(req, res) => {
-   
-   try {
-       
-       res.send("crea un nuevo país")  
-   } catch (error) {
-       res.status(500).json({message: error.message});
-   }
+router.post("/", async (req, res) => {
+    try {
+      const { name, calification, flag, idContinent } = req.body;
+      const newContinent = await createCountry(name, calification, flag, idContinent);
+      return res.status(201).send("País creado satisfactoriamente");
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  router.get("/", async (req, res) => {
+    
+    try {
+      const result = await getCountries();
+  
+      result.length > 0
+      ? res.status(200).json(result)
+      : res.status(404).json("No hay países")
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  router.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const continent = await getCountriesById(id);
+        continent
+        ? res.status(200).json(continent)
+        : res.status(404).json("País no existe")
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
 });
-
-router.get('/', async(req, res) => {
-    
-    try {
-        res.send("trae todos los países")
-    } catch (error) {
-        res.status(500).json({message: error.message});  
-    }
-})
-
-router.get('/:id', async(req, res) => {
-    
-    try {
-        res.send("trae el país solicitado por id")
-    } catch (error) {
-        res.status(500).json({message: error.message});  
-    }
-})
 
 router.get('/name?=', async(req, res) => {
     
@@ -40,13 +48,14 @@ router.get('/name?=', async(req, res) => {
     }
 })
 
-router.delete('/:id', async(req, res) => {
-    
+router.delete("/:id", async (req, res) => {
     try {
-        res.send("borra el continente solicitado por id")
+      const { id } = req.params;
+      await deleteCountry(id);
+      res.status(200).json("País eliminado");
     } catch (error) {
-        res.status(500).json({message: error.message});  
+      res.status(500).json({ message: error.message });
     }
-})
+  });
 
 module.exports = router;
