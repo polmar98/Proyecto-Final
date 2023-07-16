@@ -13,7 +13,7 @@ const ContinentModels = require('./models/Continent');
 const HotelModels = require('./models/Hotel');
 const ActivityModels = require('./models/Activity');
 const UserModels = require('./models/User');
-const CommentModels = require('./models/Comment');
+const CommentModels = require('./models/comment');
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -43,11 +43,10 @@ const {TypePackage, CityPackage,
 Package.hasMany(CityPackage, {foreignKey: 'idPackage', sourceKey: 'id'});
 CityPackage.belongsTo(Package, {foreignKey: 'idPackage', targetKey: 'id'});
 
-Package.belongsTo(TypePackage, {foreignKey: 'idTypePacket', targetKey: 'id'});
-//TypePackage.belongsTo(Package, {foreignKey: 'idTypePacket', targetKey: 'id'});
+Package.belongsTo(TypePackage, {foreignKey: 'idTypePackage', targetKey: 'id'});
 
-Package.hasOne(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
-Airline.belongsToMany(Package, {through: 'package_airline'});
+Package.belongsTo(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
+//Airline.belongsToMany(Package, {through: 'package_airline'});
 
 Country.hasMany(City, {foreignKey: 'idCountry', sourceKey: 'id'});
 City.belongsTo(Country, {foreignKey: 'idCountry', targetKey: 'id'});
