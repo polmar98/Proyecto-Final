@@ -69,7 +69,7 @@ const mapList = (array) => array.map((result) => {
             { association:'TypePackage', attributes:['id', 'name']},
             { association:'Airline', attributes:['id', 'name']},
             { association:'City', attributes:['id', 'name']},
-            { association:'Hotel', attributes:['id', 'name']},
+            { association:'Hotel', attributes:['id', 'name', 'image']},
             { association:'Continent', attributes:['id', 'name']},
             { model: Activity},
         ]},
@@ -86,7 +86,7 @@ const getPackageById = async(idp) => {
         { association:'TypePackage', attributes:['id', 'name']},
         { association:'Airline', attributes:['id', 'name']},
         { association:'City', attributes:['id', 'name']},
-        { association:'Hotel', attributes:['id', 'name', 'stars']},
+        { association:'Hotel', attributes:['id', 'name', 'stars', 'image', 'calification', 'details']},
         { association:'Continent', attributes:['id', 'name']},
         { model: Activity},     
         ]
