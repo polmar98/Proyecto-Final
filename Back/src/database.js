@@ -25,7 +25,6 @@ AirlineModel(sequelize);
 CityModels(sequelize);
 CountryModels(sequelize);
 ContinentModels(sequelize);
-ContinentModels(sequelize);
 HotelModels(sequelize);
 ActivityModels(sequelize);
 UserModels(sequelize);
@@ -44,10 +43,7 @@ Package.belongsTo(City, {foreignKey: 'idCity', targetKey: 'id'});
 
 Package.belongsTo(Hotel, {foreignKey: 'idHotel', targetKey: 'id'});
 
-Package.belongsTo(TypePackage, {
-  foreignKey: "idTypePackage",
-  targetKey: "id",
-});
+Package.belongsTo(TypePackage, {foreignKey: "idTypePackage", targetKey: "id"});
 
 Package.belongsTo(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
 

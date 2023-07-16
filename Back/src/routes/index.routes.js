@@ -17,7 +17,6 @@ router.use('/airlines', handlersAirlines);
 router.use('/users', handlerUser);
 router.use('/comments', handlerComment)
 router.use("/continents", handlersContinents);
-router.use("/continents/name?=", handlersContinents);
 router.use("/countries", handlersCountries);
 router.use("/cities", handlersCities);
 
