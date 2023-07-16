@@ -2,7 +2,9 @@ const { Country } = require("../database");
 
 const createCountry = async (name, calification, flag, idContinent) => {
     try {
-        const newContinent = await Country.create({ name, calification, flag, idContinent });
+        const newContinent = await Country.findOrCreate({
+          where: { name, calification, flag, idContinent }
+        });
       } catch (error) {
         console.log(error.message);
 }
