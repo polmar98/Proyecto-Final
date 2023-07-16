@@ -4,6 +4,10 @@ const handlersTypePackages = require('../handlers/typePackages.handlers');
 const handlersAirlines = require('../handlers/airlines.handlers');
 const handlerUser = require('../handlers/users.handlers');
 const handlerComment = require('../handlers/comment.handlers');
+const handlersContinents = require("../handlers/continents.handlers");
+const handlersCountries = require("../handlers/countries.handlers");
+const handlersCities = require("../handlers/cities.handlers");
+
 
 const router = Router();
 
@@ -12,5 +16,9 @@ router.use('/typePackages', handlersTypePackages);
 router.use('/airlines', handlersAirlines);
 router.use('/users', handlerUser);
 router.use('/comments', handlerComment)
+router.use("/continents", handlersContinents);
+router.use("/continents/name?=", handlersContinents);
+router.use("/countries", handlersCountries);
+router.use("/cities", handlersCities);
 
 module.exports = router;
