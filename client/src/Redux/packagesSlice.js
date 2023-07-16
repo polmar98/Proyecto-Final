@@ -1,42 +1,39 @@
-// slices/packagesSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-import { createSlice } from "@reduxjs/toolkit";
-import packages from "../packages.js";
+// Thunk action para obtener packages del servidor
+export const fetchPackages = createAsyncThunk(
+  "packages/fetchPackages",
+  async () => {
+    const response = await axios.get("http://localhost:3002/packages");
+    return response.data;
+  }
+);
 
 export const packagesSlice = createSlice({
   name: "packages",
-  initialState: {
-    packagesList: packages,
-    searchResults: []
-  },
+  initialState: { packagesList: [], status: "idle", error: null },
   reducers: {
-    // Agregar aquí reducers
-    searchPackages: (state, action) => {
-      const pais = action.payload;
-      
-
-      if (pais === "") {
-        state.searchResults = state.packagesList;
-      } else {
-        const results = state.packagesList.filter((tour) =>{
-          if (Array.isArray(tour.Pais)){
-            return tour.Pais.some((pais)=>pais.toLocaleLowerCase().includes(pais.toLocaleLowerCase()))
-          }else{
-            return tour.Pais.toLowerCase().includes(pais.toLowerCase())
-          }
-        }
-          
-        );
-        state.searchResults = results;
-      }
-    }
+    // Agrega un nuevo package al estado inicial
+    addPackage: (state, action) => {
+      state.packagesList.push(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPackages.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchPackages.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        // Agrega los packages al estado inicial
+        state.packagesList = action.payload;
+      })
+      .addCase(fetchPackages.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
-
-export const {
-  /* acciones */
-  searchPackages
-
-} = packagesSlice.actions;
 
 export default packagesSlice.reducer;
