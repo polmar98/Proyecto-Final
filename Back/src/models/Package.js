@@ -74,6 +74,10 @@ module.exports = (sequelize) => {
      active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-     }  
+     },
+     service: {
+        type: DataTypes.STRING,
+        allowNull: true,
+     } 
   },{ timestamps: false });
 };

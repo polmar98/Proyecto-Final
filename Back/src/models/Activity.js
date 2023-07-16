@@ -12,21 +12,28 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true,
         },
-        image: {
+        image : {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
         price:{
             type: DataTypes.DECIMAL,
             allowNull: false,
+            defaultValue: 0,
         },
         calification: {
             type: DataTypes.DECIMAL,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0,
         },
         available: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
+        },
+        included: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         }
 
     },{ timestamps: false })
