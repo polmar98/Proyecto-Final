@@ -1,55 +1,73 @@
 let data = [
 	{
-		"id": 3,
-		"title": "Bajo el encanto del mar: San Andrés",
-		"description": "Un viaje paradisiaco a las hermosas playas de San Andres y providencia",
-		"initialDate": "2023/10/24",
-		"finalDate": "2023/11/04",
+		"id": 1,
+		"title": "Descubre el paraíso: Cancún",
+		"description": "Descubre la magia del caribe mexicano",
+		"initialDate": "2023/12/11",
+		"finalDate": "2023/12/20",
 		"totalLimit": 100,
-		"bookings": 0,
-		"standarPrice": "697.92",
-		"promotionPrice": "647.6",
-		"duration": 12,
+			"bookings": 0,
+		"standarPrice": "1699.0",
+			"promotionPrice": "1499.0",
+		"duration": 10,
 		"originCity": 3,
-		"outboundFlight": "Sab 24 octubre 20:22PM Bogota|Directo",
-		"returnFlight": "Sab 4 Noviembre 19:42PM ADZ|Directo",
-		"image": "https://media.staticontent.com/media/pictures/b44d532d-2700-47ca-9152-40cb31d07fee/853x380?op=TRUNCATE&enlarge=false&gravity=ce_0_0&quality=80&dpr=1",
-		"qualification": "8.23",
+		"outboundFlight": "Lun 11 diciembre 09:30AM Buenos Aires|Directo",
+			"returnFlight": "Mar 20 diciembre 18:15PM CUN|Directo",
+		"image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
+		"qualification": "9.4",
 		"active": true,
-		"idContinent": 1,
-		"idCity": 1,
-		"idHotel": 1,
-		"idTypePackage": 1,
-		"idAirline": 1,
+		"idContinent": 0,
+		"idCountry": 0,
+			"idCity": 0,
+			"idHotel": 0,
+			"idTypePackage": 0,
+			"idAirline": 0,
 		"TypePackage": {
-			"id": 1,
-			"name": "Plan Individual"
-		},
-		"Airline": {
-			"id": 1,
-			"name": "Avianca"
-		},
-		"City": {
-			"id": 1,
-			"name": "San Andres y Providencia"
-		},
-		"Hotel": {
-			"id": 1,
-			"name": "Aquamare Hotel"
-		},
+				"id": 1,
+				"name": "Plan Individual"
+			},
+			"Airline": {
+				"id": 0,
+				"name": "Aerolineas Argentinas"
+			},
 		"Continent": {
-			"id": 1,
-			"name": "Suramerica"
-		},
-                "Activity" : [
-                      {
-                        "id": 1,
-                        "desctiption": "Full day: Johnny Cay Aquary, manglares y bahi",
-                        "https://media.staticontent.com/media/pictures/605b9a7e-fec2-4a05-abba-5277d1de1b24/409x210?op=TRUNCATE&enlarge=false&gravity=ce_0_0&quality=80&dpr=1",
-                        "price": 17.67,
-                        "included": false 
-                      }
-                ]
-                 
+				"id": 0,
+				"name": "Centroamérica"
+			},
+		"Country": {
+				"id": 0,
+				"name": "México"
+			},
+			"City": {
+				"id": 0,
+				"name": "Cancún, Quintana Roo"
+			},
+			"Hotel": {
+				"id": 0,
+				"name": "The Westin Resort & Spa, Cancún"
+			},
+		"Activity" : [
+		  {
+			"id": 0,
+			"desctiption": "Tour a la Isla Mujeres",
+			"URL": "https://www.turismomexico.es/wp-content/uploads/2016/12/isla-mujeresmexico.jpg",
+			"price": 45.0,
+			"included": false 
+		  },
+		  {
+			"id": 0,
+			"desctiption": "Tour a la Zona Arqueológica de Tulum",
+			"URL": "https://www.turismomexico.es/wp-content/uploads/2016/12/isla-mujeresmexico.jpg",
+			"price": 45.0,
+			"included": false 
+		  },
+		  {
+			"id": 0,
+			"desctiption": "Tour al cenote Samaal",
+			"URL": "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0b/93/db/b8.jpg",
+			"price": 55.0,
+			"included": false 
+		  }
+		]    
 	}
 ]
