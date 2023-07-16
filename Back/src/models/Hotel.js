@@ -11,7 +11,12 @@ module.exports = (sequelize) => {
         name:{
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
+        images: {
+            type: DataTypes.ARRAY(DataTypes.TEXT),
+            allowNull: false,
+          },
         calification: {
             type: DataTypes.DECIMAL,
             allowNull: false,

@@ -6,14 +6,14 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncremente: true,
+        },
+        name:{
+            type: DataTypes.STRING,
+            allowNull: false,
             unique: true,
         },
-        details:{
+        image: {
             type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        duration: {
-            type: DataTypes.DECIMAL,
             allowNull: false,
         },
         price:{
