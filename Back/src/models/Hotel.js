@@ -6,11 +6,17 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
+            unique: true,
         },
         name:{
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
+        image:{
+            type: DataTypes.ARRAY(DataTypes.TEXT),
+            allowNull: false,
+          },
         calification: {
             type: DataTypes.DECIMAL,
             defaultValue: 0,

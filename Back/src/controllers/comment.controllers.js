@@ -1,5 +1,6 @@
 const { Comment, User } = require('../database');
 
+// Controlador para crear nuevos comentarios
 const createComment = async (req, res) => {
   try {
     const { userId, testimony } = req.body;
@@ -15,11 +16,27 @@ const createComment = async (req, res) => {
       return res.status(404).json({ message: 'El usuario no existe' });
     }
 
-    const newComment = await Comment.create({ userId, testimony });
+    const newComment = await Comment.create({ idUser: userId, testimony });
     res.status(201).json(newComment);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { createComment };
+// Controlador para obtener todos los comentarios
+const getAllComments = async () => {
+    const comments = await Comment.findAll(); // Obtener todos los comentarios de la base de datos
+    return comments;
+  };
+
+// Controlador para obtener un comentario por su ID
+const getCommentById = async (id) => {
+    const comment = await Comment.findByPk(id); // Buscar el comentario por su ID en la base de datos
+    return comment;
+  };
+
+module.exports = { 
+    createComment,
+    getAllComments,
+    getCommentById
+ };

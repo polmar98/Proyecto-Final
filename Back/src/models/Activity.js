@@ -7,25 +7,37 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        details:{
-            type: DataTypes.TEXT,
+        name:{
+            type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
         duration: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.STRING,
             allowNull: false,
+        },
+        image : {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         price:{
             type: DataTypes.DECIMAL,
             allowNull: false,
+            defaultValue: 0,
         },
         calification: {
             type: DataTypes.DECIMAL,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0,
         },
         available: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
+        },
+        included: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         }
 
     },{ timestamps: false })
