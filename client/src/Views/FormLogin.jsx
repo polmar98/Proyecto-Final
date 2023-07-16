@@ -1,17 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { useSelector } from "react-redux";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [formFilled, setFormFilled] = useState(false);
 
-  const packages = useSelector((state) => state.packages.packagesList);
-  console.log(packages);
+  useEffect(() => {
+    const isFilled = email && password;
+
+    setFormFilled(isFilled);
+  }, [email, password]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isValidLogin()) {
+      setErrorMsg("Usuario o contraseña incorrectos");
+      return;
+    }
+
+    setErrorMsg("");
+    console.log("Login correcto");
+  };
+
+  const isValidLogin = () => {
+    return email === "admin" && password === "admin";
+  };
+
   return (
     <div className="flex h-screen">
       {/* Columna Izquierda */}
@@ -31,7 +53,7 @@ const LoginPage = () => {
             </h2>
           </div>
 
-          <form className="flex flex-col space-y-5">
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
             {/* Inputs */}
             <input
               value={email}
@@ -42,6 +64,8 @@ const LoginPage = () => {
 
             <div className="relative">
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
                 className="px-4 py-3 border rounded w-full text-gray-500 text-sm font-normal h-12"
@@ -59,9 +83,12 @@ const LoginPage = () => {
                 />
               )}
             </div>
-
+            {errorMsg && <p className="text-red-500">{errorMsg}</p>}
             {/* Botón Ingresar */}
-            <button className="bg-gray-400 text-white py-2 rounded-md text-center h-12">
+            <button
+              className="bg-gray-400 text-white py-2 rounded-md text-center h-12"
+              style={{ backgroundColor: formFilled ? "#43B97F" : "#gray-400" }}
+            >
               Ingresar
             </button>
 
