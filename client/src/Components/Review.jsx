@@ -1,5 +1,5 @@
 import React from "react";
-import data from "../data";
+import data from "../packages";
 
 function Review() {
   const idrequired = 2;
