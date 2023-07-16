@@ -28,6 +28,7 @@ AirlineModel(sequelize);
 CityModels(sequelize);
 CountryModels(sequelize);
 ContinentModels(sequelize);
+ContinentModels(sequelize);
 HotelModels(sequelize);
 ActivityModels(sequelize);
 UserModels(sequelize);
