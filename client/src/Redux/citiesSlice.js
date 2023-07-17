@@ -35,3 +35,6 @@ export const citiesSlice = createSlice({
 export const { addCity } = citiesSlice.actions;
 
 export default citiesSlice.reducer;
+
+export const selectCities = (state) => state.cities.citiesList;
+export const selectCitiesStatus = (state) => state.cities.status;

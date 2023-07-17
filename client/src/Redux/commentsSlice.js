@@ -38,3 +38,6 @@ export const commentsSlice = createSlice({
 export const { addComment } = commentsSlice.actions;
 
 export default commentsSlice.reducer;
+
+export const selectComments = (state) => state.comments.commentsList;
+export const selectCommentsStatus = (state) => state.comments.status;

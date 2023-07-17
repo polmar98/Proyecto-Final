@@ -38,3 +38,5 @@ export const continentsSlice = createSlice({
 export const { addContinent } = continentsSlice.actions;
 
 export default continentsSlice.reducer;
+export const selectContinents = (state) => state.continents.continentsList;
+export const selectContinentsStatus = (state) => state.continents.status;
