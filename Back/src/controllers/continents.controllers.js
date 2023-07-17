@@ -22,10 +22,9 @@ const getContinentsById = async (id) => {
 };
 
 const getContinentsByName = async (name) => {
-  let plainName = name.toLowerCase();
-  const dbContinents = await Continent.findAll({
+    const dbContinents = await Continent.findAll({
     where: {
-      name: plainName,
+      name: name,
     },
   });
   return dbContinents;
