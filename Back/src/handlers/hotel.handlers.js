@@ -37,11 +37,39 @@ router.post('/', async (req, res) => {
     console.log(req.body);
 
 try {
-    const hotelNew = await createHotel(name, image, calification, stars, details, available);
+    const hotelNew = await createHotel(name, image, calification, stars, details, available, idCity);
     res.status(201).json(hotelNew);
 } catch (error) {
     res.status(404).send("Faild create hotel");
 }
 })
+
+
+router.post('/massive', async (req, res) => {
+    const { hoteles } = req.body;
+    console.log(req.body);
+  
+    try {
+      const createdHotels = [];
+      for (const hotel of hoteles) {
+        const createdHotel = await createHotel(
+          hotel.name,
+          hotel.image,
+          hotel.calification,
+          hotel.stars,
+          hotel.details,
+          hotel.available,
+          hotel.idCity
+        );
+        createdHotels.push(createdHotel);
+      }
+  
+      res.status(201).json(createdHotels);
+    } catch (error) {
+      res.status(500).json({error: error.message });
+    }
+  });
+
+
 
 module.exports = router;

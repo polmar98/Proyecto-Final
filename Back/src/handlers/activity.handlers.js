@@ -9,7 +9,6 @@ const router = Router();
 router.get('/', async (req, res)=>{
     const {name}= req.query;
     console.log(req.query);
-
     try {
         const resultado = name ? await searchNameActivity(name) : await getActivity();
         resultado.length ? 
