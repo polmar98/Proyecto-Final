@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import airelinesReducer from "../airelinesSlice";
+import airlinesReducer from "../airlinesSlice";
 import citiesReducer from "../citiesSlice";
 import commentsReducer from "../commentsSlice";
-import continentReducer from "../continentSlice";
+import continentsReducer from "../continentsSlice";
 import countriesReducer from "../countriesSlice";
-import packagesReducer from "../packagesSlice";
 import typepackagesReducer from "../typepackagesSlice";
 import usersReducer from "../usersSlice";
+import packagesReducer, { searchReducer } from "../packagesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,9 +16,10 @@ export const store = configureStore({
     comments: commentsReducer,
     cities: citiesReducer,
     countries: countriesReducer,
-    continent: continentReducer,
+    continents: continentsReducer,
     typepackages: typepackagesReducer,
-    airelines: airelinesReducer,
+    airlines: airlinesReducer,
+    search: searchReducer,
   },
 });
 

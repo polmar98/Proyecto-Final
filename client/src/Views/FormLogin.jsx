@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
+import {
+  fetchAirlines,
+  selectAirlines,
+  selectAirlinesStatus,
+} from "../Redux/airlinesSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,12 +17,18 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
+  const dispatch = useDispatch();
+  const airlines = useSelector(selectAirlines);
+  const status = useSelector(selectAirlinesStatus);
 
   useEffect(() => {
     const isFilled = email && password;
-
+    dispatch(fetchAirlines());
     setFormFilled(isFilled);
-  }, [email, password]);
+  }, [email, password, dispatch]);
+
+  console.log(airlines);
+  console.log(status);
 
   const handleSubmit = (e) => {
     e.preventDefault();
