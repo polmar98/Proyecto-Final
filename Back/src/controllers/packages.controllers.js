@@ -8,19 +8,19 @@ const addPackages = async(objeto) => {
            standarPrice, promotionPrice, duration,
            originCity, idAirline, outboundFlight,
            returnFlight, image, qualification,service, 
-           idContinent, idCity, idHotel, activitys, 
+           idContinent, idCountry, idCity, idHotel, activitys, 
     } = objeto;
     //validamos la informacion recibida
     if(!idTypePackage || !title  || !description || !initialDate || !finalDate || !totalLimit || !standarPrice 
         || !promotionPrice || !duration || !originCity || !idAirline || !outboundFlight || !returnFlight 
-        || !image || !idContinent || !idCity || !idHotel || !activitys || !qualification || !service) {
+        || !image || !idContinent || !idCountry || !idCity || !idHotel || !activitys || !qualification || !service) {
         return {message: "Datos Incompletos"};
     };
     //armamos el nuevo json a subir en la BD
     const newPackage = {idTypePackage, title, description,
                         initialDate, finalDate, totalLimit,
                         standarPrice, promotionPrice, duration,
-                        originCity, idAirline, outboundFlight, idContinent,
+                        originCity, idAirline, outboundFlight, idContinent, idCountry,
                         returnFlight, image, qualification, idCity, idHotel, service};
 
     const packageCreated = await Package.create(newPackage); 
