@@ -20,6 +20,7 @@ const getCityById = async (id) => {
     where: {
       id: id,
     },
+    include: {association: "Country", attributes: ["id", "name"]}
   });
   return dbCountry;
 };
