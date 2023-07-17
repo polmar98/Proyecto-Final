@@ -24,4 +24,6 @@ router.use("/activity", handlersActivity);
 router.use("/hotels", handlersHotels);
 
 
+
+
 module.exports = router;
