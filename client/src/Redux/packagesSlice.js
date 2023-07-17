@@ -10,6 +10,26 @@ export const fetchPackages = createAsyncThunk(
   }
 );
 
+export const addPackages = createAsyncThunk(
+  "packages/addPackages",
+  async (newPackage) => {
+    const response = await axios.post(
+      "http://localhost:3002/packages",
+      newPackage
+    );
+    return response.data;
+  }
+);
+
+// Thunk action para obtener un package específico del servidor
+export const getPackageById = createAsyncThunk(
+  "packages/getPackageById",
+  async (id) => {
+    const response = await axios.get(`http://localhost:3002/packages/${id}`);
+    return response.data;
+  }
+);
+
 export const packagesSlice = createSlice({
   name: "packages",
   initialState: {
@@ -47,6 +67,31 @@ export const packagesSlice = createSlice({
       .addCase(fetchPackages.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(addPackages.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addPackages.fulfilled, (state, action) => {
+        state.loading = false;
+        // Añade el nuevo package a la lista de packages
+        state.packagesList.push(action.payload);
+      })
+      .addCase(addPackages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getPackageById.pending, (state) => {
+        state.loading = true;
+        state.errorId = null;
+      })
+      .addCase(getPackageById.fulfilled, (state, action) => {
+        state.loading = false;
+        // Actualiza packageData con los datos del package obtenido
+        state.packageData = action.payload;
+      })
+      .addCase(getPackageById.rejected, (state, action) => {
+        state.loading = false;
+        state.errorId = action.error.message;
       });
   },
 });
@@ -103,3 +148,5 @@ export const packagesReducer = packagesSlice.reducer;
 export const searchReducer = searchSlice.reducer;
 
 export default packagesReducer;
+export const selectPackages = (state) => state.packages.packagesList;
+export const selectPackagesStatus = (state) => state.packages.status;
