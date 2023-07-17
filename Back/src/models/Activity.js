@@ -10,11 +10,10 @@ module.exports = (sequelize) => {
         name:{
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         duration: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         image : {
             type: DataTypes.TEXT,

@@ -28,8 +28,8 @@ const getHotelById = async (id) => {
     return dbHotl;
   };
 
-const createHotel = async (name, image, calification, stars, details, available) => {
-    const newActivity = await Hotel.create({name, image, calification, stars, details, available})
+const createHotel = async (name, image, calification, stars, details, available, idCity) => {
+    const newActivity = await Hotel.create({name, image, calification, stars, details, available, idCity})
 
     return newActivity;
 }

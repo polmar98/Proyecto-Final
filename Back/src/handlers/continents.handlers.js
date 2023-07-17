@@ -6,6 +6,9 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     const { name } = req.body;
+    if (!name) {
+      throw new Error("Falta agregar 'name'");
+    };
     const newContinent = await createContinent(name);
     return res.status(201).send("Continente creado satisfactoriamente");
   } catch (error) {

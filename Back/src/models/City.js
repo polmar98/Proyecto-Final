@@ -19,6 +19,7 @@ module.exports = (sequelize) => {
   
         calification: {
           type: DataTypes.DECIMAL,
+          defaultValue: 0,
           allowNull: false,
         },
       },
