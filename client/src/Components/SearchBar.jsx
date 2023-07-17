@@ -1,34 +1,43 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { searchPackages } from "../Redux/packagesSlice";
+import { setSearchResults, searchPackagesAsync } from "../Redux/packagesSlice";
 import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
+   
+  const [word, setWord] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [pais, setPais] = useState("");
+
+  
+  const handleInputChange = (event) => {
+    setWord(event.target.value);
+  };
 
   const handleSearch = () => {
-    //dispatch(searchPackages(pais))
-    navigate("/search");
-  };
+    dispatch(searchPackagesAsync(word))
+        navigate("/search"); // Opcional: redirigir a la página de resultados de búsqueda
+        setWord("")
+      };
+  
 
-  const handleInputChange = (e) => {
-    setPais(e.target.value);
-  };
-
+  
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
       <input
         type="text"
-        placeholder="Country or Destination"
+        placeholder="A donde ..."
         className=" bg-white rounded p-2 m-2 w-[250px] focus:outline-none"
-        value={pais}
+        value={word}
         onChange={handleInputChange}
       />
-      <button className=" bg-green-300 rounded p-2 m-2" onClick={handleSearch}>
-        Find Trip Now
-      </button>
+      <button className=" bg-green-300 rounded p-2 m-2"
+      onClick={handleSearch}
+      >Buscar</button>
+
+<button className=" bg-green-300 rounded p-2 m-2"
+      onClick={handleSearch}
+      >Todos</button>
     </div>
   );
 }

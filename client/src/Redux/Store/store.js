@@ -9,6 +9,8 @@ import typepackagesReducer from "../typepackagesSlice";
 import usersReducer from "../usersSlice";
 import packagesReducer, { searchReducer } from "../packagesSlice";
 
+
+
 export const store = configureStore({
   reducer: {
     packages: packagesReducer,
