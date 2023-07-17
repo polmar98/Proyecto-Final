@@ -7,7 +7,11 @@ import continentsReducer from "../continentsSlice";
 import countriesReducer from "../countriesSlice";
 import typepackagesReducer from "../typepackagesSlice";
 import usersReducer from "../usersSlice";
+import hotelsreducer from "../hotelsSlice";
 import packagesReducer, { searchReducer } from "../packagesSlice";
+import activitysReducer from "../activitysSlice";
+
+
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +24,8 @@ export const store = configureStore({
     typepackages: typepackagesReducer,
     airlines: airlinesReducer,
     search: searchReducer,
+    hotels: hotelsreducer,
+    activitys: activitysReducer,
   },
 });
 

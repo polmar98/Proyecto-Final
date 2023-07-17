@@ -1,4 +1,4 @@
-const { Country, Continent } = require("../database");
+const { Country } = require("../database");
 const { Association } = require("../database");
 
 const createCountry = async (name, calification, flag, idContinent) => {
@@ -21,10 +21,20 @@ const getCountriesById = async (id) => {
     where: {
       id: id,
     },
-    include: {association: "Continent", attributes: ["id", "name"]}
+    include: { association: "Continent", attributes: ["id", "name"] },
   });
 
   return dbCountry;
+};
+
+const getCountryByName = async (name) => {
+  const dbcountry = await Country.findOne({
+    where: {
+      name: name,
+    },
+    include: { association: "Continent", attributes: ["id", "name"] },
+  });
+  return dbcountry;
 };
 
 const deleteCountry = async (id) => {
@@ -43,5 +53,6 @@ module.exports = {
   createCountry,
   getCountries,
   getCountriesById,
+  getCountryByName,
   deleteCountry,
 };
