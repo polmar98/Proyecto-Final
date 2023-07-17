@@ -3,6 +3,7 @@ const {
   createCountry,
   getCountries,
   getCountriesById,
+  getCountryByName,
   deleteCountry,
 } = require("../controllers/countries.controllers");
 
@@ -36,7 +37,10 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const result = await getCountries();
+    const {name} = req.query;
+        const result = name
+        ? await getCountryByName(name)
+        : await getCountries();
 
     result.length > 0
       ? res.status(200).json(result)
@@ -53,15 +57,6 @@ router.get("/:id", async (req, res) => {
     country
       ? res.status(200).json(country)
       : res.status(404).json("País no existe");
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-router.get("/", async (req, res) => {
-  const { name } = req.query;
-  try {
-    res.send("trae el país solicitado por name");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

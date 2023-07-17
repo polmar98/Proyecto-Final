@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
+import {
+  fetchAirlines,
+  selectAirlines,
+  selectAirlinesStatus,
+} from "../Redux/airlinesSlice";
+import {
+  fetchCities,
+  selectCities,
+  selectCitiesStatus,
+} from "../Redux/citiesSlice";
+import { fetchPackages, selectPackages } from "../Redux/packagesSlice";
+import { fetchHotels, selectHotels } from "../Redux/hotelsSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,12 +24,25 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
+  const dispatch = useDispatch();
+  const airlines = useSelector(selectAirlines);
+  const status = useSelector(selectAirlinesStatus);
+  const cities = useSelector(selectCities);
+  const citiesStatus = useSelector(selectCitiesStatus);
+  const packages = useSelector(selectPackages);
+  const hotels = useSelector(selectHotels);
+  const hotelsStatus = useSelector(selectHotels);
 
   useEffect(() => {
     const isFilled = email && password;
-
+    dispatch(fetchAirlines());
+    dispatch(fetchCities());
+    dispatch(fetchPackages());
+    dispatch(fetchHotels());
     setFormFilled(isFilled);
-  }, [email, password]);
+  }, [email, password, dispatch]);
+
+  console.log(hotelsStatus);
 
   const handleSubmit = (e) => {
     e.preventDefault();

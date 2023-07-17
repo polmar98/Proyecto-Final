@@ -29,9 +29,11 @@ const getHotelById = async (id) => {
   };
 
 const createHotel = async (name, image, calification, stars, details, available, idCity) => {
-    const newActivity = await Hotel.create({name, image, calification, stars, details, available, idCity})
+    const newHotel = await Hotel.findOrCreate({
+        where:{ name, image, calification, stars, details, available, idCity}
+    })
 
-    return newActivity;
+    return newHotel;
 }
 
 module.exports={

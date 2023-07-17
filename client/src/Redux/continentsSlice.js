@@ -26,7 +26,7 @@ export const continentsSlice = createSlice({
     },
     [fetchContinents.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.continentsList = state.continentsList.concat(action.payload);
+      state.continentsList = action.payload;
     },
     [fetchContinents.rejected]: (state, action) => {
       state.status = "failed";
@@ -38,3 +38,5 @@ export const continentsSlice = createSlice({
 export const { addContinent } = continentsSlice.actions;
 
 export default continentsSlice.reducer;
+export const selectContinents = (state) => state.continents.continentsList;
+export const selectContinentsStatus = (state) => state.continents.status;

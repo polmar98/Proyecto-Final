@@ -26,7 +26,7 @@ export const commentsSlice = createSlice({
     },
     [fetchComments.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.commentsList = state.commentsList.concat(action.payload);
+      state.commentsList = action.payload;
     },
     [fetchComments.rejected]: (state, action) => {
       state.status = "failed";
@@ -38,3 +38,6 @@ export const commentsSlice = createSlice({
 export const { addComment } = commentsSlice.actions;
 
 export default commentsSlice.reducer;
+
+export const selectComments = (state) => state.comments.commentsList;
+export const selectCommentsStatus = (state) => state.comments.status;

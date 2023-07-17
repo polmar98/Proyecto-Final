@@ -1,23 +1,40 @@
-import React from "react";
-import SearchBar from "../Components/SearchBar";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
-
-export default function SearchResult (){
-
-    const searchResult = useSelector((state)=>state.packages.searchResults)
-    const packagesList = useSelector((state) => state.packages.packagesList);
+import { useDispatch } from "react-redux";
+import {fetchPackages} from "../Redux/packagesSlice"
 
 
-    return(
-        <div>
-        <SearchBar />
+export default function SearchResult() {
+
+  const dispatch = useDispatch()
+
   
-        {searchResult.length > 0 ? (
-          searchResult.map(tour => <Card key={tour.Id} {...tour} />)
-        ) : (
-          packagesList.map(tour => <Card key={tour.Id} {...tour} />)
-        )}
-      </div>
-    );
-  }
+
+  useEffect(()=>{
+    dispatch(fetchPackages())
+  },[dispatch])
+
+  // useEffect (()=>{
+  //   dispatch(fetchCities())
+  // },[dispatch])
+
+
+    
+  const searchResults = useSelector((state) => state.search.searchResults);
+  const packagesList = useSelector((state) => state.packages.packagesList);
+  
+
+  return (
+    <div>
+      <SearchBar />
+
+      {searchResults.length > 0 ? (
+        searchResults.map((tour) => <Card key={tour.id} {...tour} />)
+      ) : (
+        packagesList.map((tour) => <Card key={tour.id} {...tour} />)
+      )}
+    </div>
+  );
+}

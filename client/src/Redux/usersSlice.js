@@ -23,7 +23,7 @@ export const usersSlice = createSlice({
     },
     [fetchUsers.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.usersList = state.usersList.concat(action.payload);
+      state.usersList = action.payload;
     },
     [fetchUsers.rejected]: (state, action) => {
       state.status = "failed";
@@ -35,3 +35,5 @@ export const usersSlice = createSlice({
 export const { addUser } = usersSlice.actions;
 
 export default usersSlice.reducer;
+export const selectUsers = (state) => state.users.usersList;
+export const selectUsersStatus = (state) => state.users.status;

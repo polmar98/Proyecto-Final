@@ -1,9 +1,10 @@
 const { City } = require("../database");
+const { Association } = require("../database");
 
 const createCity = async (name, idCountry) => {
   try {
     const newCity = await City.findOrCreate({
-      where:{ name, idCountry }
+      where: { name, idCountry },
     });
   } catch (error) {
     console.log(error.message);
@@ -16,12 +17,24 @@ const getCities = async () => {
 };
 
 const getCityById = async (id) => {
-  const dbCountry = await City.findOne({
+  const dbCity = await City.findOne({
     where: {
       id: id,
     },
+    include: { association: "Country", attributes: ["id", "name"] },
   });
-  return dbCountry;
+  return dbCity;
+};
+
+const getCityByName = async (name) => {
+  const dbCity = await City.findOne({
+    where: {
+      name: name,
+    },
+    include: { association: "Country", attributes: ["id", "name"] },
+  });
+  console.log (dbCity);
+  return dbCity;
 };
 
 const deleteCity = async (id) => {
@@ -36,4 +49,10 @@ const deleteCity = async (id) => {
   }
 };
 
-module.exports = { createCity, getCities, getCityById, deleteCity };
+module.exports = {
+  createCity,
+  getCities,
+  getCityById,
+  getCityByName,
+  deleteCity,
+};

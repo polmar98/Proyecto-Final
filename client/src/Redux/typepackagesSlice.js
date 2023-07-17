@@ -26,7 +26,7 @@ export const typepackagesSlice = createSlice({
     },
     [fetchTypepackages.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.typepackagesList = state.typepackagesList.concat(action.payload);
+      state.typepackagesList = action.payload;
     },
     [fetchTypepackages.rejected]: (state, action) => {
       state.status = "failed";
@@ -38,3 +38,6 @@ export const typepackagesSlice = createSlice({
 export const { addTypepackage } = typepackagesSlice.actions;
 
 export default typepackagesSlice.reducer;
+export const selectTypepackages = (state) =>
+  state.typepackages.typepackagesList;
+export const selectTypepackagesStatus = (state) => state.typepackages.status;
