@@ -3,24 +3,19 @@ import { useDispatch } from "react-redux";
 import { searchPackages } from "../Redux/packagesSlice";
 import { useNavigate } from "react-router-dom";
 
-
 function SearchBar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [pais, setPais] = useState("");
 
-  const dispatch= useDispatch()
-  const navigate = useNavigate ()
-  const[pais,setPais]=useState("")
-  
+  const handleSearch = () => {
+    //dispatch(searchPackages(pais))
+    navigate("/search");
+  };
 
-  const handleSearch =()=>{
-    
-    dispatch(searchPackages(pais))
-    navigate ("/search")
-  }
-
-  const handleInputChange=(e)=>{
-    setPais(e.target.value)
-  }
-
+  const handleInputChange = (e) => {
+    setPais(e.target.value);
+  };
 
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
@@ -31,9 +26,9 @@ function SearchBar() {
         value={pais}
         onChange={handleInputChange}
       />
-      <button className=" bg-green-300 rounded p-2 m-2"
-      onClick={handleSearch}
-      >Find Trip Now</button>
+      <button className=" bg-green-300 rounded p-2 m-2" onClick={handleSearch}>
+        Find Trip Now
+      </button>
     </div>
   );
 }
