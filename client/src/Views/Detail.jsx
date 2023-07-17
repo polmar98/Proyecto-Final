@@ -3,7 +3,7 @@ import React, { useEffect} from "react";
 // import Flights from "../Components/Flights";
 // import Activities from "../Components/Activities.jsx";
 // import Review from "../Components/Review";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPackageById, clearPackageDetails } from "../Redux/packagesSlice";
 import { fetchAirlines } from "../Redux/airlinesSlice";
@@ -12,6 +12,7 @@ import { fetchHotels } from "../Redux/hotelsSlice";
 
 function Detail() {
   const {id} = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageData);
   const loading = useSelector((state) => state.packages.loading);
@@ -51,9 +52,15 @@ function Detail() {
     return <div>Error: {rejected}</div>;
   }
 
+
+  function getBack(event) {
+    event.preventDefault()
+    navigate(-1)
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <button className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-3 rounded-full float-left ml-3">
+      <button onClick={getBack()} className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-3 rounded-full float-left ml-3">
   X
 </button>
   <div className="grid grid-cols-2 gap-4">
