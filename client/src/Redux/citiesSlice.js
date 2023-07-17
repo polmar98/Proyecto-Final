@@ -23,7 +23,7 @@ export const citiesSlice = createSlice({
     },
     [fetchCities.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.citiesList = state.citiesList.concat(action.payload);
+      state.citiesList = action.payload;
     },
     [fetchCities.rejected]: (state, action) => {
       state.status = "failed";

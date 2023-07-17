@@ -26,7 +26,7 @@ export const countriesSlice = createSlice({
     },
     [fetchCountries.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.countriesList = state.countriesList.concat(action.payload);
+      state.countriesList = action.payload;
     },
     [fetchCountries.rejected]: (state, action) => {
       state.status = "failed";

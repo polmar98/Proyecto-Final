@@ -16,6 +16,7 @@ import {
   selectCitiesStatus,
 } from "../Redux/citiesSlice";
 import { fetchPackages, selectPackages } from "../Redux/packagesSlice";
+import { fetchHotels, selectHotels } from "../Redux/hotelsSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -29,20 +30,19 @@ const LoginPage = () => {
   const cities = useSelector(selectCities);
   const citiesStatus = useSelector(selectCitiesStatus);
   const packages = useSelector(selectPackages);
+  const hotels = useSelector(selectHotels);
+  const hotelsStatus = useSelector(selectHotels);
 
   useEffect(() => {
     const isFilled = email && password;
     dispatch(fetchAirlines());
     dispatch(fetchCities());
     dispatch(fetchPackages());
+    dispatch(fetchHotels());
     setFormFilled(isFilled);
   }, [email, password, dispatch]);
 
-  console.log(airlines);
-  console.log(status);
-  console.log(cities);
-  console.log(citiesStatus);
-  console.log(packages);
+  console.log(hotelsStatus);
 
   const handleSubmit = (e) => {
     e.preventDefault();
