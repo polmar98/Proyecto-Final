@@ -10,6 +10,7 @@ function SearchBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
   const handleInputChange = (event) => {
     setWord(event.target.value);
   };

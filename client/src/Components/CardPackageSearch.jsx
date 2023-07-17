@@ -42,4 +42,5 @@ const dispatch = useDispatch()
   )
 }
 
+
 export default Card;
