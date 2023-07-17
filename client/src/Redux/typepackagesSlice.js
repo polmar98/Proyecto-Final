@@ -38,3 +38,6 @@ export const typepackagesSlice = createSlice({
 export const { addTypepackage } = typepackagesSlice.actions;
 
 export default typepackagesSlice.reducer;
+export const selectTypepackages = (state) =>
+  state.typepackages.typepackagesList;
+export const selectTypepackagesStatus = (state) => state.typepackages.status;
