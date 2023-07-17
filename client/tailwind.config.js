@@ -7,6 +7,9 @@ module.exports = {
       colors: {
         verdeFooter: "#295943",
       },
+      fontSize: {
+        "2xs": "0.625rem",
+      },
     },
   },
   variants: {

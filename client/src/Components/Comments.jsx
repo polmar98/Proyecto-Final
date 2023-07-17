@@ -27,17 +27,11 @@ function Sale({ paquetes }) {
             key={paquete.idTypePackage}
             className="m-2 rounded shadow-2xl p-2"
           >
-            <div
-              className="text-yellow-400 text-lg -rotate-45 w-12 rounded bg-red-600
-            "
-            >
-              OFF
-            </div>
-            <img
+            {/* <img
               className="rounded w-[280px] h-[150px]"
               src={paquete.image}
               alt=""
-            />
+            /> */}
             <h1 className=" fontPoppinsB text-left m-1">{paquete.title}</h1>
             {/* 
             <h6 className="text-gray-600 text-2xs">
