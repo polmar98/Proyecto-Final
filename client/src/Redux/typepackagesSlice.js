@@ -26,7 +26,7 @@ export const typepackagesSlice = createSlice({
     },
     [fetchTypepackages.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.typepackagesList = state.typepackagesList.concat(action.payload);
+      state.typepackagesList = action.payload;
     },
     [fetchTypepackages.rejected]: (state, action) => {
       state.status = "failed";

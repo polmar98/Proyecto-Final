@@ -26,7 +26,7 @@ export const airlinesSlice = createSlice({
     },
     [fetchAirlines.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.airlinesList = state.airlinesList.concat(action.payload);
+      state.airlinesList = action.payload;
     },
     [fetchAirlines.rejected]: (state, action) => {
       state.status = "failed";
