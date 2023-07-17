@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
         },
         calification: {
           type: DataTypes.DECIMAL,
-          defaultValue: 0,
+          defaultValue: 0,         
         },
         flag: {
           type: DataTypes.TEXT,
