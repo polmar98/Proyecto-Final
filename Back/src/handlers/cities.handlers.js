@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
       };
 
       if (!idCountry) {
-        throw new Error("Falta agregar idCountry");
+        throw new Error("Falta agregar idCountry ");
       };
             
       const newCity = await createCity(name, idCountry);
