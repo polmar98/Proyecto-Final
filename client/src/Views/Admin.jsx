@@ -100,6 +100,7 @@ const Form = () => {
     idCity: "", // salida
     idHotel: "",
     activitys: [],
+    activitys: [],
   });
 
   const handleInputChange = (event) => {
