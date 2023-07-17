@@ -32,6 +32,8 @@ const Form = () => {
     dispatch(fetchActivitys());
   }, []);
 
+  console.log(cities);
+
   /*json de ejemplo
 
  "idTypePackage": 1,
@@ -97,10 +99,9 @@ const Form = () => {
       "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
     qualification: "9.4",
     idContinent: "",
-
     idCity: "", // salida
     idHotel: "",
-    activitys: "",
+    activitys: [],
   });
 
   const handleInputChange = (event) => {
@@ -419,7 +420,7 @@ const Form = () => {
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="">Select a activitys</option>
-                {hotels.map((activitys) => (
+                {activitys.map((activitys) => (
                   <option key={activitys.Id} value={activitys.Id}>
                     {activitys.name}
                   </option>
