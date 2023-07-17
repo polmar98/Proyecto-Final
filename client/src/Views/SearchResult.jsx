@@ -10,6 +10,7 @@ export default function SearchResult() {
 
   const dispatch = useDispatch()
 
+  
 
   useEffect(()=>{
     dispatch(fetchPackages())
