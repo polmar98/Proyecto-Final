@@ -102,20 +102,63 @@ const Form = () => {
     idCity: "", // salida
     idHotel: "",
     activitys: [],
+    activitys: [],
   });
 
   const handleInputChange = (event) => {
-    setInput({
-      ...input,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value, options } = event.target;
+
+    if (options && options.multiple) {
+      const selectedValues = Array.from(options)
+        .filter((option) => option.selected)
+        .map((option) => option.value);
+
+      setInput({
+        ...input,
+        [name]: selectedValues,
+      });
+    } else {
+      setInput({
+        ...input,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(input);
-    setInput({});
-    alert("Package created successfully");
+    dispatch(addPackages(input))
+      .unwrap()
+      .then(() => {
+        setInput({
+          idTypePackage: 1,
+          title: "",
+          description: "",
+          initialDate: "",
+          finalDate: "",
+          totalLimit: "",
+          standarPrice: "",
+          promotionPrice: "",
+          service: "",
+          duration: "",
+          originCity: "",
+          idAirline: "",
+          outboundFlight: "asfasfa",
+          returnFlight: "fasfasfas",
+          image:
+            "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
+          qualification: "9.4",
+          idContinent: "",
+          idCity: "",
+          idHotel: "",
+          activitys: [],
+        });
+        alert("Package created successfully");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error occurred while creating the package");
+      });
   };
 
   return (
