@@ -38,9 +38,7 @@ const addPackages = async(objeto) => {
         }
         await Activity.create(newActivity);
     })
-
     return packageCreated;
-
 };
 
 
@@ -69,12 +67,11 @@ const mapList = (array) => array.map((result) => {
         include: [
             { association:'TypePackage', attributes:['id', 'name']},
             { association:'Airline', attributes:['id', 'name']},
-            { association:'City', attributes:['id', 'name']},
+            { association:'City', attributes:['id', 'name', 'idCountry']},
             { association:'Hotel', attributes:['id', 'name', 'image']},
             { association:'Continent', attributes:['id', 'name']},
             { model: Activity},
         ]},
-   
     );    
     return paquetes;
 };
@@ -86,7 +83,7 @@ const getPackageById = async(idp) => {
     include: [
         { association:'TypePackage', attributes:['id', 'name']},
         { association:'Airline', attributes:['id', 'name']},
-        { association:'City', attributes:['id', 'name']},
+        { association:'City', attributes:['id', 'name', 'idCountry']},
         { association:'Hotel', attributes:['id', 'name', 'stars', 'image', 'calification', 'details']},
         { association:'Continent', attributes:['id', 'name']},
         { model: Activity},     
@@ -95,4 +92,31 @@ const getPackageById = async(idp) => {
    return paquete;
 };
 
-module.exports = { addPackages, viewPackages, getPackageById };
+
+//esta funcion hace una busqueda de paquetes en el campo titulo
+const searchPackages = async(search) => {
+    const paquetes = await Package.findAll({
+        where: {active: true},
+        include: [
+            { association:'TypePackage', attributes:['id', 'name']},
+            { association:'Airline', attributes:['id', 'name']},
+            { association:'City', attributes:['id', 'name', 'idCountry']},
+            { association:'Hotel', attributes:['id', 'name', 'image']},
+            { association:'Continent', attributes:['id', 'name']},
+            { model: Activity},
+        ]},
+   
+    );  
+    const packages = paquetes.filter(e => e.title.toLowerCase().includes(search.toLowerCase()))
+    return packages;
+};
+
+//la sgte rutina almacena de forma masiva paquetes enviados desde un array
+const addMassivePackages = async(array) => {
+    array.forEach(async(objeto) => {
+        await addPackages(objeto);
+    });
+    return "Array de paquetes cargado";
+};
+
+module.exports = { addPackages, viewPackages, getPackageById, searchPackages, addMassivePackages };
