@@ -13,7 +13,7 @@ const HotelModels = require("./models/Hotel");
 const ActivityModels = require("./models/Activity");
 const UserModels = require("./models/User");
 const CommentModels = require("./models/comment");
-const AdminModels = require("./models/Admin");
+
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -30,13 +30,13 @@ HotelModels(sequelize);
 ActivityModels(sequelize);
 UserModels(sequelize);
 CommentModels(sequelize);
-AdminModels(sequelize);
+
 
 const {TypePackage, 
        Package, Airline, City,
        Country, Continent,
        Hotel, Activity,
-       User, Comment, Admin } = sequelize.models;
+       User, Comment } = sequelize.models;
 
 // establecemos las relaciones
 Package.belongsTo(Continent, {foreignKey: 'idContinent', targetKey: 'id'});
@@ -70,7 +70,7 @@ module.exports = {
     Airline, Package,
     City, Country, Continent,
     Hotel, Activity,
-    User, Comment, Admin,
+    User, Comment, 
     conn: sequelize, 
 
 };
