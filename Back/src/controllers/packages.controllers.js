@@ -101,7 +101,7 @@ const searchPackages = async(search) => {
             { association:'TypePackage', attributes:['id', 'name']},
             { association:'Airline', attributes:['id', 'name']},
             { association:'City', attributes:['id', 'name', 'idCountry']},
-            { association:'Hotel', attributes:['id', 'name', 'image']},
+            { association:'Hotel', attributes:['id', 'name', 'image', 'calification', 'details']},
             { association:'Continent', attributes:['id', 'name']},
             { model: Activity},
         ]},
