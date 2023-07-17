@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const {name, image, calification, stars, details, available} = req.body;
+    const {name, image, calification, stars, details, available, idCity} = req.body;
 
     console.log(req.body);
 

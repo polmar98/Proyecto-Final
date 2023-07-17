@@ -1,10 +1,9 @@
 const { City } = require("../database");
 
 const createCity = async (name, idCountry) => {
+  const xname = name;
   try {
-    const newCity = await City.findOrCreate({
-      where:{ name }
-    });
+    const newCity = await City.findOrCreate({ where:{ name: xname } });
   } catch (error) {
     console.log(error.message);
   }

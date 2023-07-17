@@ -29,11 +29,12 @@ const addPackages = async(objeto) => {
     //agregamos las actividades del paquete
     activitys.forEach( async(ele) => {
         const newActivity = {
-            details: ele.description,
+            name: ele.name,
             image: ele.image,
             price: ele.price,
             included: ele.included,
             idPackage: id,
+            duration: ele.duration,
         }
         await Activity.create(newActivity);
     })
