@@ -9,6 +9,7 @@ const handlersCountries = require("../handlers/countries.handlers");
 const handlersCities = require("../handlers/cities.handlers");
 const handlersActivity = require("../handlers/activity.handlers");
 const handlersHotels = require("../handlers/hotel.handlers");
+const handlersAdmins = require("../handlers/admin.handlers");
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use('/packages', handlersPackages);
 router.use('/typePackages', handlersTypePackages);
 router.use('/airlines', handlersAirlines);
 router.use('/users', handlerUser);
+router.use('/admins', handlersAdmins);
 router.use('/comments', handlerComment)
 router.use("/continents", handlersContinents);
 router.use("/countries", handlersCountries);
