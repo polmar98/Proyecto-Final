@@ -30,9 +30,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const {name} = req.query;
-        const result = [name
-        ? await getCityByName(name)
-        : await getCities()];
+        const result = await getCities();
 
     result.length > 0
       ? res.status(200).json(result)
