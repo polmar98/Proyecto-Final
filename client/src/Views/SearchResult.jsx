@@ -7,7 +7,7 @@ import { fetchPackages } from "../Redux/packagesSlice";
 import { useLocation } from "react-router-dom";
 import { searchPackagesAsync } from "../Redux/packagesSlice";
 import Footer from "../Components/Footer";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -32,7 +32,9 @@ export default function SearchResult() {
 
   // Calcular la cantidad total de páginas disponibles
   const totalPages = Math.ceil(
-    searchResults.length > 0 ? searchResults.length / RESULTS_PER_PAGE : packagesList.length / RESULTS_PER_PAGE
+    searchResults.length > 0
+      ? searchResults.length / RESULTS_PER_PAGE
+      : packagesList.length / RESULTS_PER_PAGE
   );
 
   // Función para manejar el botón "next"
@@ -48,7 +50,10 @@ export default function SearchResult() {
   // Filtrar los resultados según la página actual
   const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
   const endIndex = startIndex + RESULTS_PER_PAGE;
-  const currentResults = searchResults.length > 0 ? searchResults.slice(startIndex, endIndex) : packagesList.slice(startIndex, endIndex);
+  const currentResults =
+    searchResults.length > 0
+      ? searchResults.slice(startIndex, endIndex)
+      : packagesList.slice(startIndex, endIndex);
 
   return (
     <div className="pt-8">
@@ -59,28 +64,27 @@ export default function SearchResult() {
         ))}
       </div>
 
-      {/* Número de la página actual */}
       <div className="flex justify-center mt-4">
-        <p className="mr-4">
-          Page {currentPage} of {totalPages}
-        </p>
-
         {/* Botones de paginación */}
-        <button
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-          className=" bg-green-300 rounded p-2 m-2" 
-        >
-          <FiChevronLeft style={{ fontSize: "20px", color: "white" }}/>
-          
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages}
-          className=" bg-green-300 rounded p-2 m-2" 
-        >
-          <FiChevronRight style={{ fontSize: "20px", color: "white" }}/>
-        </button>
+        <div className="flex items-center">
+          <button
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+            className="bg-green-300 rounded p-2 m-2"
+          >
+            <FiChevronLeft style={{ fontSize: "20px", color: "white" }} />
+          </button>
+          <p className="">
+            Page {currentPage} of {totalPages}
+          </p>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className="bg-green-300 rounded p-2 m-2"
+          >
+            <FiChevronRight style={{ fontSize: "20px", color: "white" }} />
+          </button>
+        </div>
       </div>
 
       <Footer />
