@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-// import Hotels from "../Components/Hotels";
-// import Flights from "../Components/Flights";
-// import Activities from "../Components/Activities.jsx";
-// import Review from "../Components/Review";
+import {BiWifi} from "react-icons/bi"
+import {MdOutlineFreeBreakfast, MdOutlineLocalLaundryService, MdSmokeFree, MdOutlineAirportShuttle} from "react-icons/md/index.esm"
+import {RiStarSFill} from "react-icons/ri"
+import Footer from "../Components/Footer"
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPackageById, clearPackageDetails } from "../Redux/packagesSlice";
 import { fetchAirlines } from "../Redux/airlinesSlice";
 import { fetchHotels } from "../Redux/hotelsSlice";
+// import { fetchComments } from "../Redux/commentsSlice";
 
 function Detail() {
   const { id } = useParams();
@@ -31,34 +32,47 @@ function Detail() {
   const hotelData = hotel ? hotel : "Desconocido";
   // console.log('hotel', hotelData)
 
+   //stars del hotel
+   const stars = []
+   for (let i = 0; i < hotelData.stars; i++) {
+     stars.push(<RiStarSFill key={i} className="text-yellow-500 text-3xl mr-1 inline-flex" />);
+   }
+
+
   const tipoPaquete = tour.TypePackage ? tour.TypePackage.name : "Desconocido";
   // console.log(tipoPaquete)
+
+  // const reviews = useSelector((state) => state.comments.commentsList);
+  // const review = reviews.filter((el) => el.idPackage === tour.id);
+  // const reviewData = review ? review : "Desconocido";
+
+  // console.log(reviews)
+
 
   useEffect(() => {
     dispatch(getPackageById(id));
     dispatch(fetchAirlines());
     dispatch(fetchHotels());
+    // dispatch(fetchComments())
     return () => {
       dispatch(clearPackageDetails());
     };
   }, [id, dispatch]);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div className="flex items-center justify-center h-screen text-4xl text-green-800">Cargando...</div>;
   }
   if (rejected) {
-    return <div>Error: {rejected}</div>;
+    return <div className="flex items-center justify-center h-screen text-4xl text-green-800">Error: {rejected}</div>;
   }
 
-  function getBack(event) {
-    // event.preventDefault()
-    // navigate(-1);
-  }
+ 
 
   return (
+    <>
     <div className="container mx-auto p-4">
       <button
-        onClick={getBack()}
+        onClick={()=>{navigate(-1)}}
         className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-3 rounded-full float-left ml-3"
       >
         X
@@ -66,13 +80,13 @@ function Detail() {
       <div className="grid grid-cols-2 gap-4">
         <div className="text-left mt-20">
           <h2 className="text-4xl font-bold mb-4">{tour.title}</h2>
-          <h2 className="text-xl font-semibold">{tour.description}</h2>
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-xl font-semibold text-justify mr-10">{tour.description}</h2>
+          <h2 className="text-xl font-semibold mt-6">
             Salida en {tour.initialDate}
           </h2>
           <h2 className="text-xl font-semibold">Cupos: {tour.totalLimit}</h2>
-          <h2 className="text-xl font-bold">
-            U$s {tour.standarPrice} {tipoPaquete}
+          <h2 className="text-xl font-bold mt-4">
+            Precio: USD{tour.standarPrice} -{tipoPaquete}-
           </h2>
         </div>
 
@@ -98,11 +112,13 @@ function Detail() {
 
       <div className="mt-8 text-left">
         <h1 className="text-4xl font-bold">{hotelData.name}</h1>
-        <h3 className="text-xl">{hotelData.stars} estrellas</h3>
-        <h3 className="text-xl">Calificación: {hotelData.calification}</h3>
-        <h3 className="text-xl">Pensión Completa</h3>
-      </div>
-      <div className="grid grid-cols-3 gap-4 mt-8">
+        {}
+        <h3 className="text-xl">{stars}</h3>
+        <h3 className="text-xl font-semibold">Calificación: {hotelData.calification}</h3>
+        <h3 className="text-xl font-semibold">Pensión Completa</h3>
+
+
+        <div className="grid grid-cols-3 gap-4 mt-8">
         {hotelData.image?.map((el, index) => (
           <img
             key={index}
@@ -112,6 +128,35 @@ function Detail() {
           />
         ))}
       </div>
+
+
+        <div>
+      <h3 className="text-2xl font-bold mb-2 mt-8" >Servicios destacados</h3>
+      <div className="mt-8 text-left flex flex-wrap">
+        <div className="flex items-center mb-4">
+          <BiWifi className="text-green-500 text-3xl mr-2" />
+          <span className="text-lg">Free WIFI en todas las intalaciones</span>
+        </div>
+        <div className="flex items-center mb-4">
+          <MdOutlineFreeBreakfast className="text-green-500 text-3xl mr-2 ml-6" />
+          <span className="text-lg">Desayuno incluído</span>
+        </div>
+        <div className="flex items-center mb-4">
+          <MdOutlineLocalLaundryService className="text-green-500 text-3xl mr-2 ml-6" />
+          <span className="text-lg">Lavandería de pago</span>
+        </div>
+        <div className="flex items-center mb-4">
+          <MdSmokeFree className="text-green-500 text-3xl mr-2 ml-6" />
+          <span className="text-lg">Habitaciones libres de humo</span>
+        </div>
+        <div className="flex items-center mb-4">
+          <MdOutlineAirportShuttle className="text-green-500 text-3xl mr-2 ml-6" />
+          <span className="text-lg">Transfer al aeropuerto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+     
 
       <h2 className="text-3xl font-bold mb-4 mt-8 text-left">Actividades</h2>
       <div className="grid grid-cols-3 gap-4 mt-8">
@@ -123,7 +168,7 @@ function Detail() {
             <a href="#!">
               <img
                 className="rounded-t-lg w-full h-auto"
-                src={el.image}
+                src={el.image ? el.image : "https://uss.com.ar/sitio/wp-content/themes/consultix/images/no-image-found-360x260.png"}
                 alt="Img not found"
               />
             </a>
@@ -131,11 +176,11 @@ function Detail() {
               <h5 className="mb-2 text-2xl font-medium leading-tight text-gray-800">
                 {el.name}
               </h5>
-              <p className="mb-4 text-base text-gray-600">
+              <p className="mb-2 text-base text-gray-600">
                 Duración: {el.duration}
               </p>
               {!el.included ? (
-                <span>u$s {el.price}</span>
+                <span>USD{el.price}</span>
               ) : (
                 <span>Actividad incluida</span>
               )}
@@ -145,9 +190,12 @@ function Detail() {
       </div>
 
       <button className="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded mt-10 mb-8 w-1/2">
-        COMPRAR
+        COMPRAR PAQUETE
       </button>
+
     </div>
+    <Footer className="w-full"/>
+    </>
   );
 }
 
@@ -234,12 +282,3 @@ function Detail() {
 // }
 
 export default Detail;
-
-{
-  /* <div key={el.id} >
-          <img src={el.image} alt='Img not found' className="w-[400px] h-[300px] rounded-lg"/>
-          <h1>{el.name}</h1>
-          <h3>Duración: {el.duration}</h3>
-          {!el.included ? <span>u$s {el.price}</span> : <span> Actividad incluida</span> }
-        </div>)} */
-}
