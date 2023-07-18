@@ -6,11 +6,11 @@ import landinggif from "../assets/landinggif.gif";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [exitAnimation, setExitAnimation] = useState(false); // nuevo estado para controlar la animación
+  const [exitAnimation, setExitAnimation] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setExitAnimation(true); // desencadena la animación de salida
+      setExitAnimation(true);
       setTimeout(() => navigate("/"), 1000); // después de que la animación se complete, redirige
     }, 4000);
 
@@ -20,8 +20,8 @@ const LandingPage = () => {
   return (
     <motion.div
       initial={{ opacity: 1, scale: 1 }}
-      animate={{ opacity: exitAnimation ? 0 : 1, scale: exitAnimation ? 4 : 1 }} // Modifica los valores aquí
-      transition={{ duration: 0.5 }} // Modifica la duración aquí
+      animate={{ opacity: exitAnimation ? 0 : 1, scale: exitAnimation ? 4 : 1 }}
+      transition={{ duration: 0.5 }}
       className="flex items-center justify-center h-screen bg-customGray"
     >
       <img
