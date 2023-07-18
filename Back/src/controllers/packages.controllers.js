@@ -9,16 +9,22 @@ const addPackages = async (objeto) => {
           returnFlight, image, qualification,
           service, idContinent, idCountry,
           idCity, idHotel, activitys  } = objeto;
+     
   //validamos la informacion recibida
-  if ( !idTypePackage || !title || !description ||
+  if ( !idTypePackage || !title || !description || 
        !initialDate || !finalDate || !totalLimit ||
        !standarPrice || !promotionPrice || !duration ||
-       !originCity || !idAirline || !outboundFlight ||
-       !returnFlight || !image || !idContinent ||
-       !idCountry || !idCity || !idHotel ||
-       !activitys || !qualification || !service  ) {
-       return { message: "Datos Incompletos" };
+       !originCity || !idAirline || !outboundFlight  ) {
+        return { message: "Datos Incompletos (1)" };
+  };
+  if(  !returnFlight || !image || !idContinent ||
+       !idCountry || !idCity || !idHotel ) {
+       return { message: "Datos Incompletos (2)" };
   }
+  if(  !activitys || !qualification || !service  ) {
+       return { message: "Datos Incompletos (3)" };
+  }
+
   //armamos el nuevo json a subir en la BD
   const newPackage = { idTypePackage, title, description,
        initialDate, finalDate, totalLimit,
@@ -76,7 +82,6 @@ const viewPackages = async () => {
       { association: "City", attributes: ["id", "name", "idCountry"] },
       { association: "Hotel", attributes: ["id", "name", "stars","image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
-      { association: "Country", attributes: ["id", "name", "flag"] },
       { model: Activity },
     ],
   });
@@ -92,7 +97,6 @@ const getPackageById = async (idp) => {
       { association: "City", attributes: ["id", "name", "idCountry"] },
       { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
-      { association: "Country", attributes: ["id", "name", "flag"] },
       { model: Activity },
     ],
   });
@@ -109,7 +113,6 @@ const searchPackages = async(search) => {
             { association: "City", attributes: ["id", "name", "idCountry"] },
             { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
             { association: "Continent", attributes: ["id", "name"] },
-            { association: "Country", attributes: ["id", "name", "flag"] },
             { model: Activity },
         ]},
  
