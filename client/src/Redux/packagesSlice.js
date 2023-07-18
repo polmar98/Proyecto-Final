@@ -10,7 +10,6 @@ export const fetchPackages = createAsyncThunk(
   }
 );
 
-
 export const addPackages = createAsyncThunk(
   "packages/addPackages",
   async (newPackage) => {
@@ -97,7 +96,8 @@ export const packagesSlice = createSlice({
   },
 });
 
-export const { addPackage } = packagesSlice.actions;
+export const { addPackage, addDetail, clearPackageDetails } =
+  packagesSlice.actions;
 
 export const searchPackagesAsync = createAsyncThunk(
   "packages/searchPackages",

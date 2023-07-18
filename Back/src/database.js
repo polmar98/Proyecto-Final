@@ -13,7 +13,6 @@ const HotelModels = require("./models/Hotel");
 const ActivityModels = require("./models/Activity");
 const UserModels = require("./models/User");
 const CommentModels = require("./models/comment");
-const AdminModels = require("./models/Admin");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -30,24 +29,30 @@ HotelModels(sequelize);
 ActivityModels(sequelize);
 UserModels(sequelize);
 CommentModels(sequelize);
-AdminModels(sequelize);
 
-const {TypePackage, 
-       Package, Airline, City,
-       Country, Continent,
-       Hotel, Activity,
-       User, Comment, Admin } = sequelize.models;
+const {
+  TypePackage,
+  Package,
+  Airline,
+  City,
+  Country,
+  Continent,
+  Hotel,
+  Activity,
+  User,
+  Comment,
+} = sequelize.models;
 
 // establecemos las relaciones
-Package.belongsTo(Continent, {foreignKey: 'idContinent', targetKey: 'id'});
+Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
+Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
+Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
 
-Package.belongsTo(City, {foreignKey: 'idCity', targetKey: 'id'});
+Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
-Package.belongsTo(Hotel, {foreignKey: 'idHotel', targetKey: 'id'});
+Package.belongsTo(TypePackage, { foreignKey: "idTypePackage", targetKey: "id",});
 
-Package.belongsTo(TypePackage, {foreignKey: "idTypePackage", targetKey: "id"});
-
-Package.belongsTo(Airline, {foreignKey: 'idAirline', sourceKey: 'id'});
+Package.belongsTo(Airline, { foreignKey: "idAirline", sourceKey: "id" });
 
 Country.hasMany(City, { foreignKey: "idCountry", sourceKey: "id" });
 City.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
@@ -64,13 +69,16 @@ Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
 Comment.belongsTo(User, { foreignKey: "idPackage", targetKey: "id" });
 
-
 module.exports = {
-    TypePackage, 
-    Airline, Package,
-    City, Country, Continent,
-    Hotel, Activity,
-    User, Comment, Admin,
-    conn: sequelize, 
-
+  TypePackage,
+  Airline,
+  Package,
+  City,
+  Country,
+  Continent,
+  Hotel,
+  Activity,
+  User,
+  Comment,
+  conn: sequelize,
 };

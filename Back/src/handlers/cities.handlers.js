@@ -29,11 +29,7 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const {name} = req.query;
-        const result = [name
-        ? await getCityByName(name)
-        : await getCities()];
-
+    const result = await getCities();
     result.length > 0
       ? res.status(200).json(result)
       : res.status(404).json("No hay Ciudades");
@@ -46,6 +42,21 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const city = await getCityById(id);
+    city
+      ? res.status(200).json(city)
+      : res.status(404).json("Ciudad no existe");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+//al pedir una ciudad por nombre, no está entrando en este handler
+router.get("/cities", async (req, res) => {
+  try {
+    const { name } = req.query;
+    const city = await getCityByName(name);
+
     city
       ? res.status(200).json(city)
       : res.status(404).json("Ciudad no existe");
