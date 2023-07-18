@@ -69,9 +69,9 @@ function ContFilter({ paquetes }) {
             {filtrados.length > 0
               ? filtrados.map((paq) => (
                   <Link
-                    className=" rounded shadow-2xl  p-2 m-3"
                     to={`/detail/${paq.idTypePackage}`}
                     key={paq.idTypePackage}
+                    className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
                   >
                     <div>
                       <img
@@ -91,9 +91,9 @@ function ContFilter({ paquetes }) {
                 ))
               : paquetes.slice(0, 6).map((paq1) => (
                   <Link
-                    className=" rounded shadow-2xl  p-2 m-3 hover:bg-gray-200 hover:scale-y-105 transition"
                     to={`/detail/${paq1.idTypePackage}`}
                     key={paq1.idTypePackage}
+                    className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
                   >
                     <div>
                       <img
