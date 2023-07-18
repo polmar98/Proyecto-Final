@@ -5,12 +5,14 @@ import Detail from "./Views/Detail";
 import SearchResult from "./Views/SearchResult";
 import Admin from "./Views/Admin";
 import About from "./Views/About";
+import LandingPage from "./Views/Landing";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
       <Routes>
+        <Route exact path="/landing" element={<LandingPage />} />
         <Route exact path="/" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/search" element={<SearchResult />} />
