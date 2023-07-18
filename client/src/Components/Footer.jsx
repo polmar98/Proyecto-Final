@@ -17,20 +17,20 @@ function Footer() {
               </h2>
               <ul class="text-gray-500 dark:text-gray-400 font-medium">
                 <li class="mb-4">
-                  <a href="https://flowbite.com/" class="hover:underline">
+                  <Link to="/" class="hover:underline">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li class="mb-4">
-                  <a href="https://tailwindcss.com/" class="hover:underline">
+                  <Link to="/search" class="hover:underline">
                     Discover
-                  </a>
+                  </Link>
                 </li>
 
                 <li class="mb-4">
-                  <a href="https://tailwindcss.com/" class="hover:underline">
+                  <Link to="/about" class="hover:underline">
                     About Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -40,7 +40,12 @@ function Footer() {
               </h2>
               <ul class="text-gray-500 dark:text-gray-400 font-medium">
                 <li class="mb-4">
-                  <a href="#" class="hover:underline ">
+                  <a
+                    href="https://github.com/polmar98/Proyecto-Final"
+                    className="hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Github
                   </a>
                 </li>

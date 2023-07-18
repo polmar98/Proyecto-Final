@@ -20,7 +20,7 @@ function ContFilter({ paquetes }) {
         </h1>
         <div className="flex justify-around mt-10">
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Africa");
             }}
@@ -29,41 +29,37 @@ function ContFilter({ paquetes }) {
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("América");
             }}
           >
-            {" "}
             Americas
           </button>
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Asia");
             }}
           >
-            {" "}
             Asia
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Europa");
             }}
           >
-            {" "}
             Europa
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Oceania");
             }}
           >
-            {" "}
             Oceanía
           </button>
         </div>
@@ -97,9 +93,7 @@ function ContFilter({ paquetes }) {
                       src={paq1.image}
                       alt=""
                     />
-                    <h1 className=" fontPoppinsB text-left m-1">
-                      {paq1.title}
-                    </h1>
+                    <h1 className="fontPoppinsB text-left m-1">{paq1.title}</h1>
 
                     <h1 className="fontPoppins text-right m-1 text-xs">
                       {paq1.duration} days for trip
