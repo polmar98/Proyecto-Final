@@ -26,6 +26,7 @@ function Detail() {
   const airlineName = airlineData ? airlineData.name : "Desconocida";
   // console.log('aerolinea', airlineName)
 
+  
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
   const hotel = hotels.find((el) => el.id === tour.idHotel);
