@@ -49,7 +49,7 @@ function Sale({ paquetes }) {
               <ImLocation className="w-3  text-gray-600" /> {paquete.City.name}
               {""}
               <AiFillCalendar className="w-3 text-gray-600" />
-              {paquete.duration} days
+              {paquete.duration} dias
             </h6>
 
             <h1 className="fontPoppinsB mt-3 mr-[250px] text-gray-600 text-xs line-through">
@@ -59,15 +59,15 @@ function Sale({ paquetes }) {
             <span className="  fontPoppinsB text-left m-1  text-red-600">
               {"USD$" + " " + paquete.promotionPrice + ",00"}
             </span>
-            <span className=" text-xs text-gray-600">/Per person</span>
+            <span className=" text-xs text-gray-600">/Por persona</span>
 
-            <h1 className="text-orange-600 fontPoppinsB bg-orange-200 w-12 rounded-[6px]">
+            <h1 className="text-orange-600 fontPoppinsB mb-6 bg-orange-200 w-12 rounded-[6px]">
               -15%
             </h1>
 
-            <h1 className="fontPoppins text-right m-1 text-xs">
+            {/* <h1 className="fontPoppins text-right m-1 text-xs">
               {paquete.duration} days for trip
-            </h1>
+            </h1> */}
           </div>
         ))}
       </div>
