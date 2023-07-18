@@ -26,11 +26,12 @@ const dispatch = useDispatch()
     navigate(`/detail/${id}`);
   }
   return (
-    <div onClick={navigateHandler}>
-      <div> 
-        <img src={image} alt={title} />
-      </div>
-      <h2>{title}</h2>
+    <div onClick={navigateHandler} className="grid grid-cols-2">
+      <div className="flex items-center p-4 bg-white rounded-lg cursor-pointer"> 
+        <img src={image} alt={title} className="w-[400px] h-[300px] rounded-lg mr-4"/>
+      </div >
+<div className="flex flex-col">
+<h2>{title}</h2>
       <h2>Ciudad: {cityName}</h2>
       <h2>Duracion: {duration} dias</h2>
       <h2> Cupos: {totalLimit}</h2>
@@ -38,6 +39,8 @@ const dispatch = useDispatch()
           <h2> Precio: {standarPrice} USD /Por persona </h2>
       </div>
            <h2>Puntuacion: {qualification}</h2> 
+</div>
+      
     </div>
   )
 }
