@@ -73,24 +73,24 @@ function Detail() {
     <div className="container mx-auto p-4">
       <button
         onClick={()=>{navigate(-1)}}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-3 rounded-full float-left ml-3"
+        className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-3 rounded-full float-right mt-12"
       >
         X
       </button>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="text-left mt-20">
-          <h2 className="text-4xl font-bold mb-4">{tour.title}</h2>
+          <h2 className="text-5xl font-bold mb-4 text-left mt-20 fontPoppins">{tour.title}</h2>
+      <div className="grid grid-cols-3 gap-4 fontPoppins">
+        <div className="text-left mt-20 col-span-1">
           <h2 className="text-xl font-semibold text-justify mr-10">{tour.description}</h2>
           <h2 className="text-xl font-semibold mt-6">
             Salida en {tour.initialDate}
           </h2>
-          <h2 className="text-xl font-semibold">Cupos: {tour.totalLimit}</h2>
           <h2 className="text-xl font-bold mt-4">
-            Precio: USD{tour.standarPrice} -{tipoPaquete}-
+            Precio: USD {tour.standarPrice} -{tipoPaquete}-
           </h2>
+          <h2 className="text-xl font-semibold">Cupos disponibles: {tour.totalLimit}</h2>
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center col-span-2 mt-12">
           <img
             src={tour.image}
             alt="Img not found"
@@ -99,18 +99,18 @@ function Detail() {
         </div>
       </div>
 
-      <div className="mt-8 text-left">
+      <div className="mt-12 text-left fontPoppins">
         <h2 className="text-3xl font-bold mb-4">Resumen del vuelo</h2>
         <div className="border-2 border-gray-300 rounded px-3 py-3 w-auto">
-          <h3 className="text-xl text-center">Salida: {tour.outboundFlight}</h3>
+          <h3 className="text-xl font-semibold text-center">Salida: {tour.outboundFlight}</h3>
           <hr className="my-2" />
-          <h3 className="text-xl text-center">Regreso: {tour.returnFlight}</h3>
+          <h3 className="text-xl font-semibold  text-center">Regreso: {tour.returnFlight}</h3>
           <hr className="my-2" />
-          <h3 className="text-xl text-center">Vuelas con {airlineName}</h3>
+          <h3 className="text-xl font-semibold text-center">Vuelas con {airlineName}</h3>
         </div>
       </div>
 
-      <div className="mt-8 text-left">
+      <div className="mt-12 text-left fontPoppins">
         <h1 className="text-4xl font-bold">{hotelData.name}</h1>
         {}
         <h3 className="text-xl">{stars}</h3>
@@ -130,7 +130,7 @@ function Detail() {
       </div>
 
 
-        <div>
+        <div className="font-medium">
       <h3 className="text-2xl font-bold mb-2 mt-8" >Servicios destacados</h3>
       <div className="mt-8 text-left flex flex-wrap">
         <div className="flex items-center mb-4">
@@ -158,7 +158,7 @@ function Detail() {
   </div>
      
 
-      <h2 className="text-3xl font-bold mb-4 mt-8 text-left">Actividades</h2>
+      <h2 className="text-3xl font-bold mb-4 mt-12 text-left fontPoppins">Actividades</h2>
       <div className="grid grid-cols-3 gap-4 mt-8">
         {tour.Activities?.map((el) => (
           <div
@@ -172,15 +172,15 @@ function Detail() {
                 alt="Img not found"
               />
             </a>
-            <div className="text-center">
-              <h5 className="mb-2 text-2xl font-medium leading-tight text-gray-800">
+            <div className="text-center fontPoppins">
+              <h5 className="mb-2 text-2xl font-bold leading-tight text-gray-800">
                 {el.name}
               </h5>
-              <p className="mb-2 text-base text-gray-600">
+              <p className="mb-2 text-lg font-medium text-gray-600">
                 Duración: {el.duration}
               </p>
               {!el.included ? (
-                <span>USD{el.price}</span>
+                <span className="font-medium text-lg">USD {el.price}</span>
               ) : (
                 <span>Actividad incluida</span>
               )}
