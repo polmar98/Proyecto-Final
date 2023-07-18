@@ -93,6 +93,7 @@ export const packagesSlice = createSlice({
         state.loading = false;
         state.errorId = action.error.message;
       });
+      
   },
 });
 
@@ -144,6 +145,7 @@ export const searchSlice = createSlice({
 });
 
 export const { setSearchResults } = searchSlice.actions;
+
 
 export const packagesReducer = packagesSlice.reducer;
 export const searchReducer = searchSlice.reducer;

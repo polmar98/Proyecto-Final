@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import{ useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
@@ -8,6 +9,8 @@ import { useLocation } from "react-router-dom";
 import { searchPackagesAsync } from "../Redux/packagesSlice";
 import Footer from "../Components/Footer";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { fetchCities } from "../Redux/citiesSlice";
+
 
 const RESULTS_PER_PAGE = 3;
 
@@ -15,6 +18,9 @@ export default function SearchResult() {
   const dispatch = useDispatch();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [cities,setCities]=useState([])
+
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,6 +32,10 @@ export default function SearchResult() {
     };
     loadData();
   }, [dispatch, location.search]);
+
+  useEffect(()=>{
+      fetchCities()
+  },[dispatch])
 
   const searchResults = useSelector((state) => state.search.searchResults);
   const packagesList = useSelector((state) => state.packages.packagesList);
@@ -50,9 +60,46 @@ export default function SearchResult() {
   const endIndex = startIndex + RESULTS_PER_PAGE;
   const currentResults = searchResults.length > 0 ? searchResults.slice(startIndex, endIndex) : packagesList.slice(startIndex, endIndex);
 
+
   return (
     <div className="pt-8">
       <SearchBar />
+
+      {cities.length === 0 ? (
+      <p>Cargando ciudades...</p>
+    ) : (
+      <div>
+        <h2>Ciudad de destino: </h2>
+        <select>
+          {cities.map((city) => {
+            return (
+              <option key={city.id} value={city.name}>
+                {city.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    )}
+
+      <div>
+        <h2 >Duración: </h2>  {/* filtro duración */}
+        <select>
+          <option value="Todos">...</option>
+          <option value="Menor-Mayor">Menor-Mayor</option>
+          <option value="Mayor-Menor">Mayor-Menor</option>
+        </select>
+        </div>
+
+        <div >
+        <h2 >Precio: </h2> {/* filtro de precio */}
+        <select>
+        <option value="TodosPrecio">...</option>
+          <option value="MenorPrecio">Menor</option>
+          <option value="MayorPrecio">Mayor</option>
+        </select>
+        </div>
+
       <div className="pt-10">
         {currentResults.map((tour) => (
           <Card key={tour.id} {...tour} />
@@ -60,10 +107,8 @@ export default function SearchResult() {
       </div>
 
       {/* Número de la página actual */}
-      <div className="flex justify-center mt-4">
-        <p className="mr-4">
-          Page {currentPage} of {totalPages}
-        </p>
+      <div className="flex justify-center  items-center font-bold mt-4">
+        
 
         {/* Botones de paginación */}
         <button
@@ -74,6 +119,11 @@ export default function SearchResult() {
           <FiChevronLeft style={{ fontSize: "20px", color: "white" }}/>
           
         </button>
+
+        <p className="mr-4">
+          Page {currentPage} of {totalPages}
+        </p>
+        
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
@@ -86,4 +136,4 @@ export default function SearchResult() {
       <Footer />
     </div>
   );
-}
+} 
