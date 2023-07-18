@@ -14,6 +14,7 @@ const dispatch = useDispatch()
     dispatch(fetchCities())
   },[dispatch])
 
+  
 
   const navigate = useNavigate()
   const cities = useSelector((state) => state.cities.citiesList);
