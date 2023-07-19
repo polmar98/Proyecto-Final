@@ -13,6 +13,7 @@ const HotelModels = require("./models/Hotel");
 const ActivityModels = require("./models/Activity");
 const UserModels = require("./models/User");
 const CommentModels = require("./models/comment");
+const AdminModels = require("./models/Admin");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -29,6 +30,7 @@ HotelModels(sequelize);
 ActivityModels(sequelize);
 UserModels(sequelize);
 CommentModels(sequelize);
+AdminModels(sequelize)
 
 const {
   TypePackage,
@@ -41,6 +43,7 @@ const {
   Activity,
   User,
   Comment,
+  Admin,
 } = sequelize.models;
 
 // establecemos las relaciones
@@ -79,5 +82,6 @@ module.exports = {
   Activity,
   User,
   Comment,
+  Admin,
   conn: sequelize,
 };
