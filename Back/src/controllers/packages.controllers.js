@@ -1,85 +1,38 @@
 const { Association } = require("sequelize");
-const {
-  TypePackage,
-  Package,
-  City,
-  Airline,
-  Activity,
-} = require("../database");
+const { TypePackage, Package, City, Airline, Activity, Country } = require("../database");
 
 const addPackages = async (objeto) => {
-  const {
-    idTypePackage,
-    title,
-    description,
-    initialDate,
-    finalDate,
-    totalLimit,
-    standarPrice,
-    promotionPrice,
-    duration,
-    originCity,
-    idAirline,
-    outboundFlight,
-    returnFlight,
-    image,
-    qualification,
-    service,
-    idContinent,
-    idCountry,
-    idCity,
-    idHotel,
-    activitys,
-  } = objeto;
+  const { idTypePackage, title, description,
+          initialDate, finalDate, totalLimit,
+          standarPrice, promotionPrice, duration,
+          originCity, idAirline, outboundFlight,
+          returnFlight, image, qualification,
+          service, idContinent, idCountry,
+          idCity, idHotel, activitys  } = objeto;
+     
   //validamos la informacion recibida
-  if (
-    !idTypePackage ||
-    !title ||
-    !description ||
-    !initialDate ||
-    !finalDate ||
-    !totalLimit ||
-    !standarPrice ||
-    !promotionPrice ||
-    !duration ||
-    !originCity ||
-    !idAirline ||
-    !outboundFlight ||
-    !returnFlight ||
-    !image ||
-    !idContinent ||
-    !idCountry ||
-    !idCity ||
-    !idHotel ||
-    !activitys ||
-    !qualification ||
-    !service
-  ) {
-    return { message: "Datos Incompletos" };
+  if ( !idTypePackage || !title || !description || 
+       !initialDate || !finalDate || !totalLimit ||
+       !standarPrice || !promotionPrice || !duration ||
+       !originCity || !idAirline || !outboundFlight  ) {
+        return { message: "Datos Incompletos (1)" };
+  };
+  if(  !returnFlight || !image || !idContinent ||
+       !idCountry || !idCity || !idHotel ) {
+       return { message: "Datos Incompletos (2)" };
   }
+  if(  !activitys || !qualification || !service  ) {
+       return { message: "Datos Incompletos (3)" };
+  }
+
   //armamos el nuevo json a subir en la BD
-  const newPackage = {
-    idTypePackage,
-    title,
-    description,
-    initialDate,
-    finalDate,
-    totalLimit,
-    standarPrice,
-    promotionPrice,
-    duration,
-    originCity,
-    idAirline,
-    outboundFlight,
-    idContinent,
-    idCountry,
-    returnFlight,
-    image,
-    qualification,
-    idCity,
-    idHotel,
-    service,
-    activitys: objeto.activitysIds,
+  const newPackage = { idTypePackage, title, description,
+       initialDate, finalDate, totalLimit,
+       standarPrice, promotionPrice, duration,
+       originCity, idAirline, outboundFlight,
+       idContinent, idCountry, returnFlight,
+       image, qualification, idCity,
+       idHotel, service,
   };
 
   const packageCreated = await Package.create(newPackage);
@@ -127,7 +80,7 @@ const viewPackages = async () => {
       { association: "TypePackage", attributes: ["id", "name"] },
       { association: "Airline", attributes: ["id", "name"] },
       { association: "City", attributes: ["id", "name", "idCountry"] },
-      { association: "Hotel", attributes: ["id", "name", "image"] },
+      { association: "Hotel", attributes: ["id", "name", "stars","image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
       { model: Activity },
     ],
@@ -142,10 +95,7 @@ const getPackageById = async (idp) => {
       { association: "TypePackage", attributes: ["id", "name"] },
       { association: "Airline", attributes: ["id", "name"] },
       { association: "City", attributes: ["id", "name", "idCountry"] },
-      {
-        association: "Hotel",
-        attributes: ["id", "name", "stars", "image", "calification", "details"],
-      },
+      { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
       { model: Activity },
     ],
@@ -154,22 +104,21 @@ const getPackageById = async (idp) => {
 };
 
 //esta funcion hace una busqueda de paquetes en el campo titulo
-const searchPackages = async (search) => {
-  const paquetes = await Package.findAll({
-    where: { active: true },
-    include: [
-      { association: "TypePackage", attributes: ["id", "name"] },
-      { association: "Airline", attributes: ["id", "name"] },
-      { association: "City", attributes: ["id", "name", "idCountry"] },
-      { association: "Hotel", attributes: ["id", "name", "image"] },
-      { association: "Continent", attributes: ["id", "name"] },
-      { model: Activity },
-    ],
-  });
-  const packages = paquetes.filter((e) =>
-    e.title.toLowerCase().includes(search.toLowerCase())
-  );
-  return packages;
+const searchPackages = async(search) => {
+    const paquetes = await Package.findAll({
+        where: {active: true},
+        include: [
+            { association: "TypePackage", attributes: ["id", "name"] },
+            { association: "Airline", attributes: ["id", "name"] },
+            { association: "City", attributes: ["id", "name", "idCountry"] },
+            { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
+            { association: "Continent", attributes: ["id", "name"] },
+            { model: Activity },
+        ]},
+ 
+    );  
+    const packages = paquetes.filter(e => e.title.toLowerCase().includes(search.toLowerCase()))
+    return packages;
 };
 
 //la sgte rutina almacena de forma masiva paquetes enviados desde un array

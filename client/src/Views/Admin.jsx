@@ -84,22 +84,22 @@ const Form = () => {
     description: "",
     initialDate: "",
     finalDate: "",
-    totalLimit: "",
-    standarPrice: "",
-    promotionPrice: "",
+    totalLimit: 0,
+    standarPrice: 0,
+    promotionPrice: 0,
     service: "",
     duration: "",
-    originCity: "", //destino
-    idAirline: "",
+    originCity: "", //salida
+    idAirline: 0,
     outboundFlight: "asfasfa",
     returnFlight: "fasfasfas",
     image:
       "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
     qualification: "9.4",
-    idContinent: "",
-    idCity: "", // salida
-    idHotel: "",
-    activitys: [],
+    idContinent: 0,
+    idCountry: 3,
+    idCity: "", // destino
+    idHotel: 0,
     activitys: [],
   });
 
@@ -116,9 +116,11 @@ const Form = () => {
         [name]: selectedValues,
       });
     } else {
+      //Lucas agregue esto para que convierta los valores que se espera sean numericos y llegaban como string
+      const parsedValue = !isNaN(value) ? parseFloat(value) : value;
       setInput({
         ...input,
-        [name]: value,
+        [name]: parsedValue,
       });
     }
   };
@@ -446,7 +448,7 @@ const Form = () => {
               </select>
             </div>
 
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <label
                 htmlFor="idHotel"
                 className="block mb-2 text-sm font-medium text-gray-600"
@@ -467,7 +469,7 @@ const Form = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div className="mb-5">
               <button

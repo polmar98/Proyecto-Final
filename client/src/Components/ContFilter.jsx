@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function ContFilter({ paquetes }) {
   const [filtrados, SetFiltrados] = useState([]);
@@ -20,7 +21,7 @@ function ContFilter({ paquetes }) {
         </h1>
         <div className="flex justify-around mt-10">
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Africa");
             }}
@@ -29,41 +30,37 @@ function ContFilter({ paquetes }) {
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("América");
             }}
           >
-            {" "}
             Americas
           </button>
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Asia");
             }}
           >
-            {" "}
             Asia
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Europa");
             }}
           >
-            {" "}
             Europa
           </button>
 
           <button
-            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white"
+            className="pl-7 pr-7 pt-2 pb-2 rounded bg-green-400 text-white font-bold hover:bg-green-500"
             onClick={() => {
               filtradoPorCont("Oceania");
             }}
           >
-            {" "}
             Oceanía
           </button>
         </div>
@@ -71,40 +68,48 @@ function ContFilter({ paquetes }) {
           <div className="grid grid-cols-3">
             {filtrados.length > 0
               ? filtrados.map((paq) => (
-                  <div
+                  <Link
+                    to={`/detail/${paq.idTypePackage}`}
                     key={paq.idTypePackage}
-                    className="m-2 rounded shadow-2xl p-2"
+                    className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
                   >
-                    <img
-                      className="rounded w-[280px] h-[150px]"
-                      src={paq.image}
-                      alt=""
-                    />
-                    <h1 className="fontPoppinsB text-left m-1">{paq.title}</h1>
+                    <div>
+                      <img
+                        className="rounded w-[280px] h-[150px]"
+                        src={paq.image}
+                        alt=""
+                      />
+                      <h1 className="fontPoppinsB text-left m-1">
+                        {paq.title}
+                      </h1>
 
-                    <h1 className="fontPoppins text-right m-1 text-xs">
-                      {paq.duration} days for trip
-                    </h1>
-                  </div>
+                      <h1 className="fontPoppins text-right m-1 text-xs">
+                        {paq.duration} days for trip
+                      </h1>
+                    </div>
+                  </Link>
                 ))
               : paquetes.slice(0, 6).map((paq1) => (
-                  <div
+                  <Link
+                    to={`/detail/${paq1.idTypePackage}`}
                     key={paq1.idTypePackage}
-                    className="m-2 rounded shadow-2xl p-2"
+                    className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
                   >
-                    <img
-                      className="rounded w-[280px] h-[150px]"
-                      src={paq1.image}
-                      alt=""
-                    />
-                    <h1 className=" fontPoppinsB text-left m-1">
-                      {paq1.title}
-                    </h1>
+                    <div>
+                      <img
+                        className="rounded w-[280px] h-[150px]"
+                        src={paq1.image}
+                        alt=""
+                      />
+                      <h1 className="fontPoppinsB text-left m-1">
+                        {paq1.title}
+                      </h1>
 
-                    <h1 className="fontPoppins text-right m-1 text-xs">
-                      {paq1.duration} days for trip
-                    </h1>
-                  </div>
+                      <h1 className="fontPoppins text-right m-1 text-xs">
+                        {paq1.duration} days for trip
+                      </h1>
+                    </div>
+                  </Link>
                 ))}
           </div>
         </div>

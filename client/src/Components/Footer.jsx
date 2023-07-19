@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/Logo.png";
+import logo from "../assets/Logo2.png";
 function Footer() {
   // ("./assets/Logo.png")
   return (
@@ -7,9 +7,8 @@ function Footer() {
       <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">
-            <a href="" class="flex items-center w-[260px] logo">
-              <img src={logo} alt="" />
-            </a>
+            <a href="" class="flex items-center logo"></a>
+            <img src={logo} alt="Logo" className="h-12" />
           </div>
           <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
@@ -18,20 +17,20 @@ function Footer() {
               </h2>
               <ul class="text-gray-500 dark:text-gray-400 font-medium">
                 <li class="mb-4">
-                  <a href="https://flowbite.com/" class="hover:underline">
+                  <Link to="/" class="hover:underline">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li class="mb-4">
-                  <a href="https://tailwindcss.com/" class="hover:underline">
+                  <Link to="/search" class="hover:underline">
                     Discover
-                  </a>
+                  </Link>
                 </li>
 
                 <li class="mb-4">
-                  <a href="https://tailwindcss.com/" class="hover:underline">
+                  <Link to="/about" class="hover:underline">
                     About Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -41,7 +40,12 @@ function Footer() {
               </h2>
               <ul class="text-gray-500 dark:text-gray-400 font-medium">
                 <li class="mb-4">
-                  <a href="#" class="hover:underline ">
+                  <a
+                    href="https://github.com/polmar98/Proyecto-Final"
+                    className="hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Github
                   </a>
                 </li>

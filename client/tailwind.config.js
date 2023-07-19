@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         verdeFooter: "#295943",
+        customGray: "#FBFBFB",
       },
       fontSize: {
         "2xs": "0.625rem",

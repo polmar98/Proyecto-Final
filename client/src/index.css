@@ -18,14 +18,15 @@ code {
 
 @layer base {
   .portada {
-    background-image: url(./assets/Background.png);
+    background-image: url(./assets/Background4.png);
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
   .logo {
-    background-image: url(./assets/Logo.png);
+    background-image: url(./assets/Logo2.png);
     background-repeat: no-repeat;
+    background-size: 80% 100%;
   }
   .fontPoppins {
     font-family: "poppins";

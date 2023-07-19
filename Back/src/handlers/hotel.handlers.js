@@ -13,7 +13,8 @@ router.get('/' , async (req, res) => {
 
    try {
     const resultado = name ? await searchNameHotel(name) : await getHotel();
-    res.status(200).json(resultado);
+    resultado.length ?
+        res.status(200).json(resultado) : res.status(404).json({error: error.message})
    } catch (error) {
     res.status(500).json({ message: error.message });
    }
@@ -47,7 +48,6 @@ try {
 
 router.post('/massive', async (req, res) => {
     const { hoteles } = req.body;
-    console.log(req.body);
   
     try {
       const createdHotels = [];

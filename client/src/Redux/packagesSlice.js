@@ -93,10 +93,12 @@ export const packagesSlice = createSlice({
         state.loading = false;
         state.errorId = action.error.message;
       });
+      
   },
 });
 
-export const { addPackage } = packagesSlice.actions;
+export const { addPackage, addDetail, clearPackageDetails } =
+  packagesSlice.actions;
 
 export const searchPackagesAsync = createAsyncThunk(
   "packages/searchPackages",
@@ -143,6 +145,7 @@ export const searchSlice = createSlice({
 });
 
 export const { setSearchResults } = searchSlice.actions;
+
 
 export const packagesReducer = packagesSlice.reducer;
 export const searchReducer = searchSlice.reducer;
