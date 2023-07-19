@@ -34,8 +34,8 @@ function NavBar() {
           </li>
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
             <Link
-              className="text-m text-white fontPoppins hover:fontPoppinsB font-bold"
-              to="/contact"
+              className="text-m text-white fontPoppins hover:fontPoppinsB font-bold cursor-not-allowed"
+              // to="/contact"
             >
               Contact
             </Link>
@@ -54,7 +54,7 @@ function NavBar() {
           </li>
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
             <Link
-              className="text-m text-black fontPoppins hover:fontPoppinsB rounded bg-white p-1 mt-1"
+              className="text-m text-black fontPoppins hover:fontPoppinsB rounded bg-white p-1 mt-1 "
               to="/login"
               style={{
                 padding: "10px 24px",
