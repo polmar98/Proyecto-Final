@@ -35,12 +35,11 @@ router.get("/:id", async (req, res) => {
 router.post('/', async (req, res) => {
     const {name, image, calification, stars, details, available, idCity} = req.body;
 
-    console.log(req.body);
-
 try {
     const hotelNew = await createHotel(name, image, calification, stars, details, available, idCity);
     res.status(201).json(hotelNew);
 } catch (error) {
+    console.log(error.message);
     res.status(404).send("Faild create hotel");
 }
 })
