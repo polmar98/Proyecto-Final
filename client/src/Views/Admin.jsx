@@ -1,36 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAirlines, selectAirlines } from "../Redux/airlinesSlice";
-import { fetchCities, selectCities } from "../Redux/citiesSlice";
-import {
-  fetchPackages,
-  selectPackages,
-  addPackages,
-} from "../Redux/packagesSlice";
-import { fetchContinents, selectContinents } from "../Redux/continentsSlice";
-import { fetchCountries, selectCountries } from "../Redux/countriesSlice";
-import { fetchHotels, selectHotels } from "../Redux/hotelsSlice.js";
-import { fetchActivitys, selectActivitys } from "../Redux/activitysSlice.js";
+import { addPackages } from "../Redux/Packages/packagesActions";
+import { fetchAirlines } from "../Redux/Airlines/airlinesActions";
+import { fetchCities } from "../Redux/Cities/citiesActions";
+import { fetchContinents } from "../Redux/Continents/continentsActions";
+import { fetchCountries } from "../Redux/Countries/countriesActions";
+import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 
 const Form = () => {
-  const packages = useSelector(selectPackages);
-  const continents = useSelector(selectContinents);
-  const countries = useSelector(selectCountries);
-  const cities = useSelector(selectCities);
-  const hotels = useSelector(selectHotels);
-  const airlines = useSelector(selectAirlines);
-  const activitys = useSelector(selectActivitys);
+  const packages = useSelector((state) => state.packagesList);
+  const continents = useSelector((state) => state.continentsList);
+  const countries = useSelector((state) => state.countriesList);
+  const cities = useSelector((state) => state.citiesList);
+  const hotels = useSelector((state) => state.hotelsList);
+  const airlines = useSelector((state) => state.airlinesList);
+  const activitys = useSelector((state) => state.activitysList);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchPackages());
-    dispatch(fetchContinents());
-    dispatch(fetchCountries());
-    dispatch(fetchCities());
-    dispatch(fetchHotels());
-    dispatch(fetchAirlines());
-    dispatch(fetchActivitys());
-  }, []);
+  useEffect(() => {}, []);
 
   /*json de ejemplo
 
