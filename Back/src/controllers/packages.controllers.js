@@ -53,24 +53,7 @@ const addPackages = async (objeto) => {
   return packageCreated;
 };
 
-//esta funcion devuelve el array de paquetes mapeados
-const mapList = (array) =>
-  array.map((result) => {
-    return {
-      id: result.id,
-      idTypePackage: result.idTypePackage,
-      title: result.title,
-      description: result.description,
-      initialDate: result.initialDate,
-      finalDate: result.finalDate,
-      totalLimit: result.totalLimit,
-      standarPrice: result.standarPrice,
-      promotionPrice: result.promotionPrice,
-      duration: result.duration,
-      image: result.image,
-      service: result.service,
-    };
-  });
+
 
 //Esta funcion devuelve todos los paquetes disponibles en la BD
 const viewPackages = async () => {
@@ -82,6 +65,7 @@ const viewPackages = async () => {
       { association: "City", attributes: ["id", "name", "idCountry"] },
       { association: "Hotel", attributes: ["id", "name", "stars","image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
+      { association: "Country", attributes: ["id", "name"] },
       { model: Activity },
     ],
   });
@@ -97,6 +81,7 @@ const getPackageById = async (idp) => {
       { association: "City", attributes: ["id", "name", "idCountry"] },
       { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
+      { association: "Country", attributes: ["id", "name"] },
       { model: Activity },
     ],
   });
@@ -113,6 +98,7 @@ const searchPackages = async(search) => {
             { association: "City", attributes: ["id", "name", "idCountry"] },
             { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
             { association: "Continent", attributes: ["id", "name"] },
+            { association: "Country", attributes: ["id", "name"] },
             { model: Activity },
         ]},
  
