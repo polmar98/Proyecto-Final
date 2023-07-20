@@ -46,6 +46,7 @@ const {
 // establecemos las relaciones
 Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
 Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
+Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
 
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
