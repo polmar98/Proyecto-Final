@@ -29,7 +29,7 @@ function Home() {
       <div className=" mt-10 items-center flex justify-center">
         <Sale paquetes={packages} />
       </div>
-      <div className="  mt-16 items-center flex justify-center">
+      <div className="mt-16 items-center flex justify-center">
         <ContFilter paquetes={packages} />
       </div>
       <div className="mt-[80px]">
