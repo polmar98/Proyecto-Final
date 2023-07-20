@@ -66,6 +66,7 @@ const viewPackages = async () => {
       { association: "Hotel", attributes: ["id", "name", "stars","image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
       { association: "Country", attributes: ["id", "name"] },
+      { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
     ],
   });
@@ -82,6 +83,7 @@ const getPackageById = async (idp) => {
       { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
       { association: "Continent", attributes: ["id", "name"] },
       { association: "Country", attributes: ["id", "name"] },
+      { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
     ],
   });
@@ -99,6 +101,7 @@ const searchPackages = async(search) => {
             { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"] },
             { association: "Continent", attributes: ["id", "name"] },
             { association: "Country", attributes: ["id", "name"] },
+            { association: "CityOrigin", attributes: ["id", "name"] },
             { model: Activity },
         ]},
  

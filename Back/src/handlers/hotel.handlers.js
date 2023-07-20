@@ -33,10 +33,10 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const {name, image, calification, stars, details, available, idCity} = req.body;
+    const {name, image, calification, stars, details, idCity} = req.body;
 
 try {
-    const hotelNew = await createHotel(name, image, calification, stars, details, available, idCity);
+    const hotelNew = await createHotel(name, image, calification, stars, details, idCity);
     res.status(201).json(hotelNew);
 } catch (error) {
     console.log(error.message);

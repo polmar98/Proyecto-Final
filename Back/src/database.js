@@ -14,6 +14,7 @@ const ActivityModels = require("./models/Activity");
 const UserModels = require("./models/User");
 const CommentModels = require("./models/comment");
 const AdminModels = require("./models/Admin");
+const CityOriginModels = require("./models/CityOrigin");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -31,6 +32,7 @@ ActivityModels(sequelize);
 UserModels(sequelize);
 CommentModels(sequelize);
 AdminModels(sequelize)
+CityOriginModels(sequelize);
 
 const {
   TypePackage,
@@ -44,15 +46,17 @@ const {
   User,
   Comment,
   Admin,
+  CityOrigin,
 } = sequelize.models;
 
 // establecemos las relaciones
 Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
 Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
 Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
-
+Package.belongsTo(CityOrigin, { foreignKey: "OriginCity", targetKey: "id" });
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
+CityOrigin.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
 Package.belongsTo(TypePackage, { foreignKey: "idTypePackage", targetKey: "id",});
 
 Package.belongsTo(Airline, { foreignKey: "idAirline", sourceKey: "id" });
@@ -84,5 +88,6 @@ module.exports = {
   User,
   Comment,
   Admin,
+  CityOrigin,
   conn: sequelize,
 };

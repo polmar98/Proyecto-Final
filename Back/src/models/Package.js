@@ -50,10 +50,6 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: 0,        
      },
-     originCity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-     },
      outboundFlight: {
         type: DataTypes.STRING,
         allowNull: false,
