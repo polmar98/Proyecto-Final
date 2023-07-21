@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createComment, getAllComments, getCommentById } = require('../controllers/comment.controllers.js');
+const { createComment, getAllComments, getCommentById } = require('../controllers/commentControllers.js');
 const router = Router();
 
 // Ruta para crear comments 

@@ -1,6 +1,6 @@
 const express = require("express");
 const server = express();
-const routes = require("./routes/index.routes");
+const routes = require("./routes/indexRoutes");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { conn } = require("../src/database");

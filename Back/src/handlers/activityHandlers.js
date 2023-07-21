@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const {getActivity,
     searchNameActivity,
-    createActivity} = require('../controllers/activities.controllers');
+    createActivity} = require('../controllers/activitiesControllers');
 
 const router = Router();
 

@@ -4,7 +4,7 @@ const {
   deleteAdmin,
   getAdminById,
   createAdmin,
-} = require("../controllers/admin.controller");
+} = require("../controllers/adminController");
 
 
 const router = Router();

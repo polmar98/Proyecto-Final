@@ -3,7 +3,7 @@ const {getHotel,
     searchNameHotel,
     createHotel,
     getHotelById
-} = require('../controllers/hotels.controllers');
+} = require('../controllers/hotelsControllers');
 
 const router = Router();
 

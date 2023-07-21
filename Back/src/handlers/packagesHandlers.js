@@ -3,7 +3,7 @@ const {addPackages,
       viewPackages,
       getPackageById,
       searchPackages,
-      addMassivePackages} = require('../controllers/packages.controllers');
+      addMassivePackages} = require('../controllers/packagesControllers');
 const router = Router();
 
 //handler para busqueda de paquetes. si se agrega un query de busqueda ejecuta searchPackages

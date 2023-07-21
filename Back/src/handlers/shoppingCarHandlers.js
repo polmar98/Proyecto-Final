@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const {addShoppingCar} = require('../controllers/shoppingCar.controllers');
+const {addShoppingCar} = require('../controllers/shoppingCarControllers');
 
 const router = Router();
 
