@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import Footer from "../Components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPackageById, clearPackageDetails } from "../Redux/packagesSlice";
-import { fetchAirlines } from "../Redux/airlinesSlice";
-import { fetchHotels } from "../Redux/hotelsSlice";
+import {
+  getPackageById,
+  clearPackageDetails,
+} from "../Redux/Packages/packagesActions";
+import { fetchAirlines } from "../Redux/Airlines/airlinesActions";
+import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
@@ -13,9 +16,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const tour = useSelector((state) => state.packages.packageData);
-  const loading = useSelector((state) => state.packages.loading);
-  const rejected = useSelector((state) => state.packages.errorId);
+  const tour = useSelector((state) => state.packages.packageDetails);
 
   // console.log('elpaquete', tour)
 
@@ -45,25 +46,26 @@ function Detail() {
     dispatch(fetchAirlines());
     dispatch(fetchHotels());
     // dispatch(fetchComments())
+    dispatch(clearPackageDetails());
     return () => {
-      dispatch(clearPackageDetails());
+      // dispatch(clearPackageDetails());
     };
   }, [id, dispatch]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen text-4xl text-green-800">
-        Cargando...
-      </div>
-    );
-  }
-  if (rejected) {
-    return (
-      <div className="flex items-center justify-center h-screen text-4xl text-green-800">
-        Error: {rejected}
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
+  //       Cargando...
+  //     </div>
+  //   );
+  // }
+  // if (rejected) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
+  //       Error: {rejected}
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -71,6 +73,7 @@ function Detail() {
         <button
           onClick={() => {
             navigate(-1);
+            dispatch(clearPackageDetails());
           }}
           className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-4 rounded-full inline-flex mb-4"
         >
@@ -117,7 +120,6 @@ function Detail() {
         <Hotels hotel={hotelData} />
 
         <Activities activity={tour} />
-
       </div>
 
       <Footer />

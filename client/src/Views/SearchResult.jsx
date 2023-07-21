@@ -190,12 +190,14 @@ import { useSelector } from "react-redux";
 import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
 import { useDispatch } from "react-redux";
-import { fetchPackages } from "../Redux/packagesSlice";
+import {
+  fetchPackages,
+  searchPackages,
+} from "../Redux/Packages/packagesActions";
 import { useLocation } from "react-router-dom";
-import { searchPackagesAsync } from "../Redux/packagesSlice";
 import Footer from "../Components/Footer";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { fetchCities } from "../Redux/citiesSlice";
+import { fetchCities } from "../Redux/Cities/citiesActions";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -214,7 +216,7 @@ export default function SearchResult() {
       await dispatch(fetchPackages());
       const searchQuery = new URLSearchParams(location.search).get("title");
       if (searchQuery) {
-        dispatch(searchPackagesAsync(searchQuery));
+        dispatch(searchPackages(searchQuery));
       }
     };
     loadData();
@@ -224,7 +226,7 @@ export default function SearchResult() {
     fetchCities();
   }, [dispatch]);
 
-  const searchResults = useSelector((state) => state.search.searchResults);
+  const searchResults = useSelector((state) => state.packages.packagesSearch);
   const packagesList = useSelector((state) => state.packages.packagesList);
 
   // Calcular la cantidad total de páginas disponibles

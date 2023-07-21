@@ -3,6 +3,7 @@ import {
   ADD_PACKAGE,
   GET_PACKAGE_BY_ID,
   SEARCH_PACKAGES,
+  CLEAR_PACKAGE_DETAILS,
 } from "./packagesActions";
 
 const initialState = {
@@ -34,6 +35,12 @@ const packagesReducer = (state = initialState, action) => {
         ...state,
         packagesSearch: action.payload,
       };
+    case CLEAR_PACKAGE_DETAILS:
+      return {
+        ...state,
+        packageDetails: {},
+      };
+
     default:
       return state;
   }

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPackages } from "../Redux/Packages/packagesActions";
 import { fetchAirlines } from "../Redux/Airlines/airlinesActions";
 import { fetchCities } from "../Redux/Cities/citiesActions";
-import { fetchContinents } from "../Redux/Continents/continentsActions";
-import { fetchCountries } from "../Redux/Countries/countriesActions";
+import { fetchContinents } from "../Redux/Continent/continentActions";
+import { fetchCountries } from "../Redux/Country/countriesActions";
 import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 
 const Form = () => {

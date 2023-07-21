@@ -5,6 +5,7 @@ export const FETCH_PACKAGES = "FETCH_PACKAGES";
 export const ADD_PACKAGE = "ADD_PACKAGE";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const SEARCH_PACKAGES = "SEARCH_PACKAGES";
+export const CLEAR_PACKAGE_DETAILS = "CLEAR_PACKAGE_DETAILS";
 
 export const fetchPackages = () => {
   return async (dispatch) => {
@@ -68,5 +69,11 @@ export const searchPackages = (word) => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const clearPackageDetails = () => {
+  return {
+    type: CLEAR_PACKAGE_DETAILS,
   };
 };

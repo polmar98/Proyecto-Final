@@ -5,7 +5,7 @@ import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
-import { fetchPackages } from "../Redux/packagesSlice";
+import { fetchPackages } from "../Redux/Packages/packagesActions";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -15,13 +15,14 @@ const LoginPage = () => {
   const [formFilled, setFormFilled] = useState(false);
   const dispatch = useDispatch();
 
-  const allpackages = useSelector((state) => state.packagesList);
+  const allPackages = useSelector((state) => state.packages.packagesList);
 
   useEffect(() => {
     const isFilled = email && password;
+    dispatch(fetchPackages());
   }, [email, password, dispatch]);
 
-  console.log(allpackages);
+  console.log(allPackages);
 
   const handleSubmit = (e) => {
     e.preventDefault();

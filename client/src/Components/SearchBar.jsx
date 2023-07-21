@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSearchResults, searchPackagesAsync } from "../Redux/packagesSlice";
+import { searchPackages } from "../Redux/Packages/packagesActions";
 import { useNavigate } from "react-router-dom";
 import logo from "../Utils/Img/logo.png";
 import { FaSearch } from "react-icons/fa";
@@ -17,9 +17,9 @@ function SearchBar() {
   };
 
   const handleSearch = () => {
-    dispatch(searchPackagesAsync(word)).then((action) => {
+    dispatch(searchPackages(word)).then((action) => {
       const filteredPackages = action.payload; // Aquí es donde se extraen los datos de los paquetes
-      dispatch(setSearchResults(filteredPackages));
+      dispatch(searchPackages(filteredPackages));
       navigate(`/search?title=${encodeURIComponent(word)}`);
       setWord("");
     });
