@@ -53,6 +53,10 @@ function Detail() {
     };
   }, [id, dispatch]);
 
+
+  function changeNavigate(event) {
+    navigate('/ShoppingCart')
+  }
   // if (loading) {
   //   return (
   //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
@@ -103,6 +107,7 @@ function Detail() {
             <h2 className="text-s font-medium">{tour.description}</h2>
             <h2 className="text-s font-base mt-2">{tour.duration} días</h2>
             <h2 className="text-s font-base">Salida en {tour.initialDate}</h2>
+            <h2 className="text-s font-base">Calificación que le dieron otros viajeros: {tour.qualification}</h2>
             <h2 className="text-s font-semibold mt-6">
               USD {tour.standarPrice} -{tipoPaquete}-
             </h2>
@@ -111,7 +116,7 @@ function Detail() {
             </h2>
 
             <div>
-              <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4">
+              <button onClick={() => {changeNavigate()}} className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4">
                 AGREGAR AL CARRITO
               </button>
             </div>
