@@ -2,7 +2,15 @@ const { Continent } = require("../database");
 
 const createContinent = async (name) => {
   try {
-    const newContinent = await Continent.create({ name });
+     await Continent.create({ name });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const bulkCreateContinent = async (contienentsData) => {
+  try {
+     await Continent.bulkCreate(contienentsData);
   } catch (error) {
     console.log(error.message);
   }
@@ -44,6 +52,7 @@ const deleteContinent = async (id) => {
 
 module.exports = {
   createContinent,
+  bulkCreateContinent,
   getContinents,
   getContinentsById,
   getContinentsByName,

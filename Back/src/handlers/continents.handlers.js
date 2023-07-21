@@ -5,6 +5,7 @@ const {
   getContinentsByName,
   getContinentsById,
   deleteContinent,
+  bulkCreateContinent,
 } = require("../controllers/continents.controllers");
 
 const router = Router();
@@ -15,8 +16,22 @@ router.post("/", async (req, res) => {
     if (!name) {
       throw new Error("Falta agregar 'name'");
     }
-    const newContinent = await createContinent(name);
+    await createContinent(name);
     return res.status(201).send("Continente creado satisfactoriamente");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/massive", async (req, res) => {
+  try {
+    const continentsData = req.body;
+
+    if (!continentsData) {
+      throw new Error("Falta agregar los nombres de los continentes");
+    }
+    await bulkCreateContinent(continentsData);
+    return res.status(201).send("Continentes creados satisfactoriamente");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

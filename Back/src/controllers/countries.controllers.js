@@ -11,6 +11,14 @@ const createCountry = async (name, calification, flag, idContinent) => {
   }
 };
 
+const bulkCreateCountries = async (countriesData) => {
+  try {
+     await Country.bulkCreate(countriesData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const getCountries = async () => {
   const dbCountries = await Country.findAll();
   return dbCountries;
@@ -51,6 +59,7 @@ const deleteCountry = async (id) => {
 
 module.exports = {
   createCountry,
+  bulkCreateCountries,
   getCountries,
   getCountriesById,
   getCountryByName,

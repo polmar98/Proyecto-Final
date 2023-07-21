@@ -11,6 +11,14 @@ const createCity = async (name, originCity, idCountry) => {
   }
 };
 
+const bulkCreateCities = async (citiesData) => {
+  try {
+     await City.bulkCreate(citiesData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const getCities = async () => {
   const dbCities = await City.findAll();
   return dbCities;
@@ -54,5 +62,6 @@ module.exports = {
   getCities,
   getCityById,
   getCityByName,
+  bulkCreateCities,
   deleteCity,
 };
