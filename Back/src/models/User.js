@@ -30,7 +30,6 @@ module.exports = (sequelize) => {
     },
     dateRecord: {
       type: DataTypes.DATE,
-      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
     locked: {

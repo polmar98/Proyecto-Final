@@ -7,7 +7,7 @@ router.post('/', async(req, res) => {
    const carrito = req.body; 
    try {
        const result = addShoppingCar(carrito);
-       res.status(200).json({message: "Carrito Almacenado Temporalmente"});
+       res.status(200).send("Carrito Almacenado");
    } catch (error) {
        res.status(500).json({message: error.message});
    }
