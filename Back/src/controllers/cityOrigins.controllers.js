@@ -1,7 +1,5 @@
 const { CityOrigin } = require("../database");
 
- 
-
 const createCity = async (name, idCountry) => {
   try {
     const newCity = await CityOrigin.findOrCreate({
@@ -13,10 +11,8 @@ const createCity = async (name, idCountry) => {
 };
 
 const bulkCreateCities = async (citiesData) => {
-
-    console.log(citiesData);
   try {
-     await CityOrigin.bulkCreate(citiesData);
+    await CityOrigin.bulkCreate(citiesData);
   } catch (error) {
     console.log(error.message);
   }
@@ -44,7 +40,7 @@ const getCityByName = async (name) => {
     },
     include: { association: "Country", attributes: ["id", "name"] },
   });
-  console.log (dbCity);
+  console.log(dbCity);
   return dbCity;
 };
 

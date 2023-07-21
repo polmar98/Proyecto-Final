@@ -3,7 +3,7 @@ const { Association } = require("../database");
 
 const createCountry = async (name, calification, flag, idContinent) => {
   try {
-    const newContinent = await Country.findOrCreate({
+    await Country.findOrCreate({
       where: { name, calification, flag, idContinent },
     });
   } catch (error) {
@@ -13,7 +13,7 @@ const createCountry = async (name, calification, flag, idContinent) => {
 
 const bulkCreateCountries = async (countriesData) => {
   try {
-     await Country.bulkCreate(countriesData);
+    await Country.bulkCreate(countriesData);
   } catch (error) {
     console.log(error.message);
   }
@@ -36,7 +36,6 @@ const getCountriesById = async (id) => {
 };
 
 const getCountryByName = async (name) => {
-
   console.log(name);
   const dbcountry = await Country.findOne({
     where: {

@@ -24,12 +24,7 @@ router.post("/", async (req, res) => {
     if (!idContinent) {
       throw new Error("Falta agregar 'idContinent'");
     }
-    const newCountry = await bulkCreateCountries(
-      name,
-      calification,
-      flag,
-      idContinent
-    );
+    await createCountry(name, calification, flag, idContinent);
     return res.status(201).send("País creado satisfactoriamente");
   } catch (error) {
     res.status(500).json({ message: error.message });
