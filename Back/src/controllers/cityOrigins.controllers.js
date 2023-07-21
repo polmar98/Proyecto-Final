@@ -1,10 +1,11 @@
-const { City } = require("../database");
-const { Association } = require("../database");
+const { CityOrigin } = require("../database");
 
-const createCity = async (name, originCity, idCountry) => {
+ 
+
+const createCity = async (name, idCountry) => {
   try {
-    const newCity = await City.findOrCreate({
-      where: { name, originCity, idCountry },
+    const newCity = await CityOrigin.findOrCreate({
+      where: { name, idCountry },
     });
   } catch (error) {
     console.log(error.message);
@@ -12,20 +13,22 @@ const createCity = async (name, originCity, idCountry) => {
 };
 
 const bulkCreateCities = async (citiesData) => {
+
+    console.log(citiesData);
   try {
-     await City.bulkCreate(citiesData);
+     await CityOrigin.bulkCreate(citiesData);
   } catch (error) {
     console.log(error.message);
   }
 };
 
 const getCities = async () => {
-  const dbCities = await City.findAll();
+  const dbCities = await CityOrigin.findAll();
   return dbCities;
 };
 
 const getCityById = async (id) => {
-  const dbCity = await City.findOne({
+  const dbCity = await CityOrigin.findOne({
     where: {
       id: id,
     },
@@ -35,7 +38,7 @@ const getCityById = async (id) => {
 };
 
 const getCityByName = async (name) => {
-  const dbCity = await City.findOne({
+  const dbCity = await CityOrigin.findOne({
     where: {
       name: name,
     },
@@ -46,7 +49,7 @@ const getCityByName = async (name) => {
 };
 
 const deleteCity = async (id) => {
-  const deletedCity = await City.destroy({
+  const deletedCity = await CityOrigin.destroy({
     where: {
       id: id,
     },

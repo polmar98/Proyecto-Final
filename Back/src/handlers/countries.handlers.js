@@ -4,6 +4,7 @@ const {
   getCountries,
   getCountriesById,
   getCountryByName,
+  bulkCreateCountries,
   deleteCountry,
 } = require("../controllers/countries.controllers");
 
@@ -23,7 +24,7 @@ router.post("/", async (req, res) => {
     if (!idContinent) {
       throw new Error("Falta agregar 'idContinent'");
     }
-    const newCountry = await createCountry(
+    const newCountry = await bulkCreateCountries(
       name,
       calification,
       flag,
@@ -35,12 +36,24 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/massive", async (req, res) => {
+  try {
+    const countriesData = req.body;
+    if (!countriesData) {
+      throw new Error("Falta agregar los Países");
+    }
+
+    await bulkCreateCountries(countriesData);
+    return res.status(201).send("Países creados satisfactoriamente");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
-    const {name} = req.query;
-        const result = name
-        ? await getCountryByName(name)
-        : await getCountries();
+    const { name } = req.query;
+    const result = name ? await getCountryByName(name) : await getCountries();
 
     result.length > 0
       ? res.status(200).json(result)

@@ -11,6 +11,14 @@ const createCountry = async (name, calification, flag, idContinent) => {
   }
 };
 
+const bulkCreateCountries = async (countriesData) => {
+  try {
+     await Country.bulkCreate(countriesData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const getCountries = async () => {
   const dbCountries = await Country.findAll();
   return dbCountries;
@@ -28,12 +36,16 @@ const getCountriesById = async (id) => {
 };
 
 const getCountryByName = async (name) => {
+
+  console.log(name);
   const dbcountry = await Country.findOne({
     where: {
       name: name,
     },
     include: { association: "Continent", attributes: ["id", "name"] },
   });
+
+  console.log(dbcountry);
   return dbcountry;
 };
 
@@ -51,6 +63,7 @@ const deleteCountry = async (id) => {
 
 module.exports = {
   createCountry,
+  bulkCreateCountries,
   getCountries,
   getCountriesById,
   getCountryByName,
