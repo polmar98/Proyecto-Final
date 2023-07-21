@@ -42,6 +42,7 @@ function Detail() {
   // console.log(reviews)
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getPackageById(id));
     dispatch(fetchAirlines());
     dispatch(fetchHotels());

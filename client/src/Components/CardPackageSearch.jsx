@@ -10,7 +10,6 @@ function Card({
   id,
   image,
   title,
-  city,
   idCity,
   duration,
   totalLimit,

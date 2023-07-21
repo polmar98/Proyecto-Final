@@ -17,9 +17,7 @@ function SearchBar() {
   };
 
   const handleSearch = () => {
-    dispatch(searchPackages(word)).then((action) => {
-      const filteredPackages = action.payload; // Aquí es donde se extraen los datos de los paquetes
-      dispatch(searchPackages(filteredPackages));
+    dispatch(searchPackages(word)).then(() => {
       navigate(`/search?title=${encodeURIComponent(word)}`);
       setWord("");
     });
