@@ -11,8 +11,6 @@ function ContFilter({ paquetes }) {
     SetFiltrados(filtroPaq.slice(0, 6));
   }
 
-  console.log(filtrados);
-
   return (
     <>
       <div className="grid grid-cols-1 ">
@@ -69,8 +67,8 @@ function ContFilter({ paquetes }) {
             {filtrados.length > 0
               ? filtrados.map((paq) => (
                   <Link
-                    to={`/detail/${paq.idTypePackage}`}
-                    key={paq.idTypePackage}
+                    to={`/detail/${paq.id}`}
+                    key={paq.id}
                     className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
                   >
                     <div>
@@ -89,28 +87,33 @@ function ContFilter({ paquetes }) {
                     </div>
                   </Link>
                 ))
-              : paquetes.slice(0, 6).map((paq1) => (
-                  <Link
-                    to={`/detail/${paq1.idTypePackage}`}
-                    key={paq1.idTypePackage}
-                    className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
-                  >
-                    <div>
-                      <img
-                        className="rounded w-[280px] h-[150px]"
-                        src={paq1.image}
-                        alt=""
-                      />
-                      <h1 className="fontPoppinsB text-left m-1">
-                        {paq1.title}
-                      </h1>
+              : paquetes.slice(0, 6).map(
+                  (paq1) => (
+                    console.log(paq1.id),
+                    (
+                      <Link
+                        to={`/detail/${paq1.id}`}
+                        key={paq1.id}
+                        className="m-2 rounded shadow-2xl p-2 hover:bg-gray-400 hover:scale-y-105 transition"
+                      >
+                        <div>
+                          <img
+                            className="rounded w-[280px] h-[150px]"
+                            src={paq1.image}
+                            alt=""
+                          />
+                          <h1 className="fontPoppinsB text-left m-1">
+                            {paq1.title}
+                          </h1>
 
-                      <h1 className="fontPoppins text-right m-1 text-xs">
-                        {paq1.duration} days for trip
-                      </h1>
-                    </div>
-                  </Link>
-                ))}
+                          <h1 className="fontPoppins text-right m-1 text-xs">
+                            {paq1.duration} days for trip
+                          </h1>
+                        </div>
+                      </Link>
+                    )
+                  )
+                )}
           </div>
         </div>
       </div>

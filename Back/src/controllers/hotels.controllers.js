@@ -28,9 +28,9 @@ const getHotelById = async (id) => {
     return dbHotl;
   };
 
-const createHotel = async (name, image, calification, stars, details, available, idCity) => {
+const createHotel = async (name, image, calification, stars, details, idCity) => {
     const newHotel = await Hotel.findOrCreate({
-        where:{ name, image, calification, stars, details, available, idCity}
+        where:{ name, image, calification, stars, details, idCity}
     })
 
     return newHotel;

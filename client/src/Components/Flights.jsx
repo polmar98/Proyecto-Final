@@ -1,22 +1,22 @@
-// import React from "react";
+import React from "react";
 
-// const Flights = (props) => {
-//   const departure= props.outboundFlight
-//   const back= props.returnFlight
-//   const airline = props.Airline.name
-//   return (
-//     <div className="flex flex-col items-center justify-center m--10">
-//       <h2 className="text-2xl font-bold m-1 inline-block">Resumen del vuelo</h2>
+const Flights =  ({tour, airlinename }) => {
+    const {outboundFlight, returnFlight} = tour;
+    const {airlineName} = airlinename
 
-//       <div className="border-2 border-slate-300 w-fit px-3 py-3 flex flex-col">
-//         <h3 className="text-xl text-center">Salida: {departure}</h3>
-//         <hr />
-//         <h3 className="text-xl text-center">Regreso: {back}</h3>
-//         <hr />
-//         <h3 className="text-xl text-center">Vuelas con {airline}</h3>
-//       </div>
-//     </div>
-//   );
-// };
+    return (
 
-// export default Flights;
+        <div className="text-left fontPoppins mt-auto">
+            <h2 className="text-l font-bold mb-2">Resumen del vuelo</h2>
+            <div className="shadow-xl border-gray-300 p-4 border-2 rounded px-3 py-3 w-full">
+              <h3 className="text-base">Salida: {outboundFlight}</h3>
+              <hr className="my-2" />
+              <h3 className="text-base">Regreso: {returnFlight}</h3>
+              <hr className="my-2" />
+              <h3 className="text-base">Vuelas con {airlineName}</h3>
+            </div>
+          </div>
+       
+    )
+}
+export default Flights;

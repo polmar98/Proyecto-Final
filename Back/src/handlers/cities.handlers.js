@@ -4,6 +4,7 @@ const {
   getCities,
   getCityById,
   getCityByName,
+  bulkCreateCities,
   deleteCity,
 } = require("../controllers/cities.controllers");
 
@@ -22,6 +23,21 @@ router.post("/", async (req, res) => {
 
     const newCity = await createCity(name, originCity, idCountry);
     return res.status(201).send("Ciudad creada satisfactoriamente");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/massive", async (req, res) => {
+  try {
+    const citiesData = req.body;
+    if (!citiesData) {
+      throw new Error("Falta agregar las ciudades");
+    }
+
+   
+    await bulkCreateCities(citiesData);
+    return res.status(201).send("Ciudades creadas satisfactoriamente");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -51,7 +67,7 @@ router.get("/:id", async (req, res) => {
 });
 
 
-//al pedir una ciudad por nombre, no está entrando en este handler
+
 router.get("/cities", async (req, res) => {
   try {
     const { name } = req.query;

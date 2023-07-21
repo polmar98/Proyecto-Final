@@ -14,6 +14,9 @@ const ActivityModels = require("./models/Activity");
 const UserModels = require("./models/User");
 const CommentModels = require("./models/comment");
 const AdminModels = require("./models/Admin");
+const CityOriginModels = require("./models/CityOrigin");
+const ShoppingCarModels = require("./models/ShoppingCar");
+const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -31,6 +34,9 @@ ActivityModels(sequelize);
 UserModels(sequelize);
 CommentModels(sequelize);
 AdminModels(sequelize)
+CityOriginModels(sequelize);
+ShoppingCarModels(sequelize);
+ItemsShoppingCarModels(sequelize);
 
 const {
   TypePackage,
@@ -44,14 +50,19 @@ const {
   User,
   Comment,
   Admin,
+  CityOrigin,
+  ShoppingCar,
+  ItemsShoppingCar,
 } = sequelize.models;
 
 // establecemos las relaciones
 Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
 Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
-
+Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
+Package.belongsTo(CityOrigin, { foreignKey: "OriginCity", targetKey: "id" });
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
+CityOrigin.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
 Package.belongsTo(TypePackage, { foreignKey: "idTypePackage", targetKey: "id",});
 
 Package.belongsTo(Airline, { foreignKey: "idAirline", sourceKey: "id" });
@@ -71,6 +82,12 @@ Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
 Comment.belongsTo(User, { foreignKey: "idPackage", targetKey: "id" });
 
+User.hasMany(ShoppingCar, { foreignKey: "idUser", sourceKey: "id"});
+ShoppingCar.belongsTo(User,{ foreignKey: 'idUser', targetKey: "id"});
+
+ShoppingCar.hasMany(ItemsShoppingCar, { foreignKey: "idShoppingCar", sourceKey: "id"});
+ItemsShoppingCar.belongsTo(ShoppingCar, { foreignKey: "idShoppingCar", targetKey: "id"});
+
 module.exports = {
   TypePackage,
   Airline,
@@ -83,5 +100,8 @@ module.exports = {
   User,
   Comment,
   Admin,
+  CityOrigin,
+  ShoppingCar,
+  ItemsShoppingCar,
   conn: sequelize,
 };

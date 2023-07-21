@@ -3,9 +3,17 @@ const { Association } = require("../database");
 
 const createCountry = async (name, calification, flag, idContinent) => {
   try {
-    const newContinent = await Country.findOrCreate({
+    await Country.findOrCreate({
       where: { name, calification, flag, idContinent },
     });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const bulkCreateCountries = async (countriesData) => {
+  try {
+    await Country.bulkCreate(countriesData);
   } catch (error) {
     console.log(error.message);
   }
@@ -28,12 +36,15 @@ const getCountriesById = async (id) => {
 };
 
 const getCountryByName = async (name) => {
+  console.log(name);
   const dbcountry = await Country.findOne({
     where: {
       name: name,
     },
     include: { association: "Continent", attributes: ["id", "name"] },
   });
+
+  console.log(dbcountry);
   return dbcountry;
 };
 
@@ -51,6 +62,7 @@ const deleteCountry = async (id) => {
 
 module.exports = {
   createCountry,
+  bulkCreateCountries,
   getCountries,
   getCountriesById,
   getCountryByName,

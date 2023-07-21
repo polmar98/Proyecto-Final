@@ -6,6 +6,7 @@ import SearchResult from "./Views/SearchResult";
 import Admin from "./Views/Admin";
 import About from "./Views/About";
 import LandingPage from "./Views/Landing";
+import ShoppingCart from "./Views/ShoppingCart";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/about" element={<About />} />
+        <Route path="/shoppingCart" element={<ShoppingCart />} />
       </Routes>
     </div>
   );
