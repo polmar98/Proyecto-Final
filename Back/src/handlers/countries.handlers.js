@@ -36,7 +36,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-
 router.post("/massive", async (req, res) => {
   try {
     const countriesData = req.body;
@@ -44,7 +43,6 @@ router.post("/massive", async (req, res) => {
       throw new Error("Falta agregar los Países");
     }
 
-   
     await bulkCreateCountries(countriesData);
     return res.status(201).send("Países creados satisfactoriamente");
   } catch (error) {
@@ -54,10 +52,8 @@ router.post("/massive", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const {name} = req.query;
-        const result = name
-        ? await getCountryByName(name)
-        : await getCountries();
+    const { name } = req.query;
+    const result = name ? await getCountryByName(name) : await getCountries();
 
     result.length > 0
       ? res.status(200).json(result)

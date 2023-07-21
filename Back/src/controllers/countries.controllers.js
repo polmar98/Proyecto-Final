@@ -36,12 +36,16 @@ const getCountriesById = async (id) => {
 };
 
 const getCountryByName = async (name) => {
+
+  console.log(name);
   const dbcountry = await Country.findOne({
     where: {
       name: name,
     },
     include: { association: "Continent", attributes: ["id", "name"] },
   });
+
+  console.log(dbcountry);
   return dbcountry;
 };
 
