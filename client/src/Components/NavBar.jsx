@@ -55,7 +55,7 @@ function NavBar() {
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
             <Link
               className="text-m text-black fontPoppins hover:fontPoppinsB rounded bg-white p-1 mt-1 "
-              to="/login"
+              to="/register"
               style={{
                 padding: "10px 24px",
                 justifyContent: "center",
