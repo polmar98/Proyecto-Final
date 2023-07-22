@@ -66,14 +66,27 @@ function Detail() {
     activities: tour.Activities
   }
 
+  //agregar items al localStorage
+ function addNewItem() {
+  let localStorageJSON = localStorage.getItem("carrito");
+  // console.log('JSON', localStorageJSON)
+  let storedItems = [];
+  if(localStorageJSON !== null){
+    storedItems= JSON.parse(localStorageJSON) //convierte a JS
+    // console.log('js', storedItems)
+  }
+  storedItems.push(item)
+  const updatedItemsJSON = JSON.stringify(storedItems)
+  localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
+
+ }
+
   function changeNavigate() {
     if(user){
       dispatch(add_to_cart(item))
      } else{
-      // const cartItems = JSON.parse(localStorage.getItem("carrito")); //convierte en JS el carrito para poder pushearle el elemento
-      // cartItems.push(item);
-      localStorage.setItem("carrito", JSON.stringify(item)); //lo convierte a json
-      console.log('detail', localStorage)
+      addNewItem()
+      // console.log('detail', localStorage)
      } 
     navigate('/shoppingCart');
   }

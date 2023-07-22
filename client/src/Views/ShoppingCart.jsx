@@ -13,21 +13,9 @@ const ShoppingCart = () => {
   const dispatch = useDispatch();
 //   const [cartState, setcartState] = useState()
 
-// let localStorageItems = JSON.parse(localStorage.getItem("carrito")); //convierte a JS
-// let arrlocalStorageItems =[];
-// console.log('lo que pusheo', arrlocalStorageItems.push(...arrlocalStorageItems, localStorageItems))
-
-// console.log('items parseados', arrlocalStorageItems)
-   
-// if (!user) {
-
-    // if (localStorageItems.length >= 1) {
-    //   cartItems.push(localStorageItems);
-    // }
+let localStorageItems = JSON.parse(localStorage.getItem("carrito")); //convierte a JS
 
 
-
-// console.log('items del carrito', cartItems)
 
 
   //vaciar el carrito
@@ -38,6 +26,7 @@ const ShoppingCart = () => {
       if (userConfirm && !user) {
         localStorage.clear("carrito");
         alert("El carrito fue vaciado con éxito.");
+        navigate('/shoppingCart');
       } 
       if (userConfirm && user) {
          dispatch(clean_cart()).catch((error) => {
@@ -52,9 +41,11 @@ const ShoppingCart = () => {
   return (
     <div>
       <h1>El carrito de compras</h1>
-        {cartItems?.map((el, index) => (
+        {user ? cartItems?.map((el, index) => (
         <CartItem key={index} props={el} />
-           ))}
+           )) : localStorageItems?.map((el, index) => (
+            <CartItem key={index} props={el} />
+               ))}
         
       <button>COMPLETAR EL PAGO</button>
       <button
