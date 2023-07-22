@@ -3,12 +3,12 @@ import { ImLocation } from "react-icons/im";
 import { AiFillCalendar } from "react-icons/ai";
 
 function Sale({ paquetes }) {
-  console.log(paquetes[0]);
+  // console.log(paquetes[0]);
   const [filtrados, SetFiltrados] = useState([]);
 
   const filtrado = paquetes.slice(0, 3);
 
-  console.log(filtrado);
+  // console.log(filtrado);
   //   function filtradoPorOf() {
   //     const sorte = paquetes.sort(() => Math.random() - 0.5);
   //     const filtroPaq = sorte.slice(0, 3);

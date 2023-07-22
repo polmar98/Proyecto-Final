@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { BsCart4 } from "react-icons/bs";
 function NavBar() {
+  const cartItems = useSelector((state) => state.carrito.cart);
+
+  const totalItemsInCart = cartItems.reduce(
+    (total, item) => total + item.amount,
+    0
+  );
+
   return (
     <div className="flex flex-row p-5">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
@@ -66,6 +75,10 @@ function NavBar() {
             >
               Sign Up
             </Link>
+          </li>
+          <li>
+            <BsCart4 />
+            <div className="text-white">({totalItemsInCart} )</div>
           </li>
         </ul>
       </div>
