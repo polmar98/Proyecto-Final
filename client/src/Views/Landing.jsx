@@ -11,7 +11,7 @@ const LandingPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setExitAnimation(true);
-      setTimeout(() => navigate("/"), 1000); // después de que la animación se complete, redirige
+      setTimeout(() => navigate("/home"), 1000); // después de que la animación se complete, redirige
     }, 4000);
 
     return () => clearTimeout(timer);
