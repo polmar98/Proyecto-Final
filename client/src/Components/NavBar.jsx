@@ -78,7 +78,9 @@ function NavBar() {
           </li>
           <li>
             <BsCart4 />
-            <div className="text-white">({totalItemsInCart} )</div>
+            <div className="text-white">
+              {totalItemsInCart ? totalItemsInCart : ""}
+            </div>
           </li>
         </ul>
       </div>
