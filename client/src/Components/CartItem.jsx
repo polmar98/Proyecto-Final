@@ -23,6 +23,7 @@ const CartItem = ({props}) => {
 
             </select>
             </div>
+            <button>Eliminar paquete</button>
             </div>
         </div>
     
