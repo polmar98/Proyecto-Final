@@ -1,6 +1,6 @@
 const express = require("express");
 const server = express();
-const routes = require("./routes/index.routes");
+const routes = require("./routes/indexRoutes");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { conn } = require("../src/database");
@@ -27,7 +27,7 @@ server.use(express.urlencoded({ extended: false }));
 server.use(routes);
 
 // Syncing all the models at once.
-conn.sync({ alter: true }).then(() => {
+conn.sync({ alter:true }).then(() => {
   server.listen(3002, () => {
     console.log("Server on port 3002");
   });

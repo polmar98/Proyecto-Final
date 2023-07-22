@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
+import { loginUser } from "../Redux/Users/usersActions";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,31 +16,23 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
+  const error = useSelector((state) => state.users.error);
+  const user = useSelector((state) => state.users.user);
   const dispatch = useDispatch();
 
-  const allPackages = useSelector((state) => state.packages.packagesList);
-
   useEffect(() => {
-    const isFilled = email && password;
-    dispatch(fetchPackages());
-  }, [email, password, dispatch]);
-
-  console.log(allPackages);
+    if (error) {
+      setErrorMsg(error);
+      alert(error); // muestra un alert con el error
+    } else if (user) {
+      alert("Login exitoso!"); // muestra un alert cuando el inicio de sesión es exitoso
+    }
+  }, [error, user]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!isValidLogin()) {
-      setErrorMsg("Usuario o contraseña incorrectos");
-      return;
-    }
-
-    setErrorMsg("");
-    console.log("Login correcto");
-  };
-
-  const isValidLogin = () => {
-    return email === "admin" && password === "admin";
+    dispatch(loginUser(email, password)); // usa la acción loginUser
   };
 
   return (
@@ -54,9 +49,11 @@ const LoginPage = () => {
           {/* Titulos */}
           <div className="flex justify-between mb-5">
             <h2 className="text-gray-700 text-lg font-bold ">Ingresar</h2>
-            <h2 className="text-blue-600 text-base font-normal tracking-wide hover:underline cursor-pointer">
-              Registrarse
-            </h2>
+            <Link to="/register">
+              <h2 className="text-blue-600 text-base font-normal tracking-wide hover:underline cursor-pointer">
+                Registrarse
+              </h2>
+            </Link>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
