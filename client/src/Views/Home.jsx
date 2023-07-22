@@ -11,6 +11,7 @@ import Sale from "../Components/Sale";
 function Home() {
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.packages.packagesList);
+  const user = useSelector((state) => state.users.user)
   // console.log(packages);
 
   useEffect(() => {
