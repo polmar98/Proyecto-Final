@@ -9,6 +9,7 @@ import continentsReducer from "./Continent/continentReducer";
 import countriesReducer from "./Country/countriesReducer";
 import hotelsReducer from "./Hotels/hotelsReducer";
 import packagesReducer from "./Packages/packagesReducer";
+import shoppingCartReducer from "./ShoppingCart/shoppingCartReducer";
 
 const rootReducer = combineReducers({
   packages: packagesReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   airlines: airlinesReducer,
   hotels: hotelsReducer,
   activitys: activitysReducer,
+  carrito: shoppingCartReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

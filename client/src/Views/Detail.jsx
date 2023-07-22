@@ -11,9 +11,11 @@ import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
+import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { id } = useParams();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
@@ -30,7 +32,7 @@ function Detail() {
   const hotels = useSelector((state) => state.hotels.hotelsList);
   const hotel = hotels.find((el) => el.id === tour.idHotel);
   const hotelData = hotel ? hotel : "Desconocido";
-  console.log("hotel", hotelData);
+  // console.log("hotel", hotelData);
 
   const tipoPaquete = tour.TypePackage ? tour.TypePackage.name : "Desconocido";
   // console.log(tipoPaquete)
@@ -53,10 +55,21 @@ function Detail() {
     };
   }, [id, dispatch]);
 
-
-  function changeNavigate(event) {
-    navigate('/ShoppingCart')
+  // item para guardar en el carrito
+  const item= {
+    id: tour.id,
+    title: tour.title,
+    image: tour.image,
+    price: tour.standarPrice,
+    amount: 1,
+    activities: tour.Activities
   }
+
+  function changeNavigate() {
+    dispatch(add_to_cart(item));
+    navigate('/shoppingCart');
+  }
+  
   // if (loading) {
   //   return (
   //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
