@@ -23,10 +23,7 @@ function Sale({ paquetes }) {
       <h1 className="text-2xl text-gray-800 fontPoppinsB">Flash Deals</h1>
       <div className="grid grid-cols-3">
         {filtrado.map((paquete) => (
-          <div
-            key={paquete.idTypePackage}
-            className="m-2 rounded shadow-2xl p-2"
-          >
+          <div key={paquete.id} className="m-2 rounded shadow-2xl p-2">
             <div
               className="text-yellow-400 text-lg -rotate-45 w-12 rounded bg-red-600
             "
