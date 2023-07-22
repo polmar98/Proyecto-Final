@@ -11,7 +11,7 @@ import { RiStarSFill } from "react-icons/ri";
 
 
 function Hotels({hotel}) {
-    console.log(hotel)
+    // console.log(hotel)
     const {name, calification, image, stars} = hotel
  
     // stars del hotel
