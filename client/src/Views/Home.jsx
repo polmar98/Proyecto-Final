@@ -15,7 +15,12 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchPackages());
-  }, [dispatch]);
+
+    if (!user && !localStorage.getItem("carrito")) {
+      //si no hay login y no existe el elemento carrito cuando carga el home
+      localStorage.setItem("carrito", "[]"); //lo crea. Recibe como 1er arg la clave y 2do arg el valor, que es un array vacio al ppio
+    }
+  }, [dispatch, user]);
 
   return (
     <>

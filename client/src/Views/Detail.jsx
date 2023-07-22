@@ -15,6 +15,7 @@ import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { id } = useParams();
+  const user = useSelector(state => state.users.user)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -66,7 +67,14 @@ function Detail() {
   }
 
   function changeNavigate() {
-    dispatch(add_to_cart(item));
+    if(user){
+      dispatch(add_to_cart(item))
+     } else{
+      // const cartItems = JSON.parse(localStorage.getItem("carrito")); //convierte en JS el carrito para poder pushearle el elemento
+      // cartItems.push(item);
+      localStorage.setItem("carrito", JSON.stringify(item)); //lo convierte a json
+      console.log('detail', localStorage)
+     } 
     navigate('/shoppingCart');
   }
   
