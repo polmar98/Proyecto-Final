@@ -1,42 +1,55 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { searchPackages } from "../Redux/Packages/packagesActions";
-import { useNavigate } from "react-router-dom";
+import { SearchPackagesByCountry } from "../Redux/Packages/packagesActions";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../Utils/Img/logo.png";
 import { FaSearch } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
 
-function SearchBar() {
-  const [word, setWord] = useState("");
+export default function SearchBar() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [country, setCountry] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleInputChange = (event) => {
-    setWord(event.target.value);
+  const handleInputChange = (e) => {
+    setCountry(e.target.value);
   };
 
   const handleSearch = () => {
-    dispatch(searchPackages(word)).then(() => {
-      navigate(`/search?title=${encodeURIComponent(word)}`);
-      setWord("");
-    });
+    if (country.trim() !== "") {
+      // Si se ingresa un país en el campo de búsqueda, realizamos la búsqueda y navegamos a SearchResult
+      dispatch(SearchPackagesByCountry(country));
+      setCountry("");
+      const isSearchResult = location.pathname === "/search";
+      if (isSearchResult) {
+        // Si la búsqueda se realiza desde SearchResult, simplemente actualizamos la página
+        navigate(`/search?Country=${country}`, { replace: true });
+      } else {
+        // Si la búsqueda se realiza desde Home, redirigimos a SearchResult
+        navigate(`/search?Country=${country}`);
+      }
+    } else {
+      // Si no se ingresa un país, navegamos directamente a SearchResult para mostrar todos los paquetes
+      navigate("/search");
+    }
   };
 
   const isSearchResult = location.pathname === "/search";
 
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
+      {/* <div className="ml-auto">
       {isSearchResult && (
-        <img src={logo} alt="logo" className="w-1/2 h-auto ml-5 mr-20" />
-      )}
+      <img onClick={() => navigate("/home")} src= {logo} alt="logo" className="w-8 h-auto cursor-pointer" />
+    )}
+      </div> */}
 
       <div className="flex-grow">
         <input
           type="text"
           placeholder="A donde ..."
-          className=" bg-white rounded p-2 m-2 text-lg w-[250px] focus:outline-none"
-          value={word}
+          className="bg-white rounded p-2 m-2 text-lg w-full focus:outline-none text-gray-700"
+          value={country}
           onChange={handleInputChange}
         />
       </div>
@@ -48,54 +61,3 @@ function SearchBar() {
     </div>
   );
 }
-
-export default SearchBar;
-
-// import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
-// import { setSearchResults, searchPackagesAsync } from "../Redux/packagesSlice";
-// import { useNavigate } from "react-router-dom";
-// import { FaSearch } from "react-icons/fa";
-// import { IoLocationSharp } from "react-icons/io5";
-
-// function SearchBar() {
-//   const [word, setWord] = useState("");
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const handleInputChange = (event) => {
-//     setWord(event.target.value);
-//   };
-
-//   const handleSearch = () => {
-//     dispatch(searchPackagesAsync(word)).then((filteredPackages) => {
-//       dispatch(setSearchResults(filteredPackages));
-//       navigate(`/search?title=${encodeURIComponent(word)}`);
-//       setWord("");
-//     });
-//   };
-
-//   return (
-//     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center shadow-md">
-//       <div className="flex items-center">
-//         <IoLocationSharp
-//           style={{ fontSize: "20px", marginLeft: "10px", marginRight: "5px" }}
-//         />
-//         <input
-//           type="text"
-//           placeholder="A donde ..."
-//           className="bg-white rounded p-2 m-2 w-[250px] focus:outline-none"
-//           value={word}
-//           onChange={handleInputChange}
-//         />
-//       </div>
-//       <div>
-//         <button className="bg-green-300 rounded p-2 m-2" onClick={handleSearch}>
-//           <FaSearch style={{ fontSize: "20px", color: "white" }} />
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SearchBar;

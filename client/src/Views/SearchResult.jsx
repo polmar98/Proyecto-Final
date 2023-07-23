@@ -1,15 +1,17 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
-import { useDispatch } from "react-redux";
+import NavBar from "../Components/NavBar";
 import {
   fetchPackages,
-  searchPackages,
-  setCityFilter,
+  SearchPackagesByCountry,
+  FilterPackagesByCity,
   setDurationFilter,
   setPriceFilter,
+  clearSearchView,
+  reset
 } from "../Redux/Packages/packagesActions";
 import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
@@ -23,44 +25,55 @@ export default function SearchResult() {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const searchResults = useSelector((state) => state.packages.packagesFiltered);
+  const searchResults = useSelector((state) => state.packages.packagesSearch); // Renombrado packagesSearch a searchResults
+  const packagesList = useSelector((state) => state.packages.packagesList);
   const cities = useSelector((state) => state.cities.citiesList);
+  const searchQuery = new URLSearchParams(location.search).get("Country");
+  // const filters = useSelector((state) => state.packages.filters);
 
   useEffect(() => {
     const loadData = async () => {
       await dispatch(fetchPackages());
-      const searchQuery = new URLSearchParams(location.search).get("title");
-      if (searchQuery) {
-        dispatch(searchPackages(searchQuery));
-      }
+      dispatch(SearchPackagesByCountry(searchQuery)); // Siempre llamar a la función SearchPackagesByCountry, incluso si searchQuery es una cadena vacía
     };
     loadData();
-  }, [dispatch, location.search]);
+
+    return () => {
+      dispatch(clearSearchView(true)); // Aquí despachamos la acción con "true" al desmontar
+    };
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchCities());
   }, [dispatch]);
 
-  const handleCityFilterChange = (e) => {
-    dispatch(setCityFilter(e.target.value));
-  };
+  // useEffect(()=>{
+  //   return () =>{
+  //     dispatch(clearSearchView(true))
+  //   }
+  // },[])
+
+  function handleFilterByCity(e) {
+    dispatch(FilterPackagesByCity(e.target.value));
+    setCurrentPage(1);
+  }
 
   const handleDurationFilterChange = (e) => {
     dispatch(setDurationFilter(e.target.value));
   };
 
   const handlePriceFilterChange = (e) => {
-    dispatch(setPriceFilter(e.target.value));
+    const selectedValue = e.target.value;
+    dispatch(setPriceFilter(selectedValue));
   };
 
-  const searchResults1 = useSelector((state) => state.packages.packagesSearch);
-  const packagesList = useSelector((state) => state.packages.packagesList);
+ 
 
   // Calcular la cantidad total de páginas disponibles
   const totalPages = Math.ceil(
-    searchResults1.length > 0
-      ? searchResults1.length / RESULTS_PER_PAGE
+    searchResults.length > 0
+      ? searchResults.length / RESULTS_PER_PAGE
       : packagesList.length / RESULTS_PER_PAGE
   );
 
@@ -83,43 +96,53 @@ export default function SearchResult() {
       : packagesList.slice(startIndex, endIndex);
 
   return (
-    <div className="pt-8">
+    <div className="pt-0">
+      <div className="bg-verdeFooter">
+        <NavBar />
+      </div>
       <div className="flex items-center justify-center">
         <div className="mx-auto">
           <SearchBar />
-        </div>
-      </div>
 
-      <div className="flex justify-evenly p-4">
+          <div className="flex justify-evenly p-4">
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Ciudad de destino:</h2>
-          <select className="rounded p-1" onChange={handleCityFilterChange}>
+          <select className="rounded p-1" onChange={handleFilterByCity}>
             <option value="">Todos</option>
             {cities.map((city) => {
               return (
-                <option key={city.id} value={city.id}>
+                <option key={city.id} value={city.name}>
                   {city.name}
                 </option>
               );
             })}
           </select>
         </div>
+
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Duración:</h2>
-          <select className="rounded p-1" onChange={handleDurationFilterChange}>
-            <option value="">Todos</option>
-            <option value="Menor-Mayor">Menor-Mayor</option>
-            <option value="Mayor-Menor">Mayor-Menor</option>
+          <select className="rounded p-1" onChange={handleDurationFilterChange} >
+            <option value="Todos">---</option>
+            <option value="Menor-Mayor">Mayor-Menor</option>
+            <option value="Mayor-Menor">Menor-Mayor</option>
           </select>
         </div>
+
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Precio:</h2>
+          {/* value={filters.priceFilter} esto estaba dentro del selec aca abajo, si se lo dejo al aplicar el filtro en
+          el front me queda todo el tiempo en todos (visualmente) no me muestra si es mayor o menor, solo figura todos */}
           <select className="rounded p-1" onChange={handlePriceFilterChange}>
-            <option value="">Todos</option>
+            <option value="precios">---</option>
             <option value="MenorPrecio">Menor</option>
             <option value="MayorPrecio">Mayor</option>
           </select>
         </div>
+       
+        </div>
+
+          </div>
+      
       </div>
 
       <div className="pt-10">

@@ -1,8 +1,12 @@
 import React from "react";
+import NavBar from "../Components/NavBar";
 
 function About() {
   return (
     <div className="text-center p-4 bg-verdeFooter h-screen w-screen	">
+      <div className="bg-verdeFooter border-b border-white">
+        <NavBar />
+      </div>
       <h2 className="text-4xl font-bold mb-6 text-white">
         Bienvenidos a Wanderlust
       </h2>
