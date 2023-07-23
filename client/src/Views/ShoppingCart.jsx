@@ -58,7 +58,7 @@ const ShoppingCart = () => {
 
           <div className="flex flex-row justify-center items-center">
             <Link
-              to="/" // Update this with the path for continuing shopping
+              to="/search" // Update this with the path for continuing shopping
               className="bg-gray-200 hover:bg-gray-300 text-gray-600 text-xs py-2 px-4 m-2 rounded flex items-center justify-center w-1/3"
             >
               <AiOutlineShopping className="mr-2 text-2xl" />

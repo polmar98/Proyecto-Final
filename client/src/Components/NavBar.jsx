@@ -9,7 +9,6 @@ import { useAuth } from "../Context/authContext";
 
 function NavBar() {
   const cartItems = useSelector((state) => state.carrito.cart);
-<<<<<<< HEAD
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -19,10 +18,6 @@ function NavBar() {
     logout();
     console.log("logout");
   };
-=======
-  const cartInState = useSelector((state) => state.packages.packageDetails);
-  // console.log("esto es el estado carrito: ", cartItems);
->>>>>>> ger2
 
   const totalItemsInCart = cartItems.reduce(
     (total, item) => total + item.amount,
