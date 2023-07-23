@@ -29,7 +29,7 @@ function NavBar() {
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
             <Link
               className="text-m text-white fontPoppins hover:fontPoppinsB font-bold"
-              to="/"
+              to="/home"
             >
               Home
             </Link>
