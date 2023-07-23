@@ -15,13 +15,15 @@ import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { id } = useParams();
-  const user = useSelector((state) => state.users.user);
+  // const user = useSelector((state) => state.users.user);
+  // console.log("USER: ", user);
+  const user = 1;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
 
-  // console.log('elpaquete', tour)
+  // console.log("elpaquete", tour.title);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
@@ -58,13 +60,47 @@ function Detail() {
 
   // item para guardar en el carrito
   const item = {
-    id: tour.id,
-    title: tour.title,
-    image: tour.image,
-    price: tour.standarPrice,
-    amount: 1,
-    activities: tour.Activities,
+    idUser: tour.id,
+    items: [
+      {
+        amount: 1,
+        unitPrice: tour.standarPrice,
+        totalPrice: tour.promotionPrice,
+        typeProduct: 1,
+        idProduct: tour.id,
+        title: tour.title,
+      },
+    ],
+    //  id: tour.id,
+    // title: tour.title,
+    // image: tour.image,
+    // price: tour.standarPrice,
+    // amount: 1,
+    // activities: tour.Activities,
   };
+  // {
+  // 	 "idUser": 1,
+  // 	 "items": [
+  // 		  {
+  // 				"amount": 2,
+  // 				"unitPrice": 1499,
+  // 				"totalPrice": 2998,
+  // 				"typeProduct": 1,
+  // 				"idProduct": 1,
+  // 				"title": "Paq. Turistico a Cancun"
+  // 			},
+
+  // 		  {
+  // 				"amount": 2,
+  // 				"unitPrice": 55,
+  // 				"totalPrice": 110,
+  // 				"typeProduct": 2,
+  // 				"idProduct": 3,
+  // 				"title":  "Actividad: Tour al cenote Samaal"
+  // 			}
+  // 	 ]
+
+  // }
 
   //agregar items al localStorage
   function addNewItem() {
@@ -73,17 +109,18 @@ function Detail() {
     let storedItems = [];
     if (localStorageJSON !== null) {
       storedItems = JSON.parse(localStorageJSON); //convierte a JS
-      // console.log('js', storedItems)
+      // console.log("js", storedItems);
     }
     storedItems.push(item);
     const updatedItemsJSON = JSON.stringify(storedItems);
+    // console.log("asi queda el json final", updatedItemsJSON);
     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
   }
 
   //! german:
   async function guardarEnBDD() {
     try {
-      const response = await fetch("/shoppingCar/", {
+      const response = await fetch("http://localhost:3002/shoppingCar/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
