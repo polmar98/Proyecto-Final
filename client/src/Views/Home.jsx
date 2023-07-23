@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavBar from "../Components/NavBar";
 import SearchBar from "../Components/SearchBar";
 import ContFilter from "../Components/ContFilter";
 import Footer from "../Components/Footer";
+
 import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sale from "../Components/Sale";
+import { authContext } from "../Context/authContext";
 
 function Home() {
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.packages.packagesList);
-  console.log(packages);
+  const user = useSelector((state) => state.users.user);
+  const { currentUser } = useContext(authContext);
+
+  if (currentUser) {
+    console.log(currentUser.displayName);
+    console.log("hay usuario");
+  } else {
+    console.log("no hay usuario");
+  }
 
   useEffect(() => {
     dispatch(fetchPackages());
-  }, [dispatch]);
+
+    if (!user && !localStorage.getItem("carrito")) {
+      //si no hay login y no existe el elemento carrito cuando carga el home
+      localStorage.setItem("carrito", "[]"); //lo crea. Recibe como 1er arg la clave y 2do arg el valor, que es un array vacio al ppio
+    }
+  }, [dispatch, user]);
 
   return (
     <>

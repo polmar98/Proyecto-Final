@@ -3,7 +3,8 @@ const {addPackages,
       viewPackages,
       getPackageById,
       searchPackages,
-      addMassivePackages} = require('../controllers/packagesControllers');
+      addMassivePackages,
+      updatePackages} = require('../controllers/packagesControllers');
 const router = Router();
 
 //handler para busqueda de paquetes. si se agrega un query de busqueda ejecuta searchPackages
@@ -54,6 +55,21 @@ router.post('/massive', async(req, res) => {
         } catch (error) {
             res.status(500).json({message: error.message});                    
         }
+});
+
+//handlers para actualizar paquetes
+router.put('/:id', async(req, res) => {
+   const objeto = req.body;
+   const {id}= req.params;
+   console.log("paquete", id);
+   if(!id) { return res.status(404).send("Id del paquete No enviado")};
+   try {
+       const idPackage = id;
+       const result = await updatePackages(objeto, idPackage);
+       res.status(200).send("Paquete actualizado");
+   } catch (error) {
+       res.status(500).json({message: error.message});      
+   }
 });
 
 

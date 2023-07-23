@@ -15,6 +15,7 @@ import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { id } = useParams();
+  const user = useSelector((state) => state.users.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,20 +57,61 @@ function Detail() {
   }, [id, dispatch]);
 
   // item para guardar en el carrito
-  const item= {
+  const item = {
     id: tour.id,
     title: tour.title,
     image: tour.image,
     price: tour.standarPrice,
     amount: 1,
-    activities: tour.Activities
+    activities: tour.Activities,
+  };
+
+  //agregar items al localStorage
+  function addNewItem() {
+    let localStorageJSON = localStorage.getItem("carrito");
+    // console.log('JSON', localStorageJSON)
+    let storedItems = [];
+    if (localStorageJSON !== null) {
+      storedItems = JSON.parse(localStorageJSON); //convierte a JS
+      // console.log('js', storedItems)
+    }
+    storedItems.push(item);
+    const updatedItemsJSON = JSON.stringify(storedItems);
+    localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
+  }
+
+  //! german:
+  async function guardarEnBDD() {
+    try {
+      const response = await fetch("/shoppingCar/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+
+      if (response.ok) {
+        console.log("todo ok");
+      } else {
+        console.log("error al guardar el carrito en bdd.");
+      }
+    } catch (error) {
+      console.error("error:", error);
+    }
   }
 
   function changeNavigate() {
-    dispatch(add_to_cart(item));
-    navigate('/shoppingCart');
+    if (user) {
+      dispatch(add_to_cart(item));
+      guardarEnBDD();
+    } else {
+      addNewItem();
+      // console.log('detail', localStorage)
+    }
+    navigate("/shoppingCart");
   }
-  
+
   // if (loading) {
   //   return (
   //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
@@ -120,7 +162,9 @@ function Detail() {
             <h2 className="text-s font-medium">{tour.description}</h2>
             <h2 className="text-s font-base mt-2">{tour.duration} días</h2>
             <h2 className="text-s font-base">Salida en {tour.initialDate}</h2>
-            <h2 className="text-s font-base">Calificación que le dieron otros viajeros: {tour.qualification}</h2>
+            <h2 className="text-s font-base">
+              Calificación que le dieron otros viajeros: {tour.qualification}
+            </h2>
             <h2 className="text-s font-semibold mt-6">
               USD {tour.standarPrice} -{tipoPaquete}-
             </h2>
@@ -129,7 +173,12 @@ function Detail() {
             </h2>
 
             <div>
-              <button onClick={() => {changeNavigate()}} className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4">
+              <button
+                onClick={() => {
+                  changeNavigate();
+                }}
+                className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
+              >
                 AGREGAR AL CARRITO
               </button>
             </div>

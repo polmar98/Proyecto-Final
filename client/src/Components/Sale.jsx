@@ -3,12 +3,12 @@ import { ImLocation } from "react-icons/im";
 import { AiFillCalendar } from "react-icons/ai";
 
 function Sale({ paquetes }) {
-  console.log(paquetes[0]);
+  // console.log(paquetes[0]);
   const [filtrados, SetFiltrados] = useState([]);
 
   const filtrado = paquetes.slice(0, 3);
 
-  console.log(filtrado);
+  // console.log(filtrado);
   //   function filtradoPorOf() {
   //     const sorte = paquetes.sort(() => Math.random() - 0.5);
   //     const filtroPaq = sorte.slice(0, 3);
@@ -23,10 +23,7 @@ function Sale({ paquetes }) {
       <h1 className="text-2xl text-gray-800 fontPoppinsB">Flash Deals</h1>
       <div className="grid grid-cols-3">
         {filtrado.map((paquete) => (
-          <div
-            key={paquete.idTypePackage}
-            className="m-2 rounded shadow-2xl p-2"
-          >
+          <div key={paquete.id} className="m-2 rounded shadow-2xl p-2">
             <div
               className="text-yellow-400 text-lg -rotate-45 w-12 rounded bg-red-600
             "

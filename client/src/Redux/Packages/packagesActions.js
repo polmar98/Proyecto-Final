@@ -10,6 +10,8 @@ export const SET_CITY_FILTER = "SET_CITY_FILTER";
 export const SET_DURATION_FILTER = "SET_DURATION_FILTER";
 export const SET_PRICE_FILTER = "SET_PRICE_FILTER";
 export const SET_SEARCH_FILTER = "SET_SEARCH_FILTER";
+export const CLEAR_SEARCH_VIEW = "CLEAR_SEARCH_VIEW";
+export const RESET = "RESET"
 
 
 
@@ -102,6 +104,13 @@ export const clearPackageDetails = () => {
   };
 };
 
+export const clearSearchView = (isUnmounting) => {
+  return {
+    type: CLEAR_SEARCH_VIEW,
+    isUnmounting
+  };
+};
+
 export const FilterPackagesByCity = (payload) => {
   return {
     type: SET_CITY_FILTER,
@@ -110,14 +119,19 @@ export const FilterPackagesByCity = (payload) => {
 };
 
  
-// export const setDurationFilter = (payload) => ({
-//   type: SET_DURATION_FILTER,
-//   payload,
-// });
+export const setDurationFilter = (payload) => ({
+  type: SET_DURATION_FILTER,
+  payload,
+});
 
 
 export const setPriceFilter = (payload) => ({
   type: SET_PRICE_FILTER,
   payload,
 });
+
+export function reset (){
+  return{type:RESET}
+
+}
 
