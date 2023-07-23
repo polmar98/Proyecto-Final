@@ -6,7 +6,9 @@ import { clean_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 
 const ShoppingCart = () => {
   let cartItems = useSelector((state) => state.carrito.cart);
-  const user = useSelector((state) => state.users.user);
+  console.log(cartItems);
+  // const user = useSelector((state) => state.users.user);
+  const user = 1;
   // console.log('el estado carrito', {carrito})
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,7 +41,6 @@ const ShoppingCart = () => {
         : localStorageItems?.map((el, index) => (
             <CartItem key={index} props={el} />
           ))}
-
       <button>COMPLETAR EL PAGO</button>
       <button
         onClick={() => {

@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { BsCart4 } from "react-icons/bs";
 function NavBar() {
   const cartItems = useSelector((state) => state.carrito.cart);
+  const cartInState = useSelector((state) => state.packages.packageDetails);
+  // console.log("esto es el estado carrito: ", cartItems);
 
   const totalItemsInCart = cartItems.reduce(
     (total, item) => total + item.amount,
@@ -17,8 +19,18 @@ function NavBar() {
   if (localStorageJSON !== null) {
     storedItems = JSON.parse(localStorageJSON); //convierte a JS
   }
+  // console.log("el js", storedItems.length);
   let cantidadEnCarro = storedItems.length;
-  console.log("CARRO", storedItems.length);
+  // let cantidadEnCarro = {};
+
+  // let cantidadEnCarro = "";
+  // console.log("CARRO", storedItems.length);
+
+  // if (cartInState) {
+  //   cantidadEnCarro = cartItems;
+  // } else cantidadEnCarro = storedItems.length;
+
+  // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
 
   return (
     <div className="flex flex-row p-5">
