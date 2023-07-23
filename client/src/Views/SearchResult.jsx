@@ -8,7 +8,7 @@ import {
   fetchPackages,
   SearchPackagesByCountry,
   FilterPackagesByCity,
-  // setDurationFilter,
+  setDurationFilter,
   setPriceFilter,
 } from "../Redux/Packages/packagesActions";
 import { useLocation } from "react-router-dom";
@@ -47,9 +47,9 @@ export default function SearchResult() {
     setCurrentPage(1);
   }
 
-  // const handleDurationFilterChange = (e) => {
-  //   dispatch(setDurationFilter(e.target.value));
-  // };
+  const handleDurationFilterChange = (e) => {
+    dispatch(setDurationFilter(e.target.value));
+  };
 
   const handlePriceFilterChange = (e) => {
     const selectedValue = e.target.value;
@@ -109,20 +109,18 @@ export default function SearchResult() {
 
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Duración:</h2>
-          <select className="rounded p-1">
-            <option value="">Todos</option>
+          <select className="rounded p-1" onChange={handleDurationFilterChange} >
+            <option value="Todos">Todos</option>
             <option value="Menor-Mayor">Menor-Mayor</option>
             <option value="Mayor-Menor">Mayor-Menor</option>
           </select>
         </div>
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Precio:</h2>
-          <select
-            className="rounded p-1"
-            onChange={handlePriceFilterChange}
-            value={filters.priceFilter}
-          >
-            <option value="">Todos</option>
+          {/* value={filters.priceFilter} esto estaba dentro del selec aca abajo, si se lo dejo al aplicar el filtro en
+          el front me queda todo el tiempo en todos (visualmente) no me muestra si es mayor o menor, solo figura todos */}
+          <select className="rounded p-1" onChange={handlePriceFilterChange}>
+            <option value="precios">Todos</option>
             <option value="MenorPrecio">Menor</option>
             <option value="MayorPrecio">Mayor</option>
           </select>

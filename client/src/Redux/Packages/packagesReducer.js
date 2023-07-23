@@ -77,6 +77,46 @@ const packagesReducer = (state = initialState, action) => {
           },
         };
 
+        case SET_DURATION_FILTER:
+
+        let orderDuration = [...state.packagesList];
+        orderDuration = orderDuration.sort((a, b) => {
+          if(a.duration < b.duration){
+            return action.payload === "Menor-Mayor" ? 1 : -1;
+          }
+          if(a.duration > b.duration){
+            return action.payload === "Menor-Mayor" ? -1 : 1;
+          }
+          return 0;
+        })
+
+        return {
+          ...state,
+          packagesList: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+        }
+      // let durationOrden = action.payload;
+      // if (durationOrden === "Menor-Mayor") {
+      //   return {
+      //     ...state,
+      //     packagesFiltered: state.packagesFiltered.sort((a, b) => a.duration - b.duration),
+      //     filters: {
+      //       ...state.filters,
+      //       durationFilter: durationOrden,
+      //     },
+      //   };
+      // } else if (durationOrden === "Mayor-Menor") {
+      //   return {
+      //     ...state,
+      //     packagesFiltered: state.packagesFiltered.sort((a, b) => b.duration - a.duration),
+      //     filters: {
+      //       ...state.filters,
+      //       durationFilter: durationOrden,
+      //     },
+      //   };
+      // }
+      // // Si el durationFilter no coincide con ninguna opción, devolvemos el estado tal como está.
+      // return state;
+
        
 
        
@@ -91,28 +131,48 @@ const packagesReducer = (state = initialState, action) => {
     
  
     case SET_PRICE_FILTER:
-      const sortFilter = action.payload;
-      if (sortFilter === "MenorPrecio") {
+      //Sara este es el ordenamiento con mi logica, funcionan combinados, de la otra forma tmb
+      //en el de duration segui tu logica aplicada en el de price, es el codigo que esta comentado,
+      //funciona tmb solo que en el front al darle al todos no me trae nada y no supe como nimplementarlo.
+      //aunque probe muchas formas. 
+      let orderPrice = [...state.packagesList];
+        orderPrice = orderPrice.sort((a, b) => {
+          if(a.standarPrice < b.standarPrice){
+            return action.payload === "MenorPrecio" ? -1 : 1;
+          }
+          if(a.standarPrice > b.standarPrice){
+            return action.payload === "MenorPrecio" ? 1 : -1;
+          }
+          return 0;
+        })
+
         return {
           ...state,
-          packagesFiltered: state.packagesFiltered.slice().sort((a, b) => a.standarPrice - b.standarPrice),
-          filters: {
-            ...state.filters,
-            priceFilter: sortFilter,
-          },
-        };
-      } else if (sortFilter === "MayorPrecio") {
-        return {
-          ...state,
-          packagesFiltered: state.packagesFiltered.slice().sort((a, b) => b.standarPrice - a.standarPrice),
-          filters: {
-            ...state.filters,
-            priceFilter: sortFilter,
-          },
-        };
-      }
+          packagesList: action.payload === "precios" ? state.packagesFiltered : orderPrice,
+        }
+
+    //   const sortFilter = action.payload;
+    // if (sortFilter === "MenorPrecio") {
+    //     return {
+    //       ...state,
+    //       packagesFiltered: state.packagesFiltered.sort((a, b) => a.standarPrice - b.standarPrice),
+    //       filters: {
+    //         ...state.filters,
+    //         priceFilter: sortFilter,
+    //       },
+    //     };
+    //   } else if (sortFilter === "MayorPrecio") {
+    //     return {
+    //       ...state,
+    //       packagesFiltered: state.packagesFiltered.sort((a, b) => b.standarPrice - a.standarPrice),
+    //       filters: {
+    //         ...state.filters,
+    //         priceFilter: sortFilter,
+    //       },
+    //     };
+    //   }
       // Si el sortFilter no coincide con ninguna opción, devolvemos el estado tal como está.
-      return state;
+      // return state;
   
     default:
       return state;
