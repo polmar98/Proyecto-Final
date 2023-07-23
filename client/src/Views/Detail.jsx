@@ -12,6 +12,7 @@ import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
 import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
+import NavBar from "../Components/NavBar";
 
 function Detail() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ function Detail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
-
+  const idCart = useSelector((state) => state.carrito.idCart);
   // console.log("elpaquete", tour.title);
 
   //airline nombre
@@ -71,12 +72,6 @@ function Detail() {
         title: tour.title,
       },
     ],
-    //  id: tour.id,
-    // title: tour.title,
-    // image: tour.image,
-    // price: tour.standarPrice,
-    // amount: 1,
-    // activities: tour.Activities,
   };
   // {
   // 	 "idUser": 1,
@@ -120,28 +115,51 @@ function Detail() {
   //! german:
   async function guardarEnBDD() {
     try {
-      const response = await fetch("http://localhost:3002/shoppingCar/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
-
-      if (response.ok) {
-        console.log("todo ok");
+      const idCarrito = await fetch(
+        `http://localhost:3002/shoppingCar/user/${user}`
+      );
+      console.log("idCarrito", idCarrito);
+      if (idCarrito) {
+        idCart = idCarrito.id;
+        const response1 = await fetch(
+          `http://localhost:3002/shoppingCar/${idCart}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(item),
+          }
+        );
       } else {
-        console.log("error al guardar el carrito en bdd.");
+        const response = await fetch("http://localhost:3002/shoppingCar/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(item),
+        });
+
+        if (response.ok) {
+          console.log("todo ok");
+        } else {
+          console.log("error al guardar el carrito en bdd.");
+        }
       }
-    } catch (error) {
-      console.error("error:", error);
-    }
+    } catch (error) {}
   }
+
+  // Hacer
+  //crear funcion para guardar en bdd una actividad
+  //
 
   function changeNavigate() {
     if (user) {
-      dispatch(add_to_cart(item));
-      guardarEnBDD();
+      if (idCart === 0) {
+        dispatch(add_to_cart(item));
+        guardarEnBDD();
+      } else {
+      }
     } else {
       addNewItem();
       // console.log('detail', localStorage)
@@ -166,6 +184,9 @@ function Detail() {
 
   return (
     <>
+      <div className="bg-verdeFooter border-b border-white">
+        <NavBar />
+      </div>
       <div className="container mx-auto p-4 m-2 w-2/3">
         <button
           onClick={() => {

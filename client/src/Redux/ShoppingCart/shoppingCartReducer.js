@@ -8,6 +8,7 @@ import {
 const initialState = {
   products: [],
   cart: [],
+  idCart: 0,
 };
 
 const shoppingCartReducer = (state = initialState, action) => {
