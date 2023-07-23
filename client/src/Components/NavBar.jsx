@@ -11,6 +11,15 @@ function NavBar() {
     0
   );
 
+  let localStorageJSON = localStorage.getItem("carrito");
+  // console.log('JSON', localStorageJSON)
+  let storedItems = [];
+  if (localStorageJSON !== null) {
+    storedItems = JSON.parse(localStorageJSON); //convierte a JS
+  }
+  let cantidadEnCarro = storedItems.length;
+  console.log("CARRO", storedItems.length);
+
   return (
     <div className="flex flex-row p-5">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
@@ -77,10 +86,16 @@ function NavBar() {
             </Link>
           </li>
           <li>
-            <BsCart4 />
-            <div className="text-white">
-              {totalItemsInCart ? totalItemsInCart : ""}
-            </div>
+            <Link to="/shoppingCart">
+              <BsCart4 className="text-2xl text-white -pt-2 -mt-2 mb-1" />
+              <div
+                className={`text-white bg-red-400 rounded-3xl pl-2 pr-2 fontPoppinsB border border-solid border-white text-sm ${
+                  cantidadEnCarro ? "border-1" : "border-none"
+                }`}
+              >
+                {cantidadEnCarro ? cantidadEnCarro : ""}
+              </div>
+            </Link>
           </li>
         </ul>
       </div>
