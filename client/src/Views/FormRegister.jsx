@@ -9,12 +9,14 @@ import sideImage from "../Utils/Img/side.png";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { useAuth } from "../Context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const { signInWithGoogle, signInWithFacebook, register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [user, setUser] = useState({
@@ -33,13 +35,41 @@ const RegisterPage = () => {
       const res = await register(email, password);
 
       if (res) {
-        console.log(res);
         await updateProfile(res.user, {
           displayName: `${name} ${lastName}`,
         });
       }
       dispatch(addUser(user));
       setUserCreated(true);
+      navigate("/home");
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleGoogle = async () => {
+    try {
+      const result = await signInWithGoogle();
+      if (result.success === true) {
+        dispatch(addUser(result.user));
+        setUserCreated(true);
+        navigate("/home");
+      }
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleFacebook = async () => {
+    try {
+      const result = await signInWithFacebook();
+      if (result.success === true) {
+        dispatch(addUser(result.user));
+        setUserCreated(true);
+        navigate("/home");
+      }
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -132,18 +162,20 @@ const RegisterPage = () => {
               </div>
             </div>
             {/* Botones Redes Sociales */}
-            <button>Sign in with Google</button>
-            <button onClick={signInWithFacebook}>Sign in with Facebook</button>
+
             <div className="flex flex-col space-y-5">
               <button
                 className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
-                onClick={signInWithGoogle}
+                onClick={handleGoogle}
               >
                 <FcGoogle className="h-5 w-5 mr-2" />
                 <span className="text-gray-700 font-bold text-sm">Google</span>
               </button>
 
-              <button className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12">
+              <button
+                className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
+                onClick={handleFacebook}
+              >
                 <GrFacebook className="h-5 w-5 mr-2" color="#1877F2" />
                 <span className="text-gray-700 font-bold text-sm">
                   Facebook

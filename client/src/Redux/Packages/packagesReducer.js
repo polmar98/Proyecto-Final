@@ -8,6 +8,8 @@ import {
   SET_CITY_FILTER,
   SET_DURATION_FILTER,
   SET_PRICE_FILTER,
+  CLEAR_SEARCH_VIEW,
+  RESET
 } from "./packagesActions";
 
 
@@ -44,8 +46,10 @@ const packagesReducer = (state = initialState, action) => {
         packageDetails: action.payload,
       };
       case SEARCH_PACKAGES:
+
         return {
           ...state,
+          packagesList: action.payload,
           packagesSearch: action.payload,
           packagesFiltered: action.payload, // <-- Actualizar los paquetes filtrados con los resultados de búsqueda
         };
@@ -55,6 +59,14 @@ const packagesReducer = (state = initialState, action) => {
         ...state,
         packageDetails: {},
       };
+
+      case CLEAR_SEARCH_VIEW:
+        return{
+          ...state,
+          packagesFiltered:[],
+          packagesSearch:[],
+          packagesList:[]
+        }
 
 
 
@@ -93,6 +105,8 @@ const packagesReducer = (state = initialState, action) => {
         return {
           ...state,
           packagesList: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+          packagesSearch:action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+          packagesFiltered:action.payload === "Todos" ? state.packagesFiltered : orderDuration,
         }
       // let durationOrden = action.payload;
       // if (durationOrden === "Menor-Mayor") {
@@ -131,10 +145,7 @@ const packagesReducer = (state = initialState, action) => {
     
  
     case SET_PRICE_FILTER:
-      //Sara este es el ordenamiento con mi logica, funcionan combinados, de la otra forma tmb
-      //en el de duration segui tu logica aplicada en el de price, es el codigo que esta comentado,
-      //funciona tmb solo que en el front al darle al todos no me trae nada y no supe como nimplementarlo.
-      //aunque probe muchas formas. 
+ 
       let orderPrice = [...state.packagesList];
         orderPrice = orderPrice.sort((a, b) => {
           if(a.standarPrice < b.standarPrice){
@@ -149,7 +160,11 @@ const packagesReducer = (state = initialState, action) => {
         return {
           ...state,
           packagesList: action.payload === "precios" ? state.packagesFiltered : orderPrice,
+          packagesSearch: action.payload === "precios" ? state.packagesFiltered : orderPrice,
+          packagesFiltered:action.payload === "precios" ? state.packagesFiltered : orderPrice
         }
+
+     
 
     //   const sortFilter = action.payload;
     // if (sortFilter === "MenorPrecio") {
