@@ -9,8 +9,10 @@ import sideImage from "../Utils/Img/side.png";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { loginUser } from "../Redux/Users/usersActions";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Context/authContext";
 
 const LoginPage = () => {
+  const { signInWithGoogle, signInWithFacebook, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -29,10 +31,20 @@ const LoginPage = () => {
     }
   }, [error, user]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    //login email and password in firebase
+    try {
+      const res = await login(email, password);
 
-    dispatch(loginUser(email, password)); // usa la acción loginUser
+      if (res) {
+        console.log(res);
+      }
+      dispatch(loginUser(user));
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
   };
 
   return (
