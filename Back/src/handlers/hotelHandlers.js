@@ -2,7 +2,8 @@ const { Router } = require('express');
 const {getHotel,
     searchNameHotel,
     createHotel,
-    getHotelById
+    getHotelById,
+    bulkCreateHotels
 } = require('../controllers/hotelsControllers');
 
 const router = Router();
@@ -46,27 +47,17 @@ try {
 
 
 router.post('/massive', async (req, res) => {
-    const { hoteles } = req.body;
-  
-    try {
-      const createdHotels = [];
-      for (const hotel of hoteles) {
-        const createdHotel = await createHotel(
-          hotel.name,
-          hotel.image,
-          hotel.calification,
-          hotel.stars,
-          hotel.details,
-          hotel.available,
-          hotel.idCity
-        );
-        createdHotels.push(createdHotel);
-      }
-  
-      res.status(201).json(createdHotels);
-    } catch (error) {
-      res.status(500).json({error: error.message });
+  try {
+    const hotelsData = req.body;
+    if (!hotelsData) {
+      throw new Error("Falta agregar los hoteles");
     }
+
+    await bulkCreateHotels(hotelsData);
+    return res.status(201).send("Hoteles creados satisfactoriamente");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
   });
 
 

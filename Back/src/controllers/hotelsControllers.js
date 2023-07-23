@@ -34,11 +34,20 @@ const createHotel = async (name, image, calification, stars, details, idCity) =>
     })
 
     return newHotel;
-}
+};
+
+const bulkCreateHotels = async (hotelsData) => {
+    try {
+      await Hotel.bulkCreate(hotelsData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
 module.exports={
     getHotel,
     searchNameHotel,
     getHotelById,
-    createHotel
+    createHotel,
+    bulkCreateHotels
 }
