@@ -110,10 +110,10 @@ export const FilterPackagesByCity = (payload) => {
 };
 
  
-// export const setDurationFilter = (payload) => ({
-//   type: SET_DURATION_FILTER,
-//   payload,
-// });
+export const setDurationFilter = (payload) => ({
+  type: SET_DURATION_FILTER,
+  payload,
+});
 
 
 export const setPriceFilter = (payload) => ({
