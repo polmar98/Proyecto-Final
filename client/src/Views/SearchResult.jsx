@@ -1,22 +1,20 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
+import NavBar from "../Components/NavBar";
 import {
   fetchPackages,
   SearchPackagesByCountry,
   FilterPackagesByCity,
-  // setDurationFilter,
+  setDurationFilter,
   setPriceFilter,
 } from "../Redux/Packages/packagesActions";
-import { useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { fetchCities } from "../Redux/Cities/citiesActions";
-
-
-
 
 const RESULTS_PER_PAGE = 3;
 
@@ -24,14 +22,12 @@ export default function SearchResult() {
   const dispatch = useDispatch();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  
 
   const searchResults = useSelector((state) => state.packages.packagesSearch); // Renombrado packagesSearch a searchResults
   const packagesList = useSelector((state) => state.packages.packagesList);
   const cities = useSelector((state) => state.cities.citiesList);
   const searchQuery = new URLSearchParams(location.search).get("Country");
-  const filters = useSelector((state) => state.packages.filters)
-  
+  const filters = useSelector((state) => state.packages.filters);
 
   useEffect(() => {
     const loadData = async () => {
@@ -46,23 +42,19 @@ export default function SearchResult() {
     dispatch(fetchCities());
   }, [dispatch]);
 
-
-
   function handleFilterByCity(e) {
     dispatch(FilterPackagesByCity(e.target.value));
     setCurrentPage(1);
   }
 
-  // const handleDurationFilterChange = (e) => {
-  //   dispatch(setDurationFilter(e.target.value));
-  // };
+  const handleDurationFilterChange = (e) => {
+    dispatch(setDurationFilter(e.target.value));
+  };
 
   const handlePriceFilterChange = (e) => {
     const selectedValue = e.target.value;
     dispatch(setPriceFilter(selectedValue));
   };
-
-  
 
   // Calcular la cantidad total de páginas disponibles
   const totalPages = Math.ceil(
@@ -90,13 +82,15 @@ export default function SearchResult() {
       : packagesList.slice(startIndex, endIndex);
 
   return (
-    <div className="pt-8">
+    <div className="pt-0">
+      <div className="bg-verdeFooter">
+        <NavBar />
+      </div>
       <div className="flex items-center justify-center">
         <div className="mx-auto">
           <SearchBar />
         </div>
       </div>
-      
 
       <div className="flex justify-evenly p-4">
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
@@ -115,16 +109,18 @@ export default function SearchResult() {
 
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Duración:</h2>
-          <select className="rounded p-1" >
-            <option value="">Todos</option>
+          <select className="rounded p-1" onChange={handleDurationFilterChange} >
+            <option value="Todos">Todos</option>
             <option value="Menor-Mayor">Menor-Mayor</option>
             <option value="Mayor-Menor">Mayor-Menor</option>
           </select>
         </div>
         <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
           <h2 className="font-semibold text-lg mb-2">Precio:</h2>
-          <select className="rounded p-1" onChange={handlePriceFilterChange} value={filters.priceFilter} >
-            <option value="">Todos</option>
+          {/* value={filters.priceFilter} esto estaba dentro del selec aca abajo, si se lo dejo al aplicar el filtro en
+          el front me queda todo el tiempo en todos (visualmente) no me muestra si es mayor o menor, solo figura todos */}
+          <select className="rounded p-1" onChange={handlePriceFilterChange}>
+            <option value="precios">Todos</option>
             <option value="MenorPrecio">Menor</option>
             <option value="MayorPrecio">Mayor</option>
           </select>
