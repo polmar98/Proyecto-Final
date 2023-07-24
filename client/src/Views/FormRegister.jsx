@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Redux/Users/usersActions";
 import { FcGoogle } from "react-icons/fc";
-import { GrFacebook } from "react-icons/gr";
+import { GrGithub } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
@@ -10,12 +10,25 @@ import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import validateForm from "../Utils/Validateform";
 
 const RegisterPage = () => {
-  const { signInWithGoogle, signInWithFacebook, register } = useAuth();
+  const {
+    signInWithGoogle,
+    signInWithGithub,
+    signInWithFacebook,
+    register,
+    currentUser,
+    login,
+    error,
+    resetError,
+  } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,8 +41,47 @@ const RegisterPage = () => {
   });
   const { name, lastName, email, password } = user;
 
+  useEffect(() => {
+    if (error) {
+      setErrorMsg(error);
+      toast.error(error);
+    }
+    if (currentUser) {
+      navigate("/home"); // redirige a la ruta /home
+    }
+    return () => {
+      setErrorMsg("");
+      resetError();
+    };
+  }, [error, currentUser, navigate, resetError]);
+
+  useEffect(() => {
+    if (formSubmitted) {
+      const errors = validateForm(user);
+      if (Object.keys(errors).length > 0) {
+        setErrorMsg(errors);
+      } else {
+        setErrorMsg("");
+      }
+    }
+  }, [user, formSubmitted]);
+
+  const validateInput = () => {
+    if (name !== "" && lastName !== "" && email !== "" && password !== "") {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormSubmitted(true);
+    const errors = validateForm(user);
+    if (Object.keys(errors).length > 0) {
+      setErrorMsg(errors);
+      console.log(errors);
+    }
     //register email and password in firebase
     try {
       const res = await register(email, password);
@@ -38,9 +90,38 @@ const RegisterPage = () => {
         await updateProfile(res.user, {
           displayName: `${name} ${lastName}`,
         });
+        dispatch(addUser(user));
+        setUserCreated(true);
+        toast.success(`Bienvenido ${name}!`);
+        login(email, password);
+        navigate("/home");
       }
-      dispatch(addUser(user));
-      setUserCreated(true);
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  console.log(currentUser);
+
+  const handleGithub = async () => {
+    try {
+      const result = await signInWithGithub();
+      console.log(result);
+      if (result) {
+        const tokenResponse = result._tokenResponse;
+        dispatch(
+          addUser({
+            name: tokenResponse.displayName,
+            lastName: "",
+            email: tokenResponse.email,
+            password: tokenResponse.localId,
+          })
+        );
+        setUserCreated(true);
+        toast.success(`Bienvenido ${tokenResponse.fullName}!`);
+        navigate("/home");
+      }
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -50,24 +131,20 @@ const RegisterPage = () => {
   const handleGoogle = async () => {
     try {
       const result = await signInWithGoogle();
-      if (result.success === true) {
-        dispatch(addUser(result.user));
-
+      if (result) {
+        const tokenResponse = result._tokenResponse;
+        dispatch(
+          addUser({
+            name: tokenResponse.firstName,
+            lastName: tokenResponse.lastName,
+            email: tokenResponse.email,
+            password: tokenResponse.localId,
+          })
+        );
         setUserCreated(true);
+        toast.success(`Bienvenido ${tokenResponse.firstName}!`);
         navigate("/home");
       }
-      console.log(result);
-      const tokenResponse = result._tokenResponse;
-      console.log(tokenResponse);
-      dispatch(
-        addUser({
-          name: tokenResponse.firstName,
-          lastName: tokenResponse.lastName,
-          email: tokenResponse.email,
-          password: tokenResponse.localId,
-        })
-      );
-      setUserCreated(true);
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -112,29 +189,44 @@ const RegisterPage = () => {
             {/* Inputs */}
             <input
               value={name}
-              onChange={(e) => setUser({ ...user, name: e.target.value })}
+              onChange={(e) => {
+                setUser({ ...user, name: e.target.value });
+                validateInput();
+              }}
               placeholder="Nombre"
               className="px-4 py-3 border rounded border-gray-300  text-gray-500 text-sm font-normal h-12"
             />
+            {errorMsg.name && <p className="text-red-500">{errorMsg.name}</p>}
 
             <input
               value={lastName}
-              onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+              onChange={(e) => {
+                setUser({ ...user, lastName: e.target.value });
+                validateInput();
+              }}
               placeholder="Apellido"
               className="px-4 py-3 border rounded border-gray-300  text-gray-500 text-sm font-normal h-12"
             />
-
+            {errorMsg.lastName && (
+              <p className="text-red-500">{errorMsg.lastName}</p>
+            )}
             <input
               value={email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              onChange={(e) => {
+                setUser({ ...user, email: e.target.value });
+                validateInput();
+              }}
               placeholder="Correo electrónico"
               className="px-4 py-3 border rounded border-gray-300  text-gray-500 text-sm font-normal h-12"
             />
-
+            {errorMsg.email && <p className="text-red-500">{errorMsg.email}</p>}
             <div className="relative">
               <input
                 value={password}
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                onChange={(e) => {
+                  setUser({ ...user, password: e.target.value });
+                  validateInput();
+                }}
                 type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
                 className="px-4 py-3 border rounded w-full text-gray-500 text-sm font-normal h-12"
@@ -152,9 +244,15 @@ const RegisterPage = () => {
                 />
               )}
             </div>
-            {errorMsg && <p className="text-red-500">{errorMsg}</p>}
+            {errorMsg.password && (
+              <p className="text-red-500">{errorMsg.password}</p>
+            )}
             {/* Botón Registrar */}
-            <button className="bg-gray-400 text-white py-2 rounded-md text-center h-12">
+            <button
+              className={`text-white py-2 rounded-md text-center h-12 ${
+                isValid ? "bg-green-500" : "bg-gray-400"
+              }`}
+            >
               Registrarse
             </button>
 
@@ -185,12 +283,10 @@ const RegisterPage = () => {
 
               <button
                 className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
-                onClick={handleFacebook}
+                onClick={handleGithub}
               >
-                <GrFacebook className="h-5 w-5 mr-2" color="#1877F2" />
-                <span className="text-gray-700 font-bold text-sm">
-                  Facebook
-                </span>
+                <GrGithub className="h-5 w-5 mr-2" />
+                <span className="text-gray-700 font-bold text-sm">Github</span>
               </button>
             </div>
           </form>

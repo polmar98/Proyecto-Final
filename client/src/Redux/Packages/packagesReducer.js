@@ -9,7 +9,6 @@ import {
   SET_DURATION_FILTER,
   SET_PRICE_FILTER,
   CLEAR_SEARCH_VIEW,
-  RESET
 } from "./packagesActions";
 
 
