@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../Redux/Users/usersActions";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
@@ -18,6 +18,8 @@ const RegisterPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const idUser = useSelector((state) => state.users.user);
+  const idCart = useSelector((state) => state.carrito.idCart);
 
   const [user, setUser] = useState({
     profile: 1,

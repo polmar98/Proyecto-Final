@@ -17,14 +17,14 @@ import NavBar from "../Components/NavBar";
 function Detail() {
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
-  // console.log("USER: ", user);
-  // const user = 1;
+  // console.log("USER:1223322332323 ", user);
+  // const user = 31;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
-  // console.log("elpaquete", tour.Activities);
+  console.log("EL ID", idCart);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
@@ -110,7 +110,7 @@ function Detail() {
     const updatedItemsJSON = JSON.stringify(storedItems);
     // console.log("asi queda el json final", updatedItemsJSON);
     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
-    console.log("js", storedItems);
+    // console.log("js", storedItems);
   }
 
   //! german
@@ -134,13 +134,13 @@ function Detail() {
   //
 
   function changeNavigate() {
-    if (user) {
-      if (idCart === 0) {
-        dispatch(add_to_cart(item));
-        guardarEnBDD();
-      } else {
-      }
+    // if (user) {
+    if (idCart !== 0) {
+      dispatch(add_to_cart(item));
+      guardarEnBDD();
     } else {
+      // }
+      // } else {
       addNewItem(item);
       // console.log('detail', localStorage)
     }

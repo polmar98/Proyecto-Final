@@ -10,6 +10,7 @@ export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 export const ADDUSER_SHOPPING = "USER_SHOPPING";
 export const CHECKUSER_SHOPPING = "CHECKUSER_SHOPPING";
+export const NEW_CART = "NEW_CART";
 
 export const userShopping = (id) => {
   return async (dispatch) => {
@@ -59,8 +60,13 @@ export const addUser = (newUser) => {
         `http://localhost:3002/shoppingCar/user/${user.id}`
       );
       const cart = cartResponse.data;
-
-      return user;
+      console.log("CARTTTT:", cart);
+      dispatch({
+        type: NEW_CART,
+        payload: cart,
+      });
+      // console.log("CARTTTTT:", cart);
+      return { user, cart };
     } catch (error) {
       console.log(error);
     }
