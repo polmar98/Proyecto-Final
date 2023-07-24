@@ -30,12 +30,23 @@ function Activities({ activity }) {
                 {el.name}
               </h5>
 
-              <div className="flex justify-between">
-                <p className="mb-2 font-small ml-2 text-gray-600">
-                  Duración: {el.duration}
-                </p>
+              <div>
                 {!el.included ? (
-                  <span className="font-small mb-2 mr-2">USD {el.price}</span>
+                  <div>
+                    <span className="text-lg fontPoppinsB mb-2 mr-2 text-red-600 mb-4">
+                      Reservalo YA pagando solo USD {el.price}!!!
+                    </span>
+                    <div className="flex justify-between">
+                      <p className=" text-sm ml-2 text-gray-600">
+                        Duración: {el.duration}
+                      </p>
+                    </div>
+                    <div>
+                      <button className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition ">
+                        Reservar
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <span>Actividad incluida</span>
                 )}
