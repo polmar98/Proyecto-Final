@@ -1,8 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-function Activities({ activity }) {
+function Activities({ activity, addNew }) {
   const { Activities } = activity;
+  const user = useSelector((state) => state.users.user);
+  // const { addNewItem } = addNewItem;
+  console.log("actividades en Act: ", Activities); // aca llegan las 4 actividades
 
+  const handleReserveActivity = (selectedActivity) => {
+    addNew(selectedActivity);
+  };
   return (
     <>
       <h2 className="text-xl font-bold mb-4 mt-12 text-left fontPoppins">
@@ -33,7 +41,7 @@ function Activities({ activity }) {
               <div>
                 {!el.included ? (
                   <div>
-                    <span className="text-lg fontPoppinsB mb-2 mr-2 text-red-600 mb-4">
+                    <span className="text-lg fontPoppinsB  mr-2 text-red-600 mb-4">
                       Reservalo YA pagando solo USD {el.price}!!!
                     </span>
                     <div className="flex justify-between">
@@ -42,9 +50,33 @@ function Activities({ activity }) {
                       </p>
                     </div>
                     <div>
-                      <button className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition ">
-                        Reservar
-                      </button>
+                      <Link to="/search">
+                        <button
+                          onClick={() => {
+                            {
+                              handleReserveActivity({
+                                idUser: user,
+                                items: [
+                                  {
+                                    amount: 1,
+                                    unitPrice: el.price,
+                                    totalPrice: el.price,
+                                    typeProduct: 2,
+                                    idProduct: el.id,
+                                    title: el.name,
+                                  },
+                                ],
+                              });
+                            }
+                            {
+                              window.alert("Actividad reservada");
+                            }
+                          }}
+                          className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition "
+                        >
+                          Reservar
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 ) : (
