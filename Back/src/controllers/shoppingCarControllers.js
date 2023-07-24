@@ -17,74 +17,61 @@ const updateTotal = async(idCar) => {
 
 //esta rutina devuelve el carrito de compras que el usuario tenga guardado y pendiente
 const getShoppingCar = async(id) => {
-   if(!id) { return  "Usuario No definido" };
+   if(!id)  return  {message: "Usuario No definido" };
+   const idU = Number(id);
+
    //buscamos carrito pendiente
-   const carUpdate = await updateTotal(id);
    const carrito = await ShoppingCar.findOne({
-      where: {idUser: id, state: 0},
+      where: {idUser: idU, state: 0},
       include: {model: ItemsShoppingCar},
    });
-   if(!carrito.id) { return "Usuario No tiene Carrito Pendiente"};
+
+   if(carrito == null) return {message: "Usuario No tiene Carrito registrado"};
    return carrito;
 };
 
 //esta funcion agrega items al carrito existente
 const addItemsShoppingCar = async(item, id) => {
-   const {amount, unitPrice, totalPrice, typeProduct, idProduct, title} = item;
-
+   const {amount, unitPrice, totalPrice, typeProduct, idProduct, title, image} = item;
 
    if(!amount || !unitPrice || !totalPrice || !typeProduct 
-      || !idProduct || !title || !id) {
-      return "Informacion Incompleta";
+      || !idProduct || !title || !id || !image) {
+      return {message: "Informacion Incompleta"};
    };
 
    const idCar = Number(id);
    //buscamos si ya existe el articulo dentro de los ya grabados
    const existe = await ItemsShoppingCar.findOne({ where: {idShoppingCar: idCar, typeProduct, idProduct}}) ;
    const newItem = {amount, unitPrice, totalPrice,
-                    typeProduct, idProduct, title, idShoppingCar: idCar};
-
+                    typeProduct, idProduct, title, image, idShoppingCar: idCar};
 
    //si no existe lo agregamos a los items
    if(existe == null){
- 
       const itemAdd = await ItemsShoppingCar.create(newItem); 
       const carUpdate = await updateTotal(idCar);
-      return "Registro agregado al carrito";
+      return {message: "Registro agregado al carrito"};
    } else {
      //si ya existe actualizamos la cantidad
      const rows = ItemsShoppingCar.update(item, {where: {id: existe.id}});
      const carUpdate = await updateTotal(idCar);
-     return "Registro Modificado";
+     return {message: "Registro Modificado"};
    };
 };
 
 
-//esta funcion crea un carrito nuevo y agrega sus items
-const addShoppingCar = async(carrito) => {
-   const {idUser, items} = carrito;
-   if(!idUser || !items) {
-      return "Datos Incompletos";
-   };
-   const newCar = await ShoppingCar.create({idUser});
-   //ahora agregamos los items del carrito
-   items.forEach(async(element) => {
-      if(!element.amount || !element.unitPrice || !element.totalPrice
-        || !element.typeProduct || !element.idProduct || !element.title) {
-            return "Datos del paquete Incompletos";
-        }
-        newItem = {amount: element.amount,
-                   unitPrice: element.unitPrice,
-                   totalPrice: element.totalPrice,
-                   typeProduct: element.typeProduct,
-                   idProduct: element.idProduct,
-                   title: element.title,
-                   idShoppingCar: newCar.id};
-        const itemAdd = await ItemsShoppingCar.create(newItem);           
+//esta funcion crea un carrito nuevo para el usuario registrado
+const addShoppingCar = async(id) => {
+   if(!id) return {message: "Id de Usuario No definido"};
+   const idU = Number(id);
+
+   const [newCar, created] = await ShoppingCar.findOrCreate({where: 
+      {state: 0, idBill: 0, fullValue: 0, idUser: idU}
    });
-   const carUpdate = updateTotal(newCar.id);
-   return "Carrito almacenado exitosamente";
+   return {idcar: newCar.id};
+
 };
+
+
 
 //esta rutina elimina items del carrito de compras
 const deleteItemsShoppingCar = async(item) => {
@@ -120,7 +107,15 @@ const getShoppingCarById = async(id) => {
 const getAllShoppingCar = async(xquery) => {
    const carritos = await ShoppingCar.findAll({where: xquery});
    return carritos;
-}
+};
+
+//esta ruta vacia completamente el carrito
+const emptyShoppingCar = async(id) => {
+   const idCar = Number(id);
+   const registros = await ItemsShoppingCar.destroy({where: {idShoppingCar: idCar}});
+   const carUpdate = await updateTotal(idCar);
+   return {message: "Carrito Vaciado"};
+};
 
 
 module.exports = { addShoppingCar,
@@ -128,4 +123,5 @@ module.exports = { addShoppingCar,
                    addItemsShoppingCar,
                    deleteItemsShoppingCar,
                    getShoppingCarById,
-                   getAllShoppingCar};
+                   getAllShoppingCar,
+                   emptyShoppingCar};
