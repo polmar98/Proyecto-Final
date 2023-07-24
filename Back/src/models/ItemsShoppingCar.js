@@ -33,6 +33,10 @@ module.exports = (sequelize) => {
       title: {
         type: DataTypes.STRING,     //aqui se almacena el titulo del paquete o de la actividad
         allowNull: false,
+      },
+      image: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       }
     },
     { timestamps: false }

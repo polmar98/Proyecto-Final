@@ -4,16 +4,17 @@ const {addShoppingCar,
        addItemsShoppingCar,
        deleteItemsShoppingCar,
        getShoppingCarById,
-       getAllShoppingCar } = require('../controllers/shoppingCarControllers');
+       getAllShoppingCar,
+       emptyShoppingCar } = require('../controllers/shoppingCarControllers');
 
 const router = Router();
 
-//esta ruta crea un carrito nuevo cuando el usuario no tiene ninguno pendiente
-router.post('/', async(req, res) => {
-   const carrito = req.body; 
+//esta ruta crea un carrito nuevo cuando el usuario se acaba de registrar
+router.post('/user/:id', async(req, res) => {
+   const {id} = req.params; 
    try {
-       const result = addShoppingCar(carrito);
-       res.status(200).send("Carrito Almacenado");
+       const result = await addShoppingCar(id);
+       res.status(200).json(result);
    } catch (error) {
        res.status(500).json({message: error.message});
    }
@@ -76,5 +77,15 @@ router.delete('/', async(req, res) => {
     }
 });
 
+//esta ruta vacia completamente el carrito de compras
+router.delete('/:id', async(req, res) => {
+    const {id} = req.params;   
+    try {
+        result = await emptyShoppingCar(id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({message: error.message});    
+    }
+})
 
 module.exports = router;
