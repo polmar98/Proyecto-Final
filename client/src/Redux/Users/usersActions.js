@@ -8,6 +8,25 @@ export const DELETE_USER = "DELETE_USER";
 export const EDIT_USER = "EDIT_USER";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
+export const ADDUSER_SHOPPING = "USER_SHOPPING";
+export const CHECKUSER_SHOPPING = "CHECKUSER_SHOPPING";
+
+export const userShopping = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/shoppingCar/user/${id}`
+      );
+      const data = response.data;
+      return dispatch({
+        type: CHECKUSER_SHOPPING,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const fetchUsers = () => {
   return async (dispatch) => {
@@ -27,12 +46,21 @@ export const fetchUsers = () => {
 export const addUser = (newUser) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:3002/users", newUser);
-      const data = response.data;
-      return dispatch({
+      const userResponse = await axios.post(
+        "http://localhost:3002/users",
+        newUser
+      );
+      const user = userResponse.data;
+      dispatch({
         type: ADD_USER,
-        payload: data,
+        payload: user,
       });
+      const cartResponse = await axios.post(
+        `http://localhost:3002/shoppingCar/user/${user.id}`
+      );
+      const cart = cartResponse.data;
+
+      return user;
     } catch (error) {
       console.log(error);
     }

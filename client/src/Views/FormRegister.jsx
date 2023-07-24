@@ -50,18 +50,18 @@ const RegisterPage = () => {
   const handleGoogle = async () => {
     try {
       const result = await signInWithGoogle();
-      const userdata = result._tokenResponse;
-      const user = {
-        profile: 1,
-        name: userdata.firstName,
-        lastName: userdata.lastName,
-        email: userdata.email,
-        password: "AHS8234hf",
-      };
-      if (result.success === true) {
-        dispatch(addUser(user));
-        setUserCreated(true);
-      }
+      console.log(result);
+      const tokenResponse = result._tokenResponse;
+      console.log(tokenResponse);
+      dispatch(
+        addUser({
+          name: tokenResponse.firstName,
+          lastName: tokenResponse.lastName,
+          email: tokenResponse.email,
+          password: tokenResponse.localId,
+        })
+      );
+      setUserCreated(true);
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);

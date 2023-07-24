@@ -24,14 +24,26 @@ function NavBar() {
     0
   );
 
+  console.log(currentUser);
+
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
   let storedItems = [];
   if (localStorageJSON !== null) {
     storedItems = JSON.parse(localStorageJSON); //convierte a JS
   }
+  // console.log("el js", storedItems.length);
   let cantidadEnCarro = storedItems.length;
-  console.log("CARRO", storedItems.length);
+  // let cantidadEnCarro = {};
+
+  // let cantidadEnCarro = "";
+  // console.log("CARRO", storedItems.length);
+
+  // if (cartInState) {
+  //   cantidadEnCarro = cartItems;
+  // } else cantidadEnCarro = storedItems.length;
+
+  // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
 
   return (
     <div className="flex flex-row p-5">

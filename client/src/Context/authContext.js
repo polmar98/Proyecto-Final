@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 // Creando el Contexto
@@ -24,7 +25,25 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const logout = () => {
+    setCurrentUser(null);
     return auth.signOut();
+  };
+
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      setCurrentUser(user);
+      return userCredential;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setError(errorMessage);
+    }
   };
 
   const register = async (email, password) => {
@@ -74,6 +93,8 @@ export const AuthProvider = ({ children }) => {
   const value = {
     currentUser,
     register,
+    logout,
+    login,
     signInWithGoogle,
     signInWithFacebook,
     error,
