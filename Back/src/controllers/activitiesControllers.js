@@ -1,6 +1,6 @@
 const {Activity} = require('../database');
 
-
+//esta funcion trae todas las actividades
 const getActivity = async () => {
    const actiDb = await Activity.findAll();
    return actiDb;
