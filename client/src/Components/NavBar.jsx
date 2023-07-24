@@ -24,8 +24,6 @@ function NavBar() {
     0
   );
 
-  console.log(currentUser);
-
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
   let storedItems = [];
@@ -93,7 +91,14 @@ function NavBar() {
                 className="flex flex-row justify-end items-center"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <CgProfile className="text-4xl text-white" />
+                {currentUser.photoURL ? (
+                  <img
+                    src={currentUser.photoURL}
+                    className="rounded-full w-10 h-10"
+                  />
+                ) : (
+                  <CgProfile className="text-4xl text-white" />
+                )}
                 <span className="text-white ml-2">
                   {currentUser.displayName}
                 </span>

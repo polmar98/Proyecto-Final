@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -6,7 +6,11 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  GithubAuthProvider,
 } from "firebase/auth";
+import { toast } from "react-toastify";
+import getFriendlyErrorMessage from "./errorMessages";
 
 // Creando el Contexto
 export const authContext = createContext();
@@ -19,13 +23,22 @@ export const useAuth = () => {
 // Proveedores de Google y Facebook
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
   const logout = () => {
     setCurrentUser(null);
+    toast.success("Sesión cerrada con éxito");
     return auth.signOut();
   };
 
@@ -40,9 +53,8 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -57,9 +69,8 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -70,9 +81,8 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -83,9 +93,20 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, githubProvider);
+      const user = userCredential.user;
+      setCurrentUser(user);
+      return userCredential;
+    } catch (error) {
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -97,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     login,
     signInWithGoogle,
     signInWithFacebook,
+    signInWithGithub,
     error,
   };
 
