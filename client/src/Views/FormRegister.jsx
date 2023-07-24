@@ -51,8 +51,16 @@ const RegisterPage = () => {
   const handleGoogle = async () => {
     try {
       const result = await signInWithGoogle();
+      console.log(result);
       if (result.success === true) {
-        dispatch(addUser(result.user));
+        const { displayName, email, uid } = result.userCredential.user;
+        console.log( displayName, email, uid );
+        dispatch(addUser({
+          name: displayName,
+          lastName: displayName,
+          email,
+          password: uid,
+        }));
         setUserCreated(true);
         navigate("/home");
       }
