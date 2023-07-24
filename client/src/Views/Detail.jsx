@@ -16,20 +16,20 @@ import NavBar from "../Components/NavBar";
 
 function Detail() {
   const { id } = useParams();
-  // const user = useSelector((state) => state.users.user);
+  const user = useSelector((state) => state.users.user);
   // console.log("USER: ", user);
-  const user = 1;
+  // const user = 1;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
-  // console.log("elpaquete", tour.title);
+  // console.log("elpaquete", tour.Activities);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
-  const airlineName = airlineData? airlineData.name : "Desconocida";
+  const airlineName = airlineData ? airlineData.name : "Desconocida";
   // console.log('aerolinea', airlineName)
 
   //hotelInfo
@@ -98,7 +98,7 @@ function Detail() {
   // }
 
   //agregar items al localStorage
-  function addNewItem() {
+  function addNewItem(item) {
     let localStorageJSON = localStorage.getItem("carrito");
     // console.log('JSON', localStorageJSON)
     let storedItems = [];
@@ -110,43 +110,23 @@ function Detail() {
     const updatedItemsJSON = JSON.stringify(storedItems);
     // console.log("asi queda el json final", updatedItemsJSON);
     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
+    console.log("js", storedItems);
   }
 
   //! german
   async function guardarEnBDD() {
-    try {
-      const idCarrito = await fetch(
-        `http://localhost:3002/shoppingCar/user/${user}`
-      );
-      console.log("idCarrito", idCarrito);
-      if (idCarrito) {
-        idCart = idCarrito.id;
-        const response1 = await fetch(
-          `http://localhost:3002/shoppingCar/${idCart}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(item),
-          }
-        );
-      } else {
-        const response = await fetch("http://localhost:3002/shoppingCar/", {
-          method: "POST",
+    if (idCart) {
+      const response1 = await fetch(
+        `http://localhost:3002/shoppingCar/${idCart}`,
+        {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(item),
-        });
-
-        if (response.ok) {
-          console.log("todo ok");
-        } else {
-          console.log("error al guardar el carrito en bdd.");
         }
-      }
-    } catch (error) {}
+      );
+    }
   }
 
   // Hacer
@@ -161,7 +141,7 @@ function Detail() {
       } else {
       }
     } else {
-      addNewItem();
+      addNewItem(item);
       // console.log('detail', localStorage)
     }
     navigate("/shoppingCart");
@@ -245,7 +225,7 @@ function Detail() {
 
         <Hotels hotel={hotelData} />
 
-        <Activities activity={tour} />
+        <Activities activity={tour} addNew={addNewItem} />
       </div>
 
       <Footer />

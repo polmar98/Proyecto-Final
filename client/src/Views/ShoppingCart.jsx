@@ -14,8 +14,8 @@ import {
 const ShoppingCart = () => {
   let cartItems = useSelector((state) => state.carrito.cart);
   console.log(cartItems);
-  // const user = useSelector((state) => state.users.user);
-  const user = 1;
+  const user = useSelector((state) => state.users.user);
+  // const user = 1;
   // console.log('el estado carrito', {carrito})
   const navigate = useNavigate();
   const dispatch = useDispatch();
