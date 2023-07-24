@@ -41,7 +41,6 @@ const RegisterPage = () => {
       }
       dispatch(addUser(user));
       setUserCreated(true);
-      navigate("/home");
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -57,6 +56,18 @@ const RegisterPage = () => {
         setUserCreated(true);
         navigate("/home");
       }
+      console.log(result);
+      const tokenResponse = result._tokenResponse;
+      console.log(tokenResponse);
+      dispatch(
+        addUser({
+          name: tokenResponse.firstName,
+          lastName: tokenResponse.lastName,
+          email: tokenResponse.email,
+          password: tokenResponse.localId,
+        })
+      );
+      setUserCreated(true);
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -69,7 +80,6 @@ const RegisterPage = () => {
       if (result.success === true) {
         dispatch(addUser(result.user));
         setUserCreated(true);
-        navigate("/home");
       }
     } catch (error) {
       setErrorMsg(error.message);

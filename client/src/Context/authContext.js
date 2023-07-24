@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { auth } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 // Creando el Contexto
@@ -24,15 +25,26 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const logout = () => {
+    setCurrentUser(null);
     return auth.signOut();
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
       setCurrentUser(user);
-    });
-    return unsubscribe;
-  }, []);
+      return userCredential;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setError(errorMessage);
+    }
+  };
 
   const register = async (email, password) => {
     try {
@@ -55,14 +67,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
-      console.log(user);
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       setError(errorMessage);
-      return { success: false, errorMessage };
     }
   };
 
@@ -71,12 +81,11 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await signInWithPopup(auth, facebookProvider);
       const user = userCredential.user;
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       setError(errorMessage);
-      return { success: false, errorMessage };
     }
   };
 
@@ -84,9 +93,10 @@ export const AuthProvider = ({ children }) => {
   const value = {
     currentUser,
     register,
+    logout,
+    login,
     signInWithGoogle,
     signInWithFacebook,
-    logout,
     error,
   };
 

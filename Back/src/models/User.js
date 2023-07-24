@@ -10,6 +10,7 @@ module.exports = (sequelize) => {
     profile: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1
     },
     name: {
       type: DataTypes.STRING,
@@ -27,6 +28,7 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 1
     },
     dateRecord: {
       type: DataTypes.DATE,

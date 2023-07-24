@@ -12,16 +12,19 @@ import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
 import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
+import NavBar from "../Components/NavBar";
 
 function Detail() {
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
+  // console.log("USER: ", user);
+  // const user = 1;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
-
-  // console.log('elpaquete', tour)
+  const idCart = useSelector((state) => state.carrito.idCart);
+  // console.log("elpaquete", tour.Activities);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
@@ -58,55 +61,87 @@ function Detail() {
 
   // item para guardar en el carrito
   const item = {
-    id: tour.id,
-    title: tour.title,
-    image: tour.image,
-    price: tour.standarPrice,
-    amount: 1,
-    activities: tour.Activities,
+    idUser: user,
+    items: [
+      {
+        amount: 1,
+        unitPrice: tour.standarPrice,
+        totalPrice: tour.promotionPrice,
+        typeProduct: 1,
+        idProduct: tour.id,
+        title: tour.title,
+      },
+    ],
   };
+  // {
+  // 	 "idUser": 1,
+  // 	 "items": [
+  // 		  {
+  // 				"amount": 2,
+  // 				"unitPrice": 1499,
+  // 				"totalPrice": 2998,
+  // 				"typeProduct": 1,
+  // 				"idProduct": 1,
+  // 				"title": "Paq. Turistico a Cancun"
+  // 			},
+
+  // 		  {
+  // 				"amount": 2,
+  // 				"unitPrice": 55,
+  // 				"totalPrice": 110,
+  // 				"typeProduct": 2,
+  // 				"idProduct": 3,
+  // 				"title":  "Actividad: Tour al cenote Samaal"
+  // 			}
+  // 	 ]
+
+  // }
 
   //agregar items al localStorage
-  function addNewItem() {
+  function addNewItem(item) {
     let localStorageJSON = localStorage.getItem("carrito");
     // console.log('JSON', localStorageJSON)
     let storedItems = [];
     if (localStorageJSON !== null) {
       storedItems = JSON.parse(localStorageJSON); //convierte a JS
-      // console.log('js', storedItems)
+      // console.log("js", storedItems);
     }
     storedItems.push(item);
     const updatedItemsJSON = JSON.stringify(storedItems);
+    // console.log("asi queda el json final", updatedItemsJSON);
     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
+    console.log("js", storedItems);
   }
 
-  //! german:
+  //! german
   async function guardarEnBDD() {
-    try {
-      const response = await fetch("/shoppingCar/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
-
-      if (response.ok) {
-        console.log("todo ok");
-      } else {
-        console.log("error al guardar el carrito en bdd.");
-      }
-    } catch (error) {
-      console.error("error:", error);
+    if (idCart) {
+      const response1 = await fetch(
+        `http://localhost:3002/shoppingCar/${idCart}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(item),
+        }
+      );
     }
   }
 
+  // Hacer
+  //crear funcion para guardar en bdd una actividad
+  //
+
   function changeNavigate() {
     if (user) {
-      dispatch(add_to_cart(item));
-      guardarEnBDD();
+      if (idCart === 0) {
+        dispatch(add_to_cart(item));
+        guardarEnBDD();
+      } else {
+      }
     } else {
-      addNewItem();
+      addNewItem(item);
       // console.log('detail', localStorage)
     }
     navigate("/shoppingCart");
@@ -129,6 +164,9 @@ function Detail() {
 
   return (
     <>
+      <div className="bg-verdeFooter border-b border-white">
+        <NavBar />
+      </div>
       <div className="container mx-auto p-4 m-2 w-2/3">
         <button
           onClick={() => {
@@ -187,7 +225,7 @@ function Detail() {
 
         <Hotels hotel={hotelData} />
 
-        <Activities activity={tour} />
+        <Activities activity={tour} addNew={addNewItem} />
       </div>
 
       <Footer />
