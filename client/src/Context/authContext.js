@@ -42,6 +42,10 @@ export const AuthProvider = ({ children }) => {
     return auth.signOut();
   };
 
+  const resetError = () => {
+    setError(null);
+  };
+
   const login = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -120,6 +124,7 @@ export const AuthProvider = ({ children }) => {
     signInWithFacebook,
     signInWithGithub,
     error,
+    resetError,
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;

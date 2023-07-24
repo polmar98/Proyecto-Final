@@ -22,6 +22,7 @@ const RegisterPage = () => {
     currentUser,
     login,
     error,
+    resetError,
   } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
@@ -50,8 +51,9 @@ const RegisterPage = () => {
     }
     return () => {
       setErrorMsg("");
+      resetError();
     };
-  }, [error, currentUser, navigate]);
+  }, [error, currentUser, navigate, resetError]);
 
   useEffect(() => {
     if (formSubmitted) {

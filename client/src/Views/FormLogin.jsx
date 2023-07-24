@@ -29,6 +29,7 @@ const LoginPage = () => {
     signInWithGoogle,
     signInWithFacebook,
     signInWithGithub,
+    resetError,
   } = useAuth();
 
   useEffect(() => {
@@ -41,8 +42,9 @@ const LoginPage = () => {
     }
     return () => {
       setErrorMsg("");
+      resetError();
     };
-  }, [error, currentUser, navigate]);
+  }, [error, currentUser, navigate, resetError]);
 
   useEffect(() => {
     setFormFilled(email && password); // si email y password tienen valor, formFilled es true
