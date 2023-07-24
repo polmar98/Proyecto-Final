@@ -22,6 +22,7 @@ function Detail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
+  const idCart = useSelector((state) => state.carrito.idCart);
 
   // console.log("elpaquete", tour.title);
 
@@ -60,7 +61,7 @@ function Detail() {
 
   // item para guardar en el carrito
   const item = {
-    idUser: tour.id,
+    idUser: user,
     items: [
       {
         amount: 1,
