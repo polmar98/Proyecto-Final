@@ -19,6 +19,7 @@ router.get('/', async (req, res)=>{
     }
 });
 
+//esta ruta trae una actividad buscada por su ID
 router.get('/:id', async (req, res)=>{
     const {id}= req.params;
     try {
