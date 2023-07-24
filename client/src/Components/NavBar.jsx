@@ -24,6 +24,8 @@ function NavBar() {
     0
   );
 
+  console.log(currentUser);
+
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
   let storedItems = [];

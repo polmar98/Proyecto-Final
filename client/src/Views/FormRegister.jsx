@@ -41,7 +41,6 @@ const RegisterPage = () => {
       }
       dispatch(addUser(user));
       setUserCreated(true);
-      navigate("/home");
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -52,18 +51,17 @@ const RegisterPage = () => {
     try {
       const result = await signInWithGoogle();
       console.log(result);
-      if (result.success === true) {
-        const { displayName, email, uid } = result.userCredential.user;
-        console.log( displayName, email, uid );
-        dispatch(addUser({
-          name: displayName,
-          lastName: displayName,
-          email,
-          password: uid,
-        }));
-        setUserCreated(true);
-        navigate("/home");
-      }
+      const tokenResponse = result._tokenResponse;
+      console.log(tokenResponse);
+      dispatch(
+        addUser({
+          name: tokenResponse.firstName,
+          lastName: tokenResponse.lastName,
+          email: tokenResponse.email,
+          password: tokenResponse.localId,
+        })
+      );
+      setUserCreated(true);
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -76,7 +74,6 @@ const RegisterPage = () => {
       if (result.success === true) {
         dispatch(addUser(result.user));
         setUserCreated(true);
-        navigate("/home");
       }
     } catch (error) {
       setErrorMsg(error.message);
