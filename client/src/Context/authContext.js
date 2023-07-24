@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { auth } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -27,13 +27,6 @@ export const AuthProvider = ({ children }) => {
     return auth.signOut();
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-    });
-    return unsubscribe;
-  }, []);
-
   const register = async (email, password) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -55,14 +48,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
-      console.log(user);
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       setError(errorMessage);
-      return { success: false, errorMessage };
     }
   };
 
@@ -71,12 +62,11 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await signInWithPopup(auth, facebookProvider);
       const user = userCredential.user;
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       setError(errorMessage);
-      return { success: false, errorMessage };
     }
   };
 
@@ -86,7 +76,6 @@ export const AuthProvider = ({ children }) => {
     register,
     signInWithGoogle,
     signInWithFacebook,
-    logout,
     error,
   };
 
