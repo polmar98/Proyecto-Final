@@ -53,6 +53,7 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result.success === true) {
         dispatch(addUser(result.user));
+
         setUserCreated(true);
         navigate("/home");
       }

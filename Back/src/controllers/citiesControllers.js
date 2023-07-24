@@ -3,7 +3,7 @@ const { Association } = require("../database");
 
 const createCity = async (name, originCity, idCountry) => {
   try {
-    const newCity = await City.findOrCreate({
+    await City.findOrCreate({
       where: { name, originCity, idCountry },
     });
   } catch (error) {

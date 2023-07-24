@@ -15,7 +15,7 @@ function Home() {
   const packages = useSelector((state) => state.packages.packagesList);
   const user = useSelector((state) => state.users.user);
   const { currentUser } = useContext(authContext);
-
+  console.log(currentUser);
   if (currentUser) {
     console.log(currentUser.displayName);
     console.log("hay usuario");
