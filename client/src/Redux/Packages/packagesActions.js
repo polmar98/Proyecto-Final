@@ -130,8 +130,5 @@ export const setPriceFilter = (payload) => ({
   payload,
 });
 
-export function reset (){
-  return{type:RESET}
 
-}
 
