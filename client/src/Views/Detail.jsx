@@ -29,7 +29,7 @@ function Detail() {
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
-  const airlineName = airlineData ? airlineData.name : "Desconocida";
+  const airlineName = airlineData? airlineData.name : "Desconocida";
   // console.log('aerolinea', airlineName)
 
   //hotelInfo
@@ -61,7 +61,7 @@ function Detail() {
 
   // item para guardar en el carrito
   const item = {
-    idUser: tour.id,
+    idUser: user,
     items: [
       {
         amount: 1,
