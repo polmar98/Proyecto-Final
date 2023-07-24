@@ -112,7 +112,7 @@ function Detail() {
     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
   }
 
-  //! german:
+  //! german
   async function guardarEnBDD() {
     try {
       const idCarrito = await fetch(
