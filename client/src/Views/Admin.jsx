@@ -6,64 +6,40 @@ import { fetchCities } from "../Redux/Cities/citiesActions";
 import { fetchContinents } from "../Redux/Continent/continentActions";
 import { fetchCountries } from "../Redux/Country/countriesActions";
 import { fetchHotels } from "../Redux/Hotels/hotelsActions";
+import { getCityOrigin } from "../Redux/Cities/citiesActions";
+import { AiOutlinePlusSquare } from 'react-icons/ai'
+import FormNewCityOrigin from "../Components/FormNewCityOrigin";
+import FormNewCityDestiny from "../Components/FormNewCityDestiny";
+import FormNewAirline from "../Components/FormNewAirline";
+import FormNewHoltel from "../Components/FormNewHotel";
 
 const Form = () => {
-  const packages = useSelector((state) => state.packagesList);
-  const continents = useSelector((state) => state.continentsList);
-  const countries = useSelector((state) => state.countriesList);
-  const cities = useSelector((state) => state.citiesList);
-  const hotels = useSelector((state) => state.hotelsList);
-  const airlines = useSelector((state) => state.airlinesList);
-  const activitys = useSelector((state) => state.activitysList);
+  const packages = useSelector((state) => state.packages.packagesList);
+  const continents = useSelector((state) => state.continents.continentsList);
+  // console.log("Continents:", continents)
+  const countries = useSelector((state) => state.countries.countriesList);
+  const cities = useSelector((state) => state.cities.citiesList);
+  // console.log("cities:", cities)
+  const hotels = useSelector((state) => state.hotels.hotelsList);
+  const airlines = useSelector((state) => state.airlines.airlinesList);
+  const activitys = useSelector((state) => state.activitys.activitysList);
+  const cityOrigin=useSelector((state)=> state.cities.citiesOrigin)
+  // console.log("cityorigin:", cityOrigin)
+
+  
+
+
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(fetchAirlines())
+    dispatch(fetchCities())
+    dispatch(fetchContinents())
+    dispatch(fetchCountries())
+    dispatch(fetchHotels())
+    dispatch(getCityOrigin())
+  }, [dispatch]);
 
-  /*json de ejemplo
-
- "idTypePackage": 1,
-        "title": "Descubre el paraíso: Cancún",
-        "description": "Descubre la magia del caribe mexicano",
-        "initialDate": "2023/12/11",
-        "finalDate": "2023/12/20",
-        "totalLimit": 100,
-        "standarPrice": 1690.00,
-        "promotionPrice": 1499.00,
-        "service": "Translado aeropuerto - hotel -aeropuerto",
-        "duration": 10,
-        "originCity": 25,
-        "idAirline": 1,
-        "outboundFlight": "Lun 11 diciembre 09:30AM Buenos Aires|Directo",
-        "returnFlight": "Mar 20 diciembre 18:15PM CUN|Directo",
-        "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
-        "qualification":9.4,
-        "idContinent": 1,
-        "idCity": 1,
-        "idHotel": 1,
-        "activitys": [
-          {
-            "name": "Tour a la Isla Mujeres",
-            "image":"https://www.turismomexico.es/wp-content/uploads/2016/12/isla-mujeresmexico.jpg",
-            "price": 45.00,
-            "included": false,
-            "duration": "1 Dias"
-          },
-          {
-            "name": "Tour a la Zona Arqueológica de Tulum",
-            "image": "https://www.turismomexico.es/wp-content/uploads/2016/12/isla-mujeresmexico.jpg",
-            "price": 45.00,
-            "included": false,
-            "duration": "1 Dia"
-          },
-          {
-            "name": "Tour al cenote Samaal",
-            "image": "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0b/93/db/b8.jpg",
-            "price": 55.00,
-            "included": false,
-            "duration": "1 Dia"
-          }
-        ]
-      },*/
 
   const [input, setInput] = useState({
     idTypePackage: 1,
@@ -77,22 +53,46 @@ const Form = () => {
     service: "",
     duration: "",
     originCity: "", //salida
-    idAirline: 0,
-    outboundFlight: "asfasfa",
-    returnFlight: "fasfasfas",
+    idAirline: "",
+    outboundFlight: "",
+    returnFlight: "",
     image:
       "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
-    qualification: "9.4",
+    qualification: "",
     idContinent: 0,
-    idCountry: 3,
+    idCountry: "",
     idCity: "", // destino
-    idHotel: 0,
+    idHotel: "",
     activitys: [],
   });
+
+  
 
   const handleInputChange = (event) => {
     const { name, value, options } = event.target;
 
+    if (name === "idCity") {
+      const selectedCityId = parseInt(value);
+      const selectedCity = cities.find((city) => city.id === selectedCityId);
+
+      if (selectedCity) {
+        setDestinationCity(selectedCity.name);
+
+        const associatedCountry = countries.find(
+          (country) => country.id === selectedCity.idCountry
+        );
+
+        if (associatedCountry) {
+          setDestinationCountry(associatedCountry.name);
+          setInput({
+            ...input,
+            idCity: selectedCityId,
+            idCountry: associatedCountry.id,
+          });
+        }
+      }
+    }
+    
     if (options && options.multiple) {
       const selectedValues = Array.from(options)
         .filter((option) => option.selected)
@@ -114,61 +114,123 @@ const Form = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(addPackages(input))
-      .unwrap()
-      .then(() => {
-        setInput({
-          idTypePackage: 1,
-          title: "",
-          description: "",
-          initialDate: "",
-          finalDate: "",
-          totalLimit: "",
-          standarPrice: "",
-          promotionPrice: "",
-          service: "",
-          duration: "",
-          originCity: "",
-          idAirline: "",
-          outboundFlight: "asfasfa",
-          returnFlight: "fasfasfas",
-          image:
-            "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
-          qualification: "9.4",
-          idContinent: "",
-          idCity: "",
-          idHotel: "",
-          activitys: [],
-        });
-        alert("Package created successfully");
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("Error occurred while creating the package");
+    try {
+      dispatch(addPackages(input));
+      setInput({
+        idTypePackage: 1,
+        title: "",
+        description: "",
+        initialDate: "",
+        finalDate: "",
+        totalLimit: 0,
+        standarPrice: 0,
+        promotionPrice: 0,
+        service: "Translado aeropuerto - hotel -aeropuerto",
+        duration: "",
+        originCity: "",
+        idAirline: 0,
+        outboundFlight: "",
+        returnFlight: "",
+        image:
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/40/82/4b/aerial-view.jpg?w=700&h=-1&s=1",
+        qualification: "9.4",
+        idContinent: 0,
+        idCountry: 3,
+        idCity: "",
+        idHotel: 0,
+        activitys: [],
       });
+      alert("Package created successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Error occurred while creating the package");
+    }
   };
+
+
+  const calculatePromotionPrice = () => {
+    const standatPrice = parseFloat(input.standarPrice)
+    const discountpercentage =15
+    const promotionPrice = standatPrice*(1 - discountpercentage/100)
+    return promotionPrice.toFixed(2)
+  }
+ // Estado para controlar la visibilidad del formulario de nueva ciudad de origen
+  const [showNewCityForm, setShowNewCityForm] = useState(false);
+
+    // Función para mostrar el formulario de nueva ciudad de origen
+    const handleShowNewCityOriginForm = (e) => {
+      e.preventDefault()
+      setShowNewCityForm(true);
+    };
+
+    const handleHideNewCityOriginForm = () => {
+      setShowNewCityForm(false);
+    };
+
+    // Estado para controlar la visibilidad del formulario de nueva ciudad de destino
+  const [showNewCityDestinyForm, setShowNewCityDestinyForm] = useState(false);
+
+  const [destinationCity, setDestinationCity] = useState("");
+const [destinationCountry, setDestinationCountry] = useState("");
+
+  // Función para mostrar el formulario de nueva ciudad de origen
+  const handleShowNewCityDestinyOriginForm = (e) => {
+    e.preventDefault()
+    setShowNewCityDestinyForm(true);
+  };
+
+  const handleHideNewCityDestinyForm = () => {
+    setShowNewCityDestinyForm(false);
+  };
+
+      // Estado para controlar la visibilidad del formulario de nueva aerolinea
+      const [showNewAirlineForm, setShowNewAirlineForm] = useState(false);
+
+      // Función para mostrar el formulario de nueva Aerolinea
+      const handleShowNewAirlineForm = (e) => {
+        e.preventDefault()
+        setShowNewAirlineForm(true);
+      };
+    
+      const handleHideNewAirlineForm = () => {
+        setShowNewAirlineForm(false);
+      };
+
+       // Estado para controlar la visibilidad del formulario de nievo hotel
+       const [showNewHotelForm, setShowNewHotelForm] = useState(false);
+
+       // Función para mostrar el formulario de nueva Aerolinea
+       const handleShowNewHotelForm = (e) => {
+         e.preventDefault()
+         setShowNewHotelForm(true);
+       };
+     
+       const handleHideNewHotelForm = () => {
+        setShowNewHotelForm(false);
+       };
 
   return (
     <div className="flex h-screen">
       <div className="flex flex-col w-1/2">
         <div className="mx-auto my-auto p-10 w-full md:w-2/3">
           <div className="flex justify-between mb-5">
-            <h2 className="text-gray-700 text-lg font-bold">Formulario</h2>
+            <h2 className="text-gray-700 text-lg font-bold">¡Creador de viajes!</h2>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form >
+          {/* onSubmit={handleSubmit} */}
             <div className="mb-5">
               <label
                 htmlFor="title"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Title
+                Nombre del viaje:
               </label>
               <input
                 type="text"
                 name="title"
                 id="title"
-                placeholder="Title"
+                placeholder="Nombre..."
                 value={input.title}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -180,13 +242,14 @@ const Form = () => {
                 htmlFor="description"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Description
+                Description: 
               </label>
-              <input
+              <textarea
                 type="text"
                 name="description"
                 id="description"
                 placeholder="Description"
+                maxLength="250"
                 value={input.description}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -198,13 +261,13 @@ const Form = () => {
                 htmlFor="initialDate"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Initial Date
+                Fecha de ida: 
               </label>
               <input
                 type="date"
                 name="initialDate"
                 id="initialDate"
-                placeholder="Initial Date"
+                placeholder="Fecha de inicio ..."
                 value={input.initialDate}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -216,13 +279,13 @@ const Form = () => {
                 htmlFor="finalDate"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Final Date
+                Fecha de regreso:
               </label>
               <input
                 type="date"
                 name="finalDate"
                 id="finalDate"
-                placeholder="Final Date"
+                placeholder="Fecha final..."
                 value={input.finalDate}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -234,13 +297,14 @@ const Form = () => {
                 htmlFor="totalLimit"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Total Limit
+                Cupos disponibles:
               </label>
               <input
                 type="number"
                 name="totalLimit"
                 id="totalLimit"
-                placeholder="Total Limit"
+                placeholder="Cupos ..."
+                min="0"
                 value={input.totalLimit}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -252,11 +316,12 @@ const Form = () => {
                 htmlFor="standarPrice"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Standar Price
+                Precio: 
               </label>
               <input
                 type="number"
                 name="standarPrice"
+                min = "0"
                 id="standarPrice"
                 placeholder="Standar Price"
                 value={input.standarPrice}
@@ -270,14 +335,15 @@ const Form = () => {
                 htmlFor="promotionPrice"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Promotion Price
+                precio de promoción: 
               </label>
               <input
                 type="number"
                 name="promotionPrice"
                 id="promotionPrice"
                 placeholder="Promotion Price"
-                value={input.promotionPrice}
+                value={calculatePromotionPrice()}
+                readOnly
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
@@ -288,7 +354,7 @@ const Form = () => {
                 htmlFor="service"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Service
+                Incluye: 
               </label>
 
               <input
@@ -297,7 +363,7 @@ const Form = () => {
                 id="service"
                 placeholder="Service"
                 value={input.service}
-                onChange={handleInputChange}
+                readOnly
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -307,13 +373,14 @@ const Form = () => {
                 htmlFor="duration"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Duration
+                Duración:
               </label>
               <input
                 type="number"
                 name="duration"
+                min = "0"
                 id="duration"
-                placeholder="Duration"
+                placeholder="Cuantos dias..."
                 value={input.duration}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -325,7 +392,7 @@ const Form = () => {
                 htmlFor="originCity"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Destino ciudad
+                Ciudad de partida:
               </label>
               <select
                 name="originCity"
@@ -334,36 +401,22 @@ const Form = () => {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">Select a city</option>
-                {cities.map((city) => (
+                <option value="">Seleccione una ciudad </option>
+                {cityOrigin.map((city) => (
                   <option key={city.id} value={city.id}>
                     {city.name}
                   </option>
                 ))}
               </select>
-            </div>
+              <div>
+        <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleShowNewCityOriginForm} >
+          <AiOutlinePlusSquare  size={32} color= "white"  /> Nueva ciudad
+        </button>
 
-            <div className="mb-5">
-              <label
-                htmlFor="idAirline"
-                className="block mb-2 text-sm font-medium text-gray-600"
-              >
-                Id Airline
-              </label>
-              <select
-                name="idAirline"
-                id="idAirline"
-                value={input.idAirline}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">Select an airline</option>
-                {airlines.map((airline) => (
-                  <option key={airline.id} value={airline.id}>
-                    {airline.name}
-                  </option>
-                ))}
-              </select>
+        {showNewCityForm && <FormNewCityOrigin onHideForm={handleHideNewCityOriginForm} />}
+        
+      </div>
+       
             </div>
 
             <div className="mb-5">
@@ -371,7 +424,7 @@ const Form = () => {
                 htmlFor="idContinent"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Id Continent
+                Continente: 
               </label>
               <select
                 name="idContinent"
@@ -380,7 +433,7 @@ const Form = () => {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">Select a continent</option>
+                <option value="">Seleccione un Continente </option>
                 {continents.map((continent) => (
                   <option key={continent.id} value={continent.id}>
                     {continent.name}
@@ -388,13 +441,21 @@ const Form = () => {
                 ))}
               </select>
             </div>
+            <div>
+            <label
+            htmlFor="idCountry"
+            className="block mb-2 text-sm font-medium text-gray-600"
+          >
+            País de destino:  {destinationCountry}
+          </label>
+            </div>
 
             <div className="mb-5">
               <label
                 htmlFor="idCity"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Salida de ciudad
+                Ciudad de destino: 
               </label>
               <select
                 name="idCity"
@@ -403,13 +464,101 @@ const Form = () => {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">Select a city</option>
+                <option value="">Seleccione una ciudad</option>
                 {cities.map((city) => (
                   <option key={city.id} value={city.id}>
                     {city.name}
                   </option>
                 ))}
               </select>
+              <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleShowNewCityDestinyOriginForm} >
+          <AiOutlinePlusSquare  size={32} color= "white"  /> Nueva ciudad
+        </button>
+
+        {showNewCityDestinyForm && <FormNewCityDestiny onHideForm={handleHideNewCityDestinyForm} />}
+
+       
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="idAirline"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Aerolinea: 
+              </label>
+              <select
+                name="idAirline"
+                id="idAirline"
+                value={input.idAirline}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">Selecione una aerolinea </option>
+                {airlines.map((airline) => (
+                  <option key={airline.id} value={airline.id}>
+                    {airline.name}
+                  </option>
+                ))}
+              </select>
+              <div>
+        <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleShowNewAirlineForm} >
+          <AiOutlinePlusSquare  size={32} color= "white"  /> Nueva aerolinea
+        </button>
+
+        {showNewAirlineForm && <FormNewAirline onHideForm={handleHideNewAirlineForm} />}
+
+        <label
+                htmlFor="outboundFlight"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Detalles del vuelo de ida: 
+              </label>
+              <input
+                type="text"
+                name="outboundFlight"
+                id="outboundFlight"
+                placeholder="Vuelo de ida..."
+                value={input.outboundFlight}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+
+<label
+                htmlFor="returnFlight"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Detalles del vuelo de regreso: 
+              </label>
+              <input
+                type="text"
+                name="returnFlight"
+                id="returnFlight"
+                placeholder="Vuelo de regreso..."
+                value={input.returnFlight}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+
+<label
+                htmlFor="qualification"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Calificacion del paquete
+              </label>
+              <input
+                type="number"
+                name="qualification"
+                id="qualification"
+                min="0"
+                step="0.5"
+                max="10"
+                placeholder="Vuelo de regreso..."
+                value={input.qualification}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+      </div>
             </div>
 
             <div className="mb-5">
@@ -417,7 +566,7 @@ const Form = () => {
                 htmlFor="idHotel"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Id Hotel
+                Hotel:
               </label>
               <select
                 name="idHotel"
@@ -426,13 +575,22 @@ const Form = () => {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">Select a hotel</option>
+                <option value="">Seleccione un Hotel </option>
                 {hotels.map((hotel) => (
                   <option key={hotel.id} value={hotel.id}>
                     {hotel.name}
                   </option>
                 ))}
               </select>
+              <div>
+        <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleShowNewHotelForm} >
+          <AiOutlinePlusSquare  size={32} color= "white"  /> Nuevo Hotel
+        </button>
+
+        {showNewHotelForm && <FormNewHoltel onHideForm={handleHideNewHotelForm} destinationCity={destinationCity}/>}
+        </div>
+
+
             </div>
 
             {/* <div className="mb-5">

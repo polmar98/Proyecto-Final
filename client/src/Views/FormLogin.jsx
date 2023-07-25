@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FcGoogle } from "react-icons/fc";
-import { GrFacebook } from "react-icons/gr";
+import { GrGithub } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
@@ -10,6 +10,7 @@ import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { loginUser } from "../Redux/Users/usersActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -21,18 +22,29 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { login, error, currentUser, signInWithGoogle, signInWithFacebook } =
-    useAuth();
+  const {
+    login,
+    error,
+    currentUser,
+    signInWithGoogle,
+    signInWithFacebook,
+    signInWithGithub,
+    resetError,
+  } = useAuth();
 
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
-      alert(error); // muestra un alert con el error
+      toast.error(error);
     } else if (currentUser) {
-      alert("Usuario logueado correctamente"); // muestra un alert con el mensaje
+      toast.success(`Bienvenido ${currentUser.displayName}!`);
       navigate("/home"); // redirige a la ruta /home
     }
-  }, [error, currentUser, navigate]);
+    return () => {
+      setErrorMsg("");
+      resetError();
+    };
+  }, [error, currentUser, navigate, resetError]);
 
   useEffect(() => {
     setFormFilled(email && password); // si email y password tienen valor, formFilled es true
@@ -57,6 +69,16 @@ const LoginPage = () => {
   const handleGoogle = async () => {
     try {
       await signInWithGoogle();
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleGithub = async () => {
+    try {
+      await signInWithGithub();
+      console.log("github");
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -168,11 +190,11 @@ const LoginPage = () => {
 
                 <button
                   className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
-                  onClick={handleFacebook}
+                  onClick={handleGithub}
                 >
-                  <GrFacebook className="h-5 w-5 mr-2" color="#1877F2" />
+                  <GrGithub className="h-5 w-5 mr-2" />
                   <span className="text-gray-700 font-bold text-sm">
-                    Facebook
+                    Github
                   </span>
                 </button>
               </div>

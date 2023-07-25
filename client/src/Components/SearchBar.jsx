@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SearchPackagesByCountry } from "../Redux/Packages/packagesActions";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../Utils/Img/logo.png";
+// import logo from "../Utils/Img/logo.png";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar() {
@@ -34,7 +34,7 @@ export default function SearchBar() {
     }
   };
 
-  const isSearchResult = location.pathname === "/search";
+  // const isSearchResult = location.pathname === "/search";
 
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
