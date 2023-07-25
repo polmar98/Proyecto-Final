@@ -2,7 +2,10 @@ const { Router } = require('express');
 const {getActivity,
     searchNameActivity,
     createActivity,
-    getActivityById} = require('../controllers/activitiesControllers');
+    getActivityById,
+    deleteActivity,
+    updateActivity,
+} = require('../controllers/activitiesControllers');
 
 const router = Router();
 
@@ -30,17 +33,45 @@ router.get('/:id', async (req, res)=>{
     }
 })
 
-
-
 router.post('/', async(req, res) =>{
-    const {name, image, price, calification, available, idPackage} = req.body;
+    const {name, image, price, included, duration, idPackage} = req.body;
+    console.log(req.body);
     try {
-        const newAct = await createActivity(name, image, price, calification, available, idPackage);
-        res.status(201).json(newAct);
+        if (!name) {
+            return("Faltan datos");
+          }
+         await createActivity(name, image, price, included, duration, idPackage);
+        res.status(201).send("actividad creada exitosamente");
     } catch (error) {
         res.status(404).send("Faild create activity");
     }
 })
+
+//Ruta para eliminar actividades
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+     const deleteActi = await deleteActivity(id);
+      res.status(200).json(deleteActi);
+    } catch (error) {
+      console.log('error');
+      res.status(400).send({ error: 'Delete Fail' });
+    }
+  });
+
+router.put('/update/:id', async (req, res) => {
+    const { id } = req.params;
+    const newData = req.body; // Espera que los nuevos datos a actualizar se envíen en el cuerpo de la solicitud
+  
+    try {
+      const updatedActi = await updateActivity(id, newData);
+      res.status(200).json(updatedActi);
+    } catch (error) {
+      console.log('error', error);
+      res.status(400).send({ error: 'Update Fail' });
+    }
+  });
+
 
 
 module.exports = router;

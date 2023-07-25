@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FcGoogle } from "react-icons/fc";
-import { GrFacebook } from "react-icons/gr";
+import { GrGithub } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { loginUser } from "../Redux/Users/usersActions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/authContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -16,23 +18,80 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
-  const error = useSelector((state) => state.users.error);
   const user = useSelector((state) => state.users.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const {
+    login,
+    error,
+    currentUser,
+    signInWithGoogle,
+    signInWithFacebook,
+    signInWithGithub,
+    resetError,
+  } = useAuth();
 
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
-      alert(error); // muestra un alert con el error
-    } else if (user) {
-      alert("Login exitoso!"); // muestra un alert cuando el inicio de sesión es exitoso
+      toast.error(error);
+    } else if (currentUser) {
+      toast.success(`Bienvenido ${currentUser.displayName}!`);
+      navigate("/home"); // redirige a la ruta /home
     }
-  }, [error, user]);
+    return () => {
+      setErrorMsg("");
+      resetError();
+    };
+  }, [error, currentUser, navigate, resetError]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    setFormFilled(email && password); // si email y password tienen valor, formFilled es true
+  }, [email, password]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    //login email and password in firebase
+    if (!email || !password) {
+      setErrorMsg("Ingrese email y contraseña");
+      return;
+    }
+    try {
+      await login(email, password);
+      dispatch(loginUser(user));
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
 
-    dispatch(loginUser(email, password)); // usa la acción loginUser
+  const handleGoogle = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleGithub = async () => {
+    try {
+      await signInWithGithub();
+      console.log("github");
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleFacebook = async () => {
+    try {
+      await signInWithFacebook();
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
   };
 
   return (
@@ -119,17 +178,23 @@ const LoginPage = () => {
               {/* Botones Redes Sociales */}
 
               <div className="flex flex-col space-y-5">
-                <button className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12">
+                <button
+                  className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
+                  onClick={handleGoogle}
+                >
                   <FcGoogle className="h-5 w-5 mr-2" />
                   <span className="text-gray-700 font-bold text-sm">
                     Google
                   </span>
                 </button>
 
-                <button className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12">
-                  <GrFacebook className="h-5 w-5 mr-2" color="#1877F2" />
+                <button
+                  className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
+                  onClick={handleGithub}
+                >
+                  <GrGithub className="h-5 w-5 mr-2" />
                   <span className="text-gray-700 font-bold text-sm">
-                    Facebook
+                    Github
                   </span>
                 </button>
               </div>

@@ -1,11 +1,16 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  GithubAuthProvider,
 } from "firebase/auth";
+import { toast } from "react-toastify";
+import getFriendlyErrorMessage from "./errorMessages";
 
 // Creando el Contexto
 export const authContext = createContext();
@@ -18,21 +23,44 @@ export const useAuth = () => {
 // Proveedores de Google y Facebook
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
 
-  const logout = () => {
-    return auth.signOut();
-  };
-
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
     return unsubscribe;
   }, []);
+
+  const logout = () => {
+    setCurrentUser(null);
+    toast.success("Sesión cerrada con éxito");
+    return auth.signOut();
+  };
+
+  const resetError = () => {
+    setError(null);
+  };
+
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      setCurrentUser(user);
+      return userCredential;
+    } catch (error) {
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
+    }
+  };
 
   const register = async (email, password) => {
     try {
@@ -45,9 +73,8 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -55,14 +82,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
-      console.log(user);
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
-      return { success: false, errorMessage };
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -71,12 +95,22 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await signInWithPopup(auth, facebookProvider);
       const user = userCredential.user;
       setCurrentUser(user);
-      return { success: true, userCredential };
+      return userCredential;
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError(errorMessage);
-      return { success: false, errorMessage };
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, githubProvider);
+      const user = userCredential.user;
+      setCurrentUser(user);
+      return userCredential;
+    } catch (error) {
+      const errorCode = getFriendlyErrorMessage(error.code);
+      setError(errorCode);
     }
   };
 
@@ -84,10 +118,13 @@ export const AuthProvider = ({ children }) => {
   const value = {
     currentUser,
     register,
+    logout,
+    login,
     signInWithGoogle,
     signInWithFacebook,
-    logout,
+    signInWithGithub,
     error,
+    resetError,
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;
