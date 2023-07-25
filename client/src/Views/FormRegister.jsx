@@ -135,6 +135,7 @@ const RegisterPage = () => {
         const tokenResponse = result._tokenResponse;
         dispatch(
           addUser({
+            uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
