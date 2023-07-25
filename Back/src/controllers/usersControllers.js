@@ -6,10 +6,11 @@ const { User } = require("../database.js");
 // Controller Nuevo Usuario 
 const createUser = async (req, res) => {
   try {
-    const { profile, name, lastName, email, password } = req.body;
+    const { uid, profile, name, lastName, email, password } = req.body;
     /* console.log({ profile, name, lastName, email, password }); */
 
     const newUser = await User.create({
+      uid, 
       profile,
       name,
       lastName,
@@ -30,8 +31,8 @@ const getAllUsers = async () => {
 };
 
 // Controller eliminar un Usuario
-const deleteUser = async (id) => {
-  const user = await User.findByPk(id);
+const deleteUser = async (uid) => {
+  const user = await User.findByPk(uid);
   if (!user) {
     throw new Error("Usuario no encontrado");
   }
@@ -39,8 +40,8 @@ const deleteUser = async (id) => {
 };
 
 // Controller llamdo a usuario por Id
-const getUserById = async (id) => {
-  const user = await User.findByPk(id);
+const getUserById = async (uid) => {
+  const user = await User.findByPk(uid);
   if (!user) {
     throw new Error("Usuario no encontrado");
   }
