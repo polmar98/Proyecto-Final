@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
 import { useSelector, useDispatch } from "react-redux";
-// import { useState, useEffect } from "react";
 import { clean_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 import { Link } from "react-router-dom";
 import {
@@ -13,21 +12,21 @@ import {
 
 const ShoppingCart = () => {
   let cartItems = useSelector((state) => state.carrito.cart);
-  console.log(cartItems);
   const user = useSelector((state) => state.users.user);
-  // const user = 1;
-  // console.log('el estado carrito', {carrito})
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  //convierte a JS el localStorage
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
 
-  //vaciar el carrito
+  const calculateTotal = (items) => {
+    let total = 0;
+    items.forEach((item) => (total += item.price * item.quantity));
+    return total.toFixed(2);
+  };
+
   function clearCart() {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
-    ); //boolean
+    );
     if (userConfirm && !user) {
       localStorage.clear("carrito");
       navigate("/shoppingCart");
@@ -40,52 +39,60 @@ const ShoppingCart = () => {
     } else return;
   }
 
+  const items = user ? cartItems : localStorageItems;
+
   return (
     <div>
-      <div className="bg-verdeFooter border-b border-white">
+      <div className="bg-verdeFooter ">
         <NavBar />
       </div>
-      <div className="grid grid-cols-4">
-        <div className="w-full flex flex-col col-span-3 mt-4">
-          {user
-            ? cartItems?.map((el, index) => <CartItem key={index} props={el} />)
-            : localStorageItems?.map((el, index) => (
-                <CartItem key={index} props={el} />
-              ))}
-
-          <div className="grid grid-col-2 gap-4  justify-center ">
-            <div>
-              <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 m-2 rounded w-full flex items-center justify-center">
-                <AiOutlineCheckCircle className="mr-2" />
-                COMPLETAR EL PAGO
-              </button>
-            </div>
-
-            <div className="flex flex-row justify-center items-center">
+      <div className="container mx-auto mt-5 px-5">
+        <div className="grid grid-cols-5 gap-6">
+          <div className="col-span-4">
+            {items?.map((el, index) => (
+              <CartItem key={index} props={el} />
+            ))}
+            <div className="flex justify-between items-center mt-5">
               <Link
-                to="/search" // Update this with the path for continuing shopping
-                className="bg-gray-200 hover:bg-gray-300 text-gray-600 text-xs py-2 px-4 m-2 rounded flex items-center justify-center w-1/3"
+                to="/search"
+                className="text-sm bg-gray-200 hover:bg-gray-300 text-gray-600 py-2 px-4 rounded flex items-center transition-colors duration-300"
               >
-                <AiOutlineShopping className="mr-2 text-2xl" />
-                SEGUIR COMPRANDO
+                <AiOutlineShopping className="mr-2" />
+                Seguir comprando
               </Link>
               <button
-                onClick={() => {
-                  clearCart();
-                }}
-                className="bg-red-500 hover:bg-red-600 text-white text-xs py-2 px-4 m-2 rounded flex items-center justify-center"
+                onClick={clearCart}
+                className="text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded flex items-center transition-colors duration-300"
               >
-                <AiOutlineDelete className="mr-2 text-2xl" />
-                VACIAR CARRITO
+                <AiOutlineDelete className="mr-2" />
+                Vaciar carrito
               </button>
             </div>
           </div>
-        </div>
 
-        <div className="col-span-1 mt-4">
-          <div>
-            <h1>Resumen de compra</h1>
-            <span></span>
+          <div className="col-span-1">
+            <div className="border border-gray-200 rounded p-4">
+              <h1 className="text-lg font-bold mb-4">Resumen de compra</h1>
+              <div className="flex justify-between mb-2">
+                <span>Subtotal</span>
+                <span>$ {calculateTotal(items)}</span>
+              </div>
+              <div className="flex justify-between mb-2">
+                <span>Impuestos (10%)</span>
+                <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span>
+              </div>
+              <hr className="border-t border-gray-200" />
+              <div className="flex justify-between mt-2">
+                <span className="font-bold">Total</span>
+                <span className="font-bold">
+                  $ {(calculateTotal(items) * 1.1).toFixed(2)}
+                </span>
+              </div>
+              <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">
+                <AiOutlineCheckCircle className="mr-2" />
+                Completar el pago
+              </button>
+            </div>
           </div>
         </div>
       </div>

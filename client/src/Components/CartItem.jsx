@@ -75,29 +75,52 @@ import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-i
 //         >
 //           <FiTrash2 className="mr-2" />
 //         </button>
+
 const CartItem = ({ props }) => {
-  console.log(props);
   return (
-    <div className="rounded-lg bg-white shadow-xl border border-teal-900 p-4 grid grid-cols-2 w-3/4 ml-10">
-      <div>
-        {/* <img src={props.image} alt="Img not found" className="w-2/4 h-auto" /> */}
-      </div>
-      <div>
-        {props.items.map((el, index) => (
-          <div key={index}>
-            <h1>{el.title}</h1>
-            <h3>USD {el.unitPrice} por persona</h3>
-            <label htmlFor="">Cantidad: {el.amount}</label>
-            <input
-              id="number"
-              type="number"
-              value={el.amount}
-              className="w-1/5"
-            />
+    <div className="bg-white shadow-xl rounded-lg p-6 m-4">
+      {props.items &&
+        props.items.map((el, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between border-b-2 border-gray-200 py-4"
+          >
+            {/* Agregué un contenedor para la imagen y el título del producto */}
+            <div className="flex items-center">
+              <img
+                src={el.image}
+                alt={el.title}
+                className="w-20 h-20 object-cover rounded-lg mr-4"
+              />
+              <h2 className="text-lg">{el.title}</h2>
+            </div>
+
+            {/* Agregué un contenedor para la cantidad y el precio */}
+            <div className="flex items-center">
+              <div className="mr-4">
+                <label htmlFor={`amount${index}`} className="block text-sm">
+                  Cantidad:
+                </label>
+                <input
+                  id={`amount${index}`}
+                  type="number"
+                  min="1"
+                  value={el.amount}
+                  className="w-16 mt-1 border rounded-md p-1"
+                />
+              </div>
+              <div>
+                <p className="text-sm">Precio:</p>
+                <p className="text-lg font-semibold">USD {el.unitPrice}</p>
+              </div>
+            </div>
+
+            {/* Botón de eliminar */}
+            <button className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out">
+              <FiTrash2 size={24} />
+            </button>
           </div>
         ))}
-        <button>Eliminar paquete</button>
-      </div>
     </div>
   );
 };
