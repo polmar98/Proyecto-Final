@@ -77,6 +77,34 @@ import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-i
 //         </button>
 
 const CartItem = ({ props }) => {
+  console.log(props);
+
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.users.user);
+
+  function clearItem(itemToRemove) {
+    const userConfirm = window.confirm(
+      "Se eliminará este item del carrito, quieres continuar?"
+    );
+
+    if (userConfirm && !user) {
+      let localStorageJSON = localStorage.getItem("carrito");
+      let storedItems = [];
+      if (localStorageJSON !== null) {
+        storedItems = JSON.parse(localStorageJSON);
+      }
+
+      const filteredCart = storedItems.filter(
+        (item) => item.items[0].idProduct !== itemToRemove.idProduct
+      );
+
+      const updatedItemsJSON = JSON.stringify(filteredCart);
+      localStorage.setItem("carrito", updatedItemsJSON);
+    }
+
+    navigate("/shoppingCart");
+  }
+
   return (
     <div className="bg-white shadow-xl rounded-lg p-6 m-4">
       {props.items &&
@@ -87,11 +115,11 @@ const CartItem = ({ props }) => {
           >
             {/* Agregué un contenedor para la imagen y el título del producto */}
             <div className="flex items-center">
-              <img
+              {/* <img
                 src={el.image}
                 alt={el.title}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
-              />
+              /> */}
               <h2 className="text-lg">{el.title}</h2>
             </div>
 
@@ -116,7 +144,10 @@ const CartItem = ({ props }) => {
             </div>
 
             {/* Botón de eliminar */}
-            <button className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out">
+            <button
+              className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"
+              onClick={() => clearItem(el)}
+            >
               <FiTrash2 size={24} />
             </button>
           </div>

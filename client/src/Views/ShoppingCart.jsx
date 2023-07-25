@@ -16,10 +16,12 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
+  const items = user ? cartItems : localStorageItems;
 
   const calculateTotal = (items) => {
     let total = 0;
-    items.forEach((item) => (total += item.price * item.quantity));
+    console.log(items);
+    items?.forEach((item) => (total += item.price * item.quantity));
     return total.toFixed(2);
   };
 
@@ -39,7 +41,7 @@ const ShoppingCart = () => {
     } else return;
   }
 
-  const items = user ? cartItems : localStorageItems;
+  console.log(items);
 
   return (
     <div>

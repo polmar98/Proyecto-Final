@@ -45,49 +45,6 @@ module.exports = (sequelize) => {
         defaultValue: false,
       },
     },
-<<<<<<< HEAD
     { timestamps: false }
   );
 };
-=======
-    uid: {
-      type: DataTypes.STRING, // 
-      unique: true,
-      allowNull: true,
-    },
-
-    profile: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 1
-    },
-    dateRecord: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    locked: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-    
-  },{timestamps:false});
-};
->>>>>>> e1545f6c12fb65d4e5bd12ec373e3da30bda7db5

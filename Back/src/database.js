@@ -85,13 +85,8 @@ Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
 Comment.belongsTo(User, { foreignKey: "idPackage", targetKey: "id" });
 
-<<<<<<< HEAD
 User.hasMany(ShoppingCar, { foreignKey: "uidUser", sourceKey: "uid" });
 ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
-=======
-User.hasMany(ShoppingCar, { foreignKey: "idUser", sourceKey: "id"});////
-ShoppingCar.belongsTo(User,{ foreignKey: 'idUser', targetKey: "id"});////
->>>>>>> e1545f6c12fb65d4e5bd12ec373e3da30bda7db5
 
 ShoppingCar.hasMany(ItemsShoppingCar, {
   foreignKey: "idShoppingCar",
