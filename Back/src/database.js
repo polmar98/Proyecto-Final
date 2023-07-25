@@ -59,7 +59,7 @@ const {
 Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
 Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
 Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
-Package.belongsTo(CityOrigin, { foreignKey: "originCity", targetKey: "id" });
+Package.belongsTo(CityOrigin, { foreignKey: "OriginCity", targetKey: "id" });
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
 CityOrigin.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
@@ -85,8 +85,13 @@ Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
 Comment.belongsTo(User, { foreignKey: "idPackage", targetKey: "id" });
 
+<<<<<<< HEAD
 User.hasMany(ShoppingCar, { foreignKey: "uidUser", sourceKey: "uid" });
 ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
+=======
+User.hasMany(ShoppingCar, { foreignKey: "idUser", sourceKey: "id"});////
+ShoppingCar.belongsTo(User,{ foreignKey: 'idUser', targetKey: "id"});////
+>>>>>>> e1545f6c12fb65d4e5bd12ec373e3da30bda7db5
 
 ShoppingCar.hasMany(ItemsShoppingCar, {
   foreignKey: "idShoppingCar",
