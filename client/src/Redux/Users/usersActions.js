@@ -56,7 +56,7 @@ export const addUser = (newUser) => {
         payload: user,
       });
       const cartResponse = await axios.post(
-        `http://localhost:3002/shoppingCar/user/${user.id}`
+        `http://localhost:3002/shoppingCar/user/${user.uid}`
       );
       const cart = cartResponse.data;
 

@@ -10,15 +10,20 @@ module.exports = (sequelize) => {
         autoIncrement: true,
         unique: true,
       },
+      uidUser: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       state: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,           //0=pendiente, 1=pagada, 2=anulada
+        defaultValue: 0, //0=pendiente, 1=pagada, 2=anulada
       },
       idBill: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,           //este id apuntara al id en la tabla de facturas cuando se haga el pago
+        defaultValue: 0, //este id apuntara al id en la tabla de facturas cuando se haga el pago
       },
-      fullValue: {                 //almacenara el valor total de la precompra
+      fullValue: {
+        //almacenara el valor total de la precompra
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },

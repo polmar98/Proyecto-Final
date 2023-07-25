@@ -64,6 +64,7 @@ function Detail() {
     idUser: user,
     items: [
       {
+        image: tour.image,
         amount: 1,
         unitPrice: tour.standarPrice,
         totalPrice: tour.promotionPrice,

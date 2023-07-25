@@ -1,12 +1,12 @@
 const {Activity} = require('../database');
 
-
+//esta funcion trae todas las actividades
 const getActivity = async () => {
    const actiDb = await Activity.findAll();
    return actiDb;
 };
 
-//esta funcion devuelve actividad buscada por ID
+//esta funcion devuelve actividad buscada por ID.
 const getActivityById = async (id) => {
     const idAct = Number(id);
     const actiBd = await Activity.findByPk(idAct);
