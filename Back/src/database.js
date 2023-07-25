@@ -59,7 +59,7 @@ const {
 Package.belongsTo(Continent, { foreignKey: "idContinent", targetKey: "id" });
 Package.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
 Package.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
-Package.belongsTo(CityOrigin, { foreignKey: "OriginCity", targetKey: "id" });
+Package.belongsTo(CityOrigin, { foreignKey: "originCity", targetKey: "id" });
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
 CityOrigin.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });

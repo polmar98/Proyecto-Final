@@ -6,6 +6,7 @@ const {
   Airline,
   Activity,
   Country,
+  CityOrigin
 } = require("../database");
 const { Op } = require("sequelize");
 
@@ -39,18 +40,11 @@ const addPackages = async (objeto) => {
     !idTypePackage || !title || !description ||
     !initialDate || !finalDate || !totalLimit ||
     !standarPrice || !promotionPrice || !duration ||
-    !originCity || !idAirline || !outboundFlight
-  ) {
-    return { message: "Datos Incompletos (1)" };
-  }
-  if (
+    !originCity || !idAirline || !outboundFlight ||
     !returnFlight || !image || !idContinent ||
-    !idCountry || !idCity || !idHotel
-  ) {
-    return { message: "Datos Incompletos (2)" };
-  }
-  if (!activitys || !qualification || !service) {
-    return { message: "Datos Incompletos (3)" };
+    !idCountry || !idCity || !idHotel ||
+    !activitys || !qualification || !service) {
+    return { message: "Datos Incompletos " };
   }
 
   //armamos el nuevo json a subir en la BD
