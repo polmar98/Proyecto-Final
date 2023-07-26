@@ -46,7 +46,6 @@ const RegisterPage = () => {
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
-      toast.error(error);
     }
     if (currentUser) {
       navigate("/home"); // redirige a la ruta /home
@@ -135,13 +134,15 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result) {
         const tokenResponse = result._tokenResponse;
+        console.log("result", result);
+        console.log("token", tokenResponse);
         dispatch(
           addUser({
             uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
-            password: tokenResponse.localId,
+            password: tokenResponse.idToken,
           })
         );
         setUserCreated(true);

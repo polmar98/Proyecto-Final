@@ -11,11 +11,12 @@ import ShoppingCart from "./Views/ShoppingCart";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "flowbite";
 
 function App() {
   return (
     <div className="App">
-      <ToastContainer autoClose={1500} />
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} autoClose={1500} />
       <Routes>
         <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/home" element={<Home />} />

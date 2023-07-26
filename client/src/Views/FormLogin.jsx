@@ -11,13 +11,17 @@ import { loginUser } from "../Redux/Users/usersActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
 import { toast } from "react-toastify";
+import { GrFormClose } from "react-icons/gr";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
+  const [emailModal, setEmailModal] = useState("");
+
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,6 +34,7 @@ const LoginPage = () => {
     signInWithFacebook,
     signInWithGithub,
     resetError,
+    resetPassword,
   } = useAuth();
 
   useEffect(() => {
@@ -60,6 +65,21 @@ const LoginPage = () => {
     try {
       await login(email, password);
       dispatch(loginUser(user));
+    } catch (error) {
+      setErrorMsg(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleResetPasswordmodal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      await resetPassword(emailModal);
+      setEmailModal("");
+      setIsModalOpen(false);
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -155,10 +175,62 @@ const LoginPage = () => {
             </button>
 
             {/* Link Contraseña */}
-            <h1 className="mt-5 text-blue-500 text-center hover:underline cursor-pointer">
+            <h1
+              className="mt-5 text-blue-500 text-center hover:underline cursor-pointer"
+              onClick={handleResetPasswordmodal}
+            >
               ¿Olvidaste tu contraseña?
             </h1>
 
+            {isModalOpen && (
+              <div className="fixed z-10 inset-0 overflow-y-auto">
+                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                  <div
+                    className="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                  </div>
+
+                  <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
+                    <div className="flex justify-end">
+                      <button onClick={() => setIsModalOpen(false)}>
+                        <GrFormClose size={24} />
+                      </button>
+                    </div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <h3
+                        className="text-lg leading-6 font-medium text-gray-900"
+                        id="modal-title"
+                      >
+                        ¿Olvidaste tu contraseña?
+                      </h3>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                          Ingresa tu correo electrónico y te enviaremos un
+                          enlace para restablecer tu contraseña.
+                        </p>
+                        <input
+                          value={emailModal}
+                          onChange={(e) => setEmailModal(e.target.value)}
+                          placeholder="Correo electrónico"
+                          className="px-4 py-3 border rounded border-gray-300 text-gray-500 text-sm font-normal h-12 w-full mt-4"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-5 sm:mt-6">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
+                        onClick={handleResetPassword}
+                      >
+                        Enviar enlace de restablecimiento
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {/* Espaciado */}
             <div className="mt-10">
               {/* Separador */}
