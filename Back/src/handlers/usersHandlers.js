@@ -23,22 +23,22 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Eliminar un usuario por su ID
+// Eliminar un usuario por su uid
 router.delete("/:id", async (req, res) => {
   try {
-    const {id} = req.params;
-    await deleteUser(id);
+    const {uid} = req.params;
+    await deleteUser(uid);
     res.status(200).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Obtener un usuario por su ID
+// Obtener un usuario por su uid
 router.get("/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await getUserById(id);
+    const { uid } = req.params;
+    const user = await getUserById(uid);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });

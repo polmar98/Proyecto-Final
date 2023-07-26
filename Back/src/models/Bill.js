@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "ShoppingCar",
+    "Bill",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -10,20 +10,16 @@ module.exports = (sequelize) => {
         autoIncrement: true,
         unique: true,
       },
-      uidUser: {
+      number: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
       },
-      state: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0, //0=pendiente, 1=pagada, 2=anulada
-      },
-      idBill: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0, //este id apuntara al id en la tabla de facturas cuando se haga el pago
+      date: {
+        type: DataTypes.DATE,
+        defaultValue: Date.now, 
       },
       fullValue: {
-        //almacenara el valor total de la precompra
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },
