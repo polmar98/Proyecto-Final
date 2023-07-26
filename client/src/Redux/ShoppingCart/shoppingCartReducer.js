@@ -2,8 +2,9 @@ import {
   ADD_TO_CART,
   REMOVE_ONE_FROM_CART,
   CLEAN_CART,
+  CHECKUSER_SHOPPING,
 } from "./shoppingCartActions";
-import { NEW_CART } from "../Users/usersActions";
+// import { CHECKUSER_SHOPPING } from "../Users/usersActions";
 // import { getAllPackages } from "../Selectors/cartSelectors";
 
 const initialState = {
@@ -14,11 +15,11 @@ const initialState = {
 
 const shoppingCartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case NEW_CART:
-      return {
-        ...state,
-        idCart: action.payload.cart.idcar,
-      };
+    // case NEW_CART:
+    //   return {
+    //     ...state,
+    //     idCart: action.payload.cart.idcar,
+    //   };
     case ADD_TO_CART:
       // console.log('el reducer', action.payload)
       const itemexists = state.cart.find((el) => el.id === action.payload.id);
@@ -34,7 +35,7 @@ const shoppingCartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [...state.cart, action.payload],
-        idCart: action.payload.cart.id,
+        idCart: action.payload.id,
       };
 
     case REMOVE_ONE_FROM_CART:
@@ -48,6 +49,12 @@ const shoppingCartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [],
+      };
+    case CHECKUSER_SHOPPING:
+      return {
+        ...state,
+        idCart: action.payload.id,
+        cart: action.payload.ItemsShoppingCars,
       };
 
     default:

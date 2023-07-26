@@ -13,18 +13,22 @@ import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
 import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 import NavBar from "../Components/NavBar";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
-  // console.log("USER:1223322332323 ", user);
+
+  console.log("USER EN DETAIL: ", user);
   // const user = 31;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
+  const car = useSelector((state) => state.carrito.cart);
   console.log("EL ID", idCart);
+  console.log("EL CART DE MIERDA ", car);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
@@ -61,18 +65,27 @@ function Detail() {
 
   // item para guardar en el carrito
   const item = {
-    idUser: user,
-    items: [
-      {
-        amount: 1,
-        unitPrice: tour.standarPrice,
-        totalPrice: tour.promotionPrice,
-        typeProduct: 1,
-        idProduct: tour.id,
-        title: tour.title,
-      },
-    ],
+    amount: 1,
+    unitPrice: tour.standarPrice,
+    totalPrice: tour.standarPrice,
+    typeProduct: 1,
+    idProduct: tour.id,
+    title: tour.title,
+    image: tour.image,
   };
+
+  //   idUser: user,
+  //   items: [
+  //     {
+  //       amount: 1,
+  //       unitPrice: tour.standarPrice,
+  //       totalPrice: tour.standarPrice,
+  //       typeProduct: 1,
+  //       idProduct: tour.id,
+  //       title: tour.title,
+  //     },
+  //   ],
+  // };
   // {
   // 	 "idUser": 1,
   // 	 "items": [
@@ -114,7 +127,7 @@ function Detail() {
   }
 
   //! german
-  async function guardarEnBDD() {
+  async function guardarEnBDD(item) {
     if (idCart) {
       const response1 = await fetch(
         `http://localhost:3002/shoppingCar/${idCart}`,
@@ -137,7 +150,8 @@ function Detail() {
     // if (user) {
     if (idCart !== 0) {
       dispatch(add_to_cart(item));
-      guardarEnBDD();
+      guardarEnBDD(item);
+      dispatch(userShopping(user));
     } else {
       // }
       // } else {

@@ -12,7 +12,7 @@ import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import validateForm from "../Utils/Validateform";
-
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 const RegisterPage = () => {
   const {
     signInWithGoogle,
@@ -143,6 +143,8 @@ const RegisterPage = () => {
             password: tokenResponse.localId,
           })
         );
+
+        // dispatch(userShopping(idUser));
         setUserCreated(true);
         toast.success(`Bienvenido ${tokenResponse.firstName}!`);
         navigate("/home");

@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { userShopping } from "../ShoppingCart/shoppingCartActions";
 export const FETCH_USERS = "FETCH_USERS";
 export const ADD_USER = "ADD_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
@@ -12,22 +12,22 @@ export const ADDUSER_SHOPPING = "USER_SHOPPING";
 export const CHECKUSER_SHOPPING = "CHECKUSER_SHOPPING";
 export const NEW_CART = "NEW_CART";
 
-export const userShopping = (id) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3002/shoppingCar/user/${id}`
-      );
-      const data = response.data;
-      return dispatch({
-        type: CHECKUSER_SHOPPING,
-        payload: data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+// export const userShopping = (id) => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await axios.get(
+//         `http://localhost:3002/shoppingCar/user/${id}`
+//       );
+//       const data = response.data;
+//       return dispatch({
+//         type: CHECKUSER_SHOPPING,
+//         payload: data.ItemsShoppingCars,
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 
 export const fetchUsers = () => {
   return async (dispatch) => {
@@ -52,6 +52,7 @@ export const addUser = (newUser) => {
         newUser
       );
       const user = userResponse.data;
+      console.log("ESTO ES USER:", user);
       dispatch({
         type: ADD_USER,
         payload: user,
@@ -59,14 +60,22 @@ export const addUser = (newUser) => {
       const cartResponse = await axios.post(
         `http://localhost:3002/shoppingCar/user/${user.id}`
       );
-      const cart = cartResponse.data;
-      console.log("CARTTTT:", cart);
-      dispatch({
-        type: NEW_CART,
-        payload: cart,
-      });
+      dispatch(userShopping(user.id));
+      //   const response = await axios.get(
+      //   `http://localhost:3002/shoppingCar/user/${user.id}`
+      // );   const data = response.data;
+      // console.log("esto es data de action:", data);
+      // dispatch({
+      //   type:CHECKUSER_SHOPPING,
+      //   payload:
+
+      // console.log("CARTTTT:", cart);
+      // dispatch({
+      //   type: NEW_CART,
+      //   payload: cart,
+      // });
       // console.log("CARTTTTT:", cart);
-      return { user, cart };
+      return user;
     } catch (error) {
       console.log(error);
     }
