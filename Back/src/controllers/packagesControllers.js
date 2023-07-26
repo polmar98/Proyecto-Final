@@ -1,13 +1,9 @@
 const { Association } = require("sequelize");
-const {
-  TypePackage,
-  Package,
-  City,
-  Airline,
-  Activity,
-  Country,
-  CityOrigin
-} = require("../database");
+const { TypePackage, Package,
+        City, Airline,
+        Activity, Country,
+        CityOrigin, Comment} = require("../database");
+        
 const { Op } = require("sequelize");
 
 const addPackages = async (objeto) => {
@@ -97,14 +93,12 @@ const viewPackages = async () => {
       { association: "TypePackage", attributes: ["id", "name"] },
       { association: "Airline", attributes: ["id", "name"] },
       { association: "City", attributes: ["id", "name", "idCountry"] },
-      {
-        association: "Hotel",
-        attributes: ["id", "name", "stars", "image", "calification", "details"],
-      },
+      { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"]},
       { association: "Continent", attributes: ["id", "name"] },
       { association: "Country", attributes: ["id", "name"] },
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
+      { model: Comment },
     ],
   });
   return paquetes;
@@ -117,14 +111,12 @@ const getPackageById = async (idp) => {
       { association: "TypePackage", attributes: ["id", "name"] },
       { association: "Airline", attributes: ["id", "name"] },
       { association: "City", attributes: ["id", "name", "idCountry"] },
-      {
-        association: "Hotel",
-        attributes: ["id", "name", "stars", "image", "calification", "details"],
-      },
+      { association: "Hotel",attributes: ["id", "name", "stars", "image", "calification", "details"]},
       { association: "Continent", attributes: ["id", "name"] },
       { association: "Country", attributes: ["id", "name"] },
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
+      { model: Comment },
     ],
   });
   return paquete;
@@ -143,14 +135,12 @@ const searchPackages = async (search) => {
       { association: "TypePackage", attributes: ["id", "name"] },
       { association: "Airline", attributes: ["id", "name"] },
       { association: "City", attributes: ["id", "name", "idCountry"] },
-      {
-        association: "Hotel",
-        attributes: ["id", "name", "stars", "image", "calification", "details"],
-      },
+      { association: "Hotel",attributes: ["id", "name", "stars", "image", "calification", "details"]},
       { association: "Continent", attributes: ["id", "name"] },
       { association: "Country", attributes: ["id", "name"] },
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
+      { model: Comment },
     ],
   });
   return paquetes;

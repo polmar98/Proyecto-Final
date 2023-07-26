@@ -17,6 +17,8 @@ const AdminModels = require("./models/Admin");
 const CityOriginModels = require("./models/CityOrigin");
 const ShoppingCarModels = require("./models/ShoppingCar");
 const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
+const BillModels = require('./models/Bill');
+const ItemsBillModels = require('./models/ItemsBill');
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -37,6 +39,8 @@ AdminModels(sequelize);
 CityOriginModels(sequelize);
 ShoppingCarModels(sequelize);
 ItemsShoppingCarModels(sequelize);
+BillModels(sequelize);
+ItemsBillModels(sequelize);
 
 const {
   TypePackage,
@@ -53,6 +57,8 @@ const {
   CityOrigin,
   ShoppingCar,
   ItemsShoppingCar,
+  Bill,
+  ItemsBill,
 } = sequelize.models;
 
 // establecemos las relaciones
@@ -63,12 +69,13 @@ Package.belongsTo(CityOrigin, { foreignKey: "OriginCity", targetKey: "id" });
 Package.belongsTo(Hotel, { foreignKey: "idHotel", targetKey: "id" });
 
 CityOrigin.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
-Package.belongsTo(TypePackage, {
-  foreignKey: "idTypePackage",
-  targetKey: "id",
-});
+Package.belongsTo(TypePackage, {  foreignKey: "idTypePackage",  targetKey: "id" });
+Package.belongsTo(Airline, { foreignKey: "idAirline", targetKey: "id" });
+ShoppingCar.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 
-Package.belongsTo(Airline, { foreignKey: "idAirline", sourceKey: "id" });
+
+Package.hasMany(Comment, { foreignKey: 'idPackage', sourceKey: 'id'});
+Comment.belongsTo(Package, { foreignKey: 'idPackage', targetKey: 'id'});
 
 Country.hasMany(City, { foreignKey: "idCountry", sourceKey: "id" });
 City.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
@@ -83,19 +90,16 @@ Package.hasMany(Activity, { foreignKey: "idPackage", sourceKey: "id" });
 Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 
 User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
-Comment.belongsTo(User, { foreignKey: "idPackage", targetKey: "id" });
+Comment.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 
-User.hasMany(ShoppingCar, { foreignKey: "uidUser", sourceKey: "uid" });
-ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
+ShoppingCar.hasMany(ItemsShoppingCar, { foreignKey: "idShoppingCar", sourceKey: "id" });
+ItemsShoppingCar.belongsTo(ShoppingCar, { foreignKey: "idShoppingCar",  targetKey: "id" });
 
-ShoppingCar.hasMany(ItemsShoppingCar, {
-  foreignKey: "idShoppingCar",
-  sourceKey: "id",
-});
-ItemsShoppingCar.belongsTo(ShoppingCar, {
-  foreignKey: "idShoppingCar",
-  targetKey: "id",
-});
+User.hasMany(Bill,{ foreignKey: 'idUser', sourceKey: 'id'});
+Bill.belongsTo(User, { foreignKey: 'idUser', targetKey: 'id'});
+
+Bill.hasMany(ItemsBill, { foreignKey: 'idBill', sourceKey: 'id'});
+ItemsBill.belongsTo(Bill, { foreignKey: 'idBill', targetKey: 'id'});
 
 module.exports = {
   TypePackage,
@@ -112,5 +116,7 @@ module.exports = {
   CityOrigin,
   ShoppingCar,
   ItemsShoppingCar,
+  Bill,
+  ItemsBill,
   conn: sequelize,
 };

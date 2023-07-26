@@ -1,12 +1,12 @@
-const { Comment, User } = require('../database');
+const { Comment, User, Package } = require('../database');
 
 // Controlador para crear nuevos comentarios
 const createComment = async (req, res) => {
   try {
-    const { userId, testimony } = req.body;
+    const { userId, testimony, idPackage } = req.body;
 
     // Verificar si falta algún elemento obligatorio
-    if (!userId || !testimony) {
+    if (!userId || !testimony || !idPackage) {
       return res.status(400).json({ message: 'Falta uno o más elementos obligatorios' });
     }
 
@@ -16,7 +16,12 @@ const createComment = async (req, res) => {
       return res.status(404).json({ message: 'El usuario no existe' });
     }
 
-    const newComment = await Comment.create({ idUser: userId, testimony });
+    // verificar si existe el paquete
+    const existingPackage = await Package.findByPk(idPackage);
+    if (!existingPackager) {
+      return res.status(404).json({ message: 'El paquete no existe' });
+    }  
+    const newComment = await Comment.create({ idUser: userId, testimony, idPackage });
     res.status(201).json(newComment);
   } catch (error) {
     res.status(500).json({ message: error.message });
