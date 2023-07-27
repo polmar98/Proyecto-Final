@@ -6,7 +6,6 @@ import { GrGithub } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import logo from "../Utils/Img/logo.png";
 import sideImage from "../Utils/Img/side.png";
-import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { loginUser } from "../Redux/Users/usersActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
@@ -31,7 +30,6 @@ const LoginPage = () => {
     error,
     currentUser,
     signInWithGoogle,
-    signInWithFacebook,
     signInWithGithub,
     resetError,
     resetPassword,
@@ -99,15 +97,6 @@ const LoginPage = () => {
     try {
       await signInWithGithub();
       console.log("github");
-    } catch (error) {
-      setErrorMsg(error.message);
-      console.log(error);
-    }
-  };
-
-  const handleFacebook = async () => {
-    try {
-      await signInWithFacebook();
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
