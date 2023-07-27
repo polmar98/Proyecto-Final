@@ -69,17 +69,17 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       phoneNumber: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         unique: true,
         allowNull: true,
-      }, 
+      },
       dni: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         unique: true,
         allowNull: true,
       },
     },
-    
+
     { timestamps: false }
   );
 };
