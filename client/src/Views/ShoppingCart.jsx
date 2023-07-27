@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
@@ -13,7 +14,6 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai";
 import { useEffect } from "react";
-import React, { useContext } from "react";
 import { authContext } from "../Context/authContext";
 
 const ShoppingCart = () => {
