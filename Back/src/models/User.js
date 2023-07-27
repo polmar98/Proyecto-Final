@@ -44,6 +44,10 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      avatar: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      }
     },
     { timestamps: false }
   );

@@ -20,10 +20,10 @@ module.exports = (sequelize) => {
       },
       idBill: {
         type: DataTypes.INTEGER,
-        defaultValue: 0, //este id apuntara al id en la tabla de facturas cuando se haga el pago
+        defaultValue: 0, //este id apuntará al id en la tabla de facturas cuando se realice el pago
       },
       fullValue: {
-        //almacenara el valor total de la precompra
+        //almacenará el valor total de la precompra
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },
