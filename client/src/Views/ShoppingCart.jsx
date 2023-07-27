@@ -32,8 +32,8 @@ const ShoppingCart = () => {
     }
   };
 
-  // const calculateTotal = (items) => {
-  //   let total = 0;
+  // const calculateTotal =   (items) => {
+  //   let total   = 0;
   //   console.log(items);
   //   items?.forEach((item) => (total += item.price * item.quantity));
   //   return total.toFixed(2);
