@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   GithubAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import getFriendlyErrorMessage from "./errorMessages";
@@ -35,6 +36,18 @@ export const AuthProvider = ({ children }) => {
     });
     return unsubscribe;
   }, []);
+
+  const resetPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("Se ha enviado un correo para restablecer la contraseña");
+      })
+      .catch((error) => {
+        console.log(error);
+        const errorCode = getFriendlyErrorMessage(error.code);
+        setError(errorCode);
+      });
+  };
 
   const logout = () => {
     setCurrentUser(null);
@@ -125,6 +138,7 @@ export const AuthProvider = ({ children }) => {
     signInWithGithub,
     error,
     resetError,
+    resetPassword,
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;

@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         verdeFooter: "#295943",
+        verdeFooterHover: "#1e4735",
         customGray: "#FBFBFB",
       },
       fontSize: {
@@ -16,5 +17,9 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
+  content: [
+    // ...
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
 };

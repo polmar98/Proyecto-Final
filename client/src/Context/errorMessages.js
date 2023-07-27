@@ -9,7 +9,7 @@ const getFriendlyErrorMessage = (errorCode) => {
     case "auth/wrong-password":
       return "La contraseña es incorrecta.";
     case "auth/user-not-found":
-      return "El usuario no existe.";
+      return "El Email no existe.";
     case "auth/too-many-requests":
       return "Demasiados intentos de inicio de sesión fallidos. Inténtelo de nuevo más tarde.";
     case "auth/popup-closed-by-user":
@@ -22,6 +22,8 @@ const getFriendlyErrorMessage = (errorCode) => {
       return "El correo electrónico ya está en uso.";
     case "auth/invalid-credential":
       return "El inicio de sesión con  no está habilitado.";
+    case "auth/missing-email":
+      return "El correo electrónico es requerido.";
     default:
       return "Ha ocurrido un error. Inténtelo de nuevo más tarde.";
   }

@@ -3,6 +3,7 @@ import {
   REMOVE_ONE_FROM_CART,
   CLEAN_CART,
 } from "./shoppingCartActions";
+import { NEW_CART } from "../Users/usersActions";
 // import { getAllPackages } from "../Selectors/cartSelectors";
 
 const initialState = {
@@ -13,6 +14,11 @@ const initialState = {
 
 const shoppingCartReducer = (state = initialState, action) => {
   switch (action.type) {
+    case NEW_CART:
+      return {
+        ...state,
+        idCart: action.payload.cart.idcar,
+      };
     case ADD_TO_CART:
       // console.log('el reducer', action.payload)
       const itemexists = state.cart.find((el) => el.id === action.payload.id);
@@ -28,6 +34,7 @@ const shoppingCartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [...state.cart, action.payload],
+        idCart: action.payload.cart.id,
       };
 
     case REMOVE_ONE_FROM_CART:

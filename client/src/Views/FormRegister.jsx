@@ -17,7 +17,6 @@ const RegisterPage = () => {
   const {
     signInWithGoogle,
     signInWithGithub,
-    signInWithFacebook,
     register,
     currentUser,
     login,
@@ -25,7 +24,7 @@ const RegisterPage = () => {
     resetError,
   } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [userCreated, setUserCreated] = useState(false);
+
   const [isValid, setIsValid] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -44,7 +43,6 @@ const RegisterPage = () => {
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
-      toast.error(error);
     }
     if (currentUser) {
       navigate("/home"); // redirige a la ruta /home
@@ -91,7 +89,7 @@ const RegisterPage = () => {
           displayName: `${name} ${lastName}`,
         });
         dispatch(addUser(user));
-        setUserCreated(true);
+
         toast.success(`Bienvenido ${name}!`);
         login(email, password);
         navigate("/home");
@@ -118,7 +116,7 @@ const RegisterPage = () => {
             password: tokenResponse.localId,
           })
         );
-        setUserCreated(true);
+
         toast.success(`Bienvenido ${tokenResponse.fullName}!`);
         navigate("/home");
       }
@@ -133,31 +131,20 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result) {
         const tokenResponse = result._tokenResponse;
+        console.log("result", result);
+        console.log("token", tokenResponse);
         dispatch(
           addUser({
             uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
-            password: tokenResponse.localId,
+            password: tokenResponse.idToken,
           })
         );
-        setUserCreated(true);
+
         toast.success(`Bienvenido ${tokenResponse.firstName}!`);
         navigate("/home");
-      }
-    } catch (error) {
-      setErrorMsg(error.message);
-      console.log(error);
-    }
-  };
-
-  const handleFacebook = async () => {
-    try {
-      const result = await signInWithFacebook();
-      if (result.success === true) {
-        dispatch(addUser(result.user));
-        setUserCreated(true);
       }
     } catch (error) {
       setErrorMsg(error.message);
