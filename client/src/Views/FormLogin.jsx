@@ -10,11 +10,8 @@ import { loginUser } from "../Redux/Users/usersActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
-=======
 import { GrFormClose } from "react-icons/gr";
->>>>>>> 47ade0e1e8547301aeee9803b2b26334a69bacba
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { authContext } from "../Context/authContext";
 import Footer from "../Components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
+  const { currentUser } = useContext(authContext);
+
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
 
@@ -56,6 +59,10 @@ function Detail() {
     dispatch(getPackageById(id));
     dispatch(fetchAirlines());
     dispatch(fetchHotels());
+
+    if (currentUser) {
+      dispatch(userShopping(currentUser.uid));
+    }
     // dispatch(fetchComments())
     dispatch(clearPackageDetails());
     return () => {

@@ -12,11 +12,11 @@ export const add_to_cart = (item) => {
     payload: item,
   };
 };
-export const userShopping = (id) => {
+export const userShopping = (uid) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/shoppingCar/user/${id}`
+        `http://localhost:3002/shoppingCar/user/${uid}`
       );
       const data = response.data;
       console.log("esto es data de action:", data);
