@@ -20,9 +20,9 @@ function Detail() {
   const { currentUser } = useContext(authContext);
 
   const { id } = useParams();
-  const user = useSelector((state) => state.users.user);
+  // const user = useSelector((state) => state.users.user);
 
-  console.log("USER EN DETAIL: ", user);
+  console.log("USER EN DETAIL: ", currentUser);
   // const user = 31;
 
   const navigate = useNavigate();
@@ -64,11 +64,11 @@ function Detail() {
       dispatch(userShopping(currentUser.uid));
     }
     // dispatch(fetchComments())
-    dispatch(clearPackageDetails());
     return () => {
+      dispatch(clearPackageDetails());
       // dispatch(clearPackageDetails());
     };
-  }, [id, dispatch]);
+  }, [id, dispatch, currentUser]);
 
   // item para guardar en el carrito
   const item = {
@@ -158,7 +158,7 @@ function Detail() {
     if (idCart !== 0) {
       dispatch(add_to_cart(item));
       guardarEnBDD(item);
-      dispatch(userShopping(user));
+      dispatch(userShopping(currentUser.uid));
     } else {
       // }
       // } else {

@@ -107,51 +107,47 @@ const CartItem = ({ props }) => {
 
   return (
     <div className="bg-white shadow-xl rounded-lg p-6 m-4">
-      {props.items &&
-        props.items.map((el, index) => (
+      
           <div
-            key={index}
             className="flex items-center justify-between border-b-2 border-gray-200 py-4"
           >
             {/* Agregué un contenedor para la imagen y el título del producto */}
             <div className="flex items-center">
-              {/* <img
-                src={el.image}
-                alt={el.title}
+              <img
+                src={props.image}
+                alt={props.title}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
-              /> */}
-              <h2 className="text-lg">{el.title}</h2>
+              />
+              <h2 className="text-lg">{props.title}</h2>
             </div>
 
             {/* Agregué un contenedor para la cantidad y el precio */}
             <div className="flex items-center">
               <div className="mr-4">
-                <label htmlFor={`amount${index}`} className="block text-sm">
+                <label className="block text-sm">
                   Cantidad:
                 </label>
                 <input
-                  id={`amount${index}`}
                   type="number"
                   min="1"
-                  value={el.amount}
+                  value={props.amount}
                   className="w-16 mt-1 border rounded-md p-1"
                 />
               </div>
               <div>
                 <p className="text-sm">Precio:</p>
-                <p className="text-lg font-semibold">USD {el.unitPrice}</p>
+                <p className="text-lg font-semibold">USD {props.unitPrice}</p>
               </div>
             </div>
 
             {/* Botón de eliminar */}
             <button
               className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"
-              onClick={() => clearItem(el)}
+              onClick={() => clearItem(props.idProduct)}
             >
               <FiTrash2 size={24} />
             </button>
           </div>
-        ))}
     </div>
   );
 };

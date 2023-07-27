@@ -5,6 +5,7 @@ export const REMOVE_ONE_FROM_CART = "REMOVE_ONE_FROM_CART";
 export const REMOVE_ALL_FROM_CART = "REMOVE_ALL_FROM_CART";
 export const CLEAN_CART = "CLEAN_CART";
 export const CHECKUSER_SHOPPING = "CHECKUSER_SHOPPING";
+export const SAVE_ITEM_DB = "SAVE_ITEM_DB"
 
 export const add_to_cart = (item) => {
   return {
@@ -30,6 +31,7 @@ export const userShopping = (uid) => {
   };
 };
 
+
 export const remove_one_from_cart = (id) => {
   return {
     type: REMOVE_ONE_FROM_CART,
@@ -37,8 +39,19 @@ export const remove_one_from_cart = (id) => {
   };
 };
 
-export const clean_cart = () => {
-  return {
-    type: CLEAN_CART,
-  };
+export const clean_cart = (idCart) => {
+  return async (dispatch) => {
+    try {
+       axios.delete(
+      `http://localhost:3002/shoppingCar/${idCart}`
+      );
+      // const data = response.data;
+      return dispatch({
+        type: CLEAN_CART,
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
 };
