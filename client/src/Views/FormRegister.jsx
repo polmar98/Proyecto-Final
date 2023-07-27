@@ -131,18 +131,17 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result) {
         const tokenResponse = result._tokenResponse;
-        console.log("result", result);
-        console.log("token", tokenResponse);
+
         dispatch(
           addUser({
             uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
-            password: tokenResponse.idToken,
+            // password: tokenResponse.idToken,
           })
         );
-        setUserCreated(true);
+        // setUserCreated(true);
         toast.success(`Bienvenido ${tokenResponse.firstName}!`);
         navigate("/home");
       }

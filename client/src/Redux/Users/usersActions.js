@@ -60,7 +60,7 @@ export const addUser = (newUser) => {
       const cartResponse = await axios.post(
         `http://localhost:3002/shoppingCar/user/${user.uid}`
       );
-      dispatch(userShopping(user.id));
+      dispatch(userShopping(user.uid));
       //   const response = await axios.get(
       //   `http://localhost:3002/shoppingCar/user/${user.id}`
       // );   const data = response.data;
@@ -77,7 +77,7 @@ export const addUser = (newUser) => {
       // console.log("CARTTTTT:", cart);
       return user;
     } catch (error) {
-      console.log(error);
+      console.log("EL ERROR::: ", error);
     }
   };
 };
