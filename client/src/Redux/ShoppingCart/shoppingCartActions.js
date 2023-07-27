@@ -32,17 +32,27 @@ export const userShopping = (uid) => {
 };
 
 
-export const remove_one_from_cart = (id) => {
-  return {
-    type: REMOVE_ONE_FROM_CART,
-    payload: id,
-  };
+export const remove_one_from_cart = (item) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(
+        `http://localhost:3002/shoppingCar/`, {data: item}
+      )
+      return dispatch({
+        type: REMOVE_ONE_FROM_CART,
+        payload: item,
+      });
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
 };
 
 export const clean_cart = (idCart) => {
   return async (dispatch) => {
     try {
-       axios.delete(
+       await axios.delete(
       `http://localhost:3002/shoppingCar/${idCart}`
       );
       // const data = response.data;

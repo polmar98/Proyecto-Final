@@ -20,11 +20,12 @@ const ShoppingCart = () => {
   const idCart = useSelector((state) => state.carrito.idCart);
 
   let cartItems = useSelector((state) => state.carrito.cart);
-  const user = useSelector((state) => state.users.user);
+  console.log('estado global', cartItems)
+  // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
-  const items = user ? cartItems : localStorageItems;
+  const items = currentUser ? cartItems : localStorageItems;
 
   useEffect(() => {
     if (currentUser) {
@@ -43,12 +44,12 @@ const ShoppingCart = () => {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
     );
-    if (userConfirm && !user) {
+    if (userConfirm && !currentUser) {
       localStorage.clear("carrito");
       navigate("/shoppingCart");
       alert("El carrito fue vaciado con éxito.");
     }
-    if (userConfirm && user) {
+    if (userConfirm && currentUser) {
       dispatch(clean_cart(idCart)).catch((error) => {
         alert("Oops! Algo salió mal. Intentalo nuevamente.");
       });

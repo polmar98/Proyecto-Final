@@ -1,6 +1,10 @@
-import { useSelector } from "react-redux";
+import React, { useContext} from "react";
+import { authContext } from "../Context/authContext";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
+import { remove_one_from_cart } from "../Redux/ShoppingCart/shoppingCartActions";
+
 
 // const CartItem = ({ props }) => {
 //   const user = useSelector((state) => state.users.user);
@@ -77,17 +81,19 @@ import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-i
 //         </button>
 
 const CartItem = ({ props }) => {
+  const { currentUser } = useContext(authContext);
+  const dispatch = useDispatch()
   console.log(props);
 
   const navigate = useNavigate();
-  const user = useSelector((state) => state.users.user);
+  // const user = useSelector((state) => state.users.user);
 
   function clearItem(itemToRemove) {
     const userConfirm = window.confirm(
       "Se eliminará este item del carrito, quieres continuar?"
     );
 
-    if (userConfirm && !user) {
+    if (userConfirm && !currentUser) {
       let localStorageJSON = localStorage.getItem("carrito");
       let storedItems = [];
       if (localStorageJSON !== null) {
@@ -101,6 +107,9 @@ const CartItem = ({ props }) => {
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
     }
+    else if (userConfirm && currentUser) {
+      dispatch(remove_one_from_cart(itemToRemove));
+    } else return;
 
     navigate("/shoppingCart");
   }
@@ -143,7 +152,7 @@ const CartItem = ({ props }) => {
             {/* Botón de eliminar */}
             <button
               className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"
-              onClick={() => clearItem(props.idProduct)}
+              onClick={() => clearItem(props)}
             >
               <FiTrash2 size={24} />
             </button>

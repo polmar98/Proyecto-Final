@@ -38,12 +38,12 @@ const shoppingCartReducer = (state = initialState, action) => {
         idCart: action.payload.id,
       };
 
-    // case REMOVE_ONE_FROM_CART:
-    //   let deleteOne = state.cart.filter((el) => el.id !== action.payload);
-    //   return {
-    //     ...state,
-    //     cart: [deleteOne],
-    //   };
+    case REMOVE_ONE_FROM_CART:
+      let deleteOne = state.cart.filter((el) => el.idProduct !== action.payload.idProduct);
+      return {
+        ...state,
+        cart: [deleteOne],
+      };
 
     case CLEAN_CART:
       return {
