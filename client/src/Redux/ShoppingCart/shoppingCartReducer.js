@@ -18,16 +18,16 @@ const shoppingCartReducer = (state = initialState, action) => {
    
     case ADD_TO_CART:
       // console.log('el reducer', action.payload)
-      const itemexists = state.cart.find((el) => el.idProduct === action.payload.idProduct);
-      if (itemexists) {
-        return {
-          ...state,
-          cart: [
-            ...state.cart,
-            state.cart[itemexists]= {...itemexists, amount: action.payload.amount + 1 }
-          ],
-        };
-      }
+      // const itemexists = state.cart.find((el) => el.idProduct === action.payload.idProduct);
+      // if (itemexists) {
+      //   return {
+      //     ...state,
+      //     cart: [
+      //       ...state.cart,
+      //       state.cart[itemexists]= {...itemexists, amount: action.payload.amount + 1 }
+      //     ],
+      //   };
+      // }
       return {
         ...state,
         cart: [...state.cart, action.payload.ItemsShoppingCars],
@@ -35,23 +35,22 @@ const shoppingCartReducer = (state = initialState, action) => {
       };
 
       case SET_ITEM:
-        let item = state.cart.find(el => el.productId === action.payload.productId)
-        if(item){
+        state.cart.forEach((el)=> {
+          if(el.productId === action.payload.productId)
+              el.amount = action.payload.amount
+              el.totalPrice = el.unitPrice * el.amount
+        })
           return {
             ...state,
-            cart: [...state.cart, {...item, amount: action.payload.amount} ]
+            cart: [...state.cart]
           }
-        }
-        return {
-          ...state,
-          
-        }
+        
 
     case REMOVE_ONE_FROM_CART:
       let deleteOne = state.cart.filter((el) => el.idProduct !== action.payload.idProduct);
       return {
         ...state,
-        cart: [deleteOne],
+        cart: deleteOne,
       };
 
     case CLEAN_CART:

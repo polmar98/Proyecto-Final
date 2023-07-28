@@ -4,6 +4,10 @@ const Flights =  ({tour, airline }) => {
     const {outboundFlight, returnFlight} = tour;
     const {airlineName} = airline
 
+    if(!airline){
+      return <div> cargando... </div>
+    }
+
     return (
 
         <div className="text-left fontPoppins mt-auto">

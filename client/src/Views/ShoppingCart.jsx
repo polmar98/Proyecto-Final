@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   clean_cart,
   userShopping,
-  set_item,
 } from "../Redux/ShoppingCart/shoppingCartActions";
 import { Link } from "react-router-dom";
 import {
@@ -34,30 +33,8 @@ const ShoppingCart = () => {
     }
   }, [dispatch, currentUser]);
 
-  //manejar el cambio de la cantidad de items
-  function handleAmountChange(idProduct, newAmount) {
-    if (currentUser) {
-      dispatch(set_item(idCart, idProduct, newAmount));
-    } else {
-      const localStorageJSON = localStorage.getItem("carrito");
-      let storedItems = [];
-
-      if (localStorageJSON !== null) {
-        storedItems = JSON.parse(localStorageJSON);
-      }
-
-      const findItem = storedItems.find(
-        (item) => item.items[0].idProduct === idProduct
-      );
-
-      if (findItem) {
-        findItem.items[0].amount = newAmount;
-        const updatedItemsJSON = JSON.stringify(storedItems);
-        localStorage.setItem("carrito", updatedItemsJSON);
-      }
-    }
-  }
-
+  //
+ 
   function clearCart() {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
@@ -76,6 +53,13 @@ const ShoppingCart = () => {
     } else return;
   }
 
+  function calculateTotal(items){
+    const total = items.reduce((acc, el) => {
+      return acc + el.unitPrice * el.amount;
+    }, 0);
+    return total;
+  }
+  
   // console.log(items);
 
   return (
@@ -89,8 +73,8 @@ const ShoppingCart = () => {
             {items?.map((el, index) => (
               <CartItem
                 key={index}
-                props={el}
-                handleAmountChange={handleAmountChange}
+                item={el}
+                cart={idCart}
               />
             ))}
             <div className="flex justify-between items-center mt-5">
@@ -118,17 +102,17 @@ const ShoppingCart = () => {
               <h1 className="text-lg font-bold mb-4">Resumen de compra</h1>
               <div className="flex justify-between mb-2">
                 <span>Subtotal</span>
-                {/* <span>$ {calculateTotal(items)}</span> */}
+                <span>$ {calculateTotal(items)}</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>Impuestos (10%)</span>
-                {/* <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span> */}
+                <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span>
               </div>
               <hr className="border-t border-gray-200" />
               <div className="flex justify-between mt-2">
                 <span className="font-bold">Total</span>
                 <span className="font-bold">
-                  {/* $ {(calculateTotal(items) * 1.1).toFixed(2)} */}
+                  $ {(calculateTotal(items) * 1.1).toFixed(2)}
                 </span>
               </div>
               <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">

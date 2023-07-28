@@ -3,7 +3,7 @@ import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
-import { remove_one_from_cart} from "../Redux/ShoppingCart/shoppingCartActions";
+import { remove_one_from_cart, set_item} from "../Redux/ShoppingCart/shoppingCartActions";
 
 
 // const CartItem = ({ props }) => {
@@ -80,26 +80,63 @@ import { remove_one_from_cart} from "../Redux/ShoppingCart/shoppingCartActions";
 //           <FiTrash2 className="mr-2" />
 //         </button>
 
-const CartItem = ({ props }) => {
+const CartItem = ({ item, cart }) => {
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const [currentAmount, setCurrentAmount] = useState(1);
+  const {idCart} = cart
   
   // console.log(props);
   
   
   //chequea que haya props, sino rompe.
-  if (!props) {
+  if (!item) {
     return <div>Cargando...</div>;
   }
+
+  function handleAmountChange(idCart, itemToUpdate) {
+    if (currentUser) {
+      dispatch(set_item(idCart, { 
+        amount: currentAmount,
+        unitPrice: item.standarPrice,
+        totalPrice: item.standarPrice,
+        typeProduct: 1,
+        idProduct: item.id,
+        title: item.title,
+        image: item.image,
+      }))
+    } else {
+      const localStorageJSON = localStorage.getItem("carrito");
+      let storedItems = [];
+
+      if (localStorageJSON !== null) {
+        storedItems = JSON.parse(localStorageJSON);
+      }
+
+      const findItem = storedItems.find(
+        (item) => item.items[0].idProduct === item.idProduct
+      );
+
+      if (findItem) {
+        findItem.items[0].amount = currentAmount;
+        const updatedItemsJSON = JSON.stringify(storedItems);
+        localStorage.setItem("carrito", updatedItemsJSON);
+      }
+    }
+  }
+
 
   
   //maneja el input de cantidad, ver funcion. hay que desarrollarla en el componente padre shoppingcart.
   const handleChange = (e) => {
     const newAmount = parseInt(e.target.value);
     setCurrentAmount(newAmount);
-    // handleAmountChange(props.idProduct, newAmount);
+    handleAmountChange(idCart, item);
+  };
+
+  const handleBlur = () => {
+    handleAmountChange(idCart, item);
   };
   
 
@@ -124,7 +161,7 @@ const CartItem = ({ props }) => {
       navigate("/shoppingCart");
     }
     else if (userConfirm && currentUser) {
-      dispatch(remove_one_from_cart(itemToRemove));
+      dispatch(remove_one_from_cart(item));
       navigate("/shoppingCart");
     } else return;
 
@@ -139,11 +176,11 @@ const CartItem = ({ props }) => {
             {/* Agregué un contenedor para la imagen y el título del producto */}
             <div className="flex items-center">
               <img
-                src={props.image}
-                alt={props.title}
+                src={item.image}
+                alt={item.title}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
               />
-              <h2 className="text-lg">{props.title}</h2>
+              <h2 className="text-lg">{item.title}</h2>
             </div>
 
             {/* Agregué un contenedor para la cantidad y el precio */}
@@ -159,19 +196,20 @@ const CartItem = ({ props }) => {
                   name= "amount"
                   value={currentAmount}
                   onChange={(event) => handleChange(event)}
+                  onBlur={handleBlur}
                   className="w-16 mt-1 border rounded-md p-1"
                 />
               </div>
               <div>
                 <p className="text-sm">Precio:</p>
-                <p className="text-lg font-semibold">USD {props.unitPrice}</p>
+                <p className="text-lg font-semibold">USD {item.unitPrice}</p>
               </div>
             </div>
 
             {/* Botón de eliminar */}
             <button
               className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"
-              onClick={() => clearItem(props)}
+              onClick={() => clearItem(item)}
             >
               <FiTrash2 size={24} />
             </button>
