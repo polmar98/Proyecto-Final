@@ -20,13 +20,12 @@ const ShoppingCart = () => {
   const idCart = useSelector((state) => state.carrito.idCart);
 
   let cartItems = useSelector((state) => state.carrito.cart);
-  console.log("estado global", cartItems);
+  // console.log("estado global", cartItems);
   // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
   const items = currentUser ? cartItems : localStorageItems;
-
   useEffect(() => {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
@@ -34,7 +33,7 @@ const ShoppingCart = () => {
   }, [dispatch, currentUser]);
 
   //
- 
+
   function clearCart() {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
@@ -53,14 +52,12 @@ const ShoppingCart = () => {
     } else return;
   }
 
-  function calculateTotal(items){
+  function calculateTotal(items) {
     const total = items.reduce((acc, el) => {
       return acc + el.unitPrice * el.amount;
     }, 0);
     return total;
   }
-  
-  // console.log(items);
 
   return (
     <div>
@@ -71,11 +68,7 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem
-                key={index}
-                item={el}
-                cart={idCart}
-              />
+              <CartItem key={index} item={el} cart={idCart} />
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link

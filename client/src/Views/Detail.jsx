@@ -22,7 +22,7 @@ function Detail() {
   const { id } = useParams();
   // const user = useSelector((state) => state.users.user);
 
-  console.log("USER EN DETAIL: ", currentUser);
+  // console.log("USER EN DETAIL: ", currentUser);
   // const user = 31;
 
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function Detail() {
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
   const airlineName = airlineData ? airlineData.name : "Desconocida";
-  console.log('aerolinea', airlineName)
+  console.log("aerolinea", airlineName);
 
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
@@ -146,6 +146,7 @@ function Detail() {
           body: JSON.stringify(item),
         }
       );
+      //      console.log(response1);
     }
   }
 
