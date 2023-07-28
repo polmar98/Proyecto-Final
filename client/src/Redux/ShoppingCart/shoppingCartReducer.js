@@ -8,30 +8,25 @@ import {
 // import { getAllPackages } from "../Selectors/cartSelectors";
 
 const initialState = {
-  products: [],
   cart: [],
   idCart: 0,
 };
 
 const shoppingCartReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case NEW_CART:
-    //   return {
-    //     ...state,
-    //     idCart: action.payload.cart.idcar,
-    //   };
+   
     case ADD_TO_CART:
       // console.log('el reducer', action.payload)
-      // const itemexists = state.cart.find((el) => el.id === action.payload.id);
-      // if (itemexists) {
-      //   return {
-      //     ...state,
-      //     cart: [
-      //       ...state.cart,
-      //       { ...itemexists, amount: itemexists.amount + 1 },
-      //     ],
-      //   };
-      // }
+      const itemexists = state.cart.find((el) => el.idProduct === action.payload.idProduct);
+      if (itemexists) {
+        return {
+          ...state,
+          cart: [
+            ...state.cart,
+            state.cart[itemexists]= {...itemexists, amount: action.payload.amount + 1 }
+          ],
+        };
+      }
       return {
         ...state,
         cart: [...state.cart, action.payload.ItemsShoppingCars],
