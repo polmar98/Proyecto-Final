@@ -54,10 +54,10 @@ router.get('/:id', async (req, res) => {
 });
 
 // Ruta para obtener todos los comentarios de un mismo usuario
-router.get('/user/:id', async (req, res) => {
-  const {id}= req.params;
+router.get('/user', async (req, res) => {
+  const search= req.query;
   try {
-    const comments = await getCommentByIdUser(id); // Llamar al controlador para obtener todos los comentarios
+    const comments = await getCommentByIdUser(search); // Llamar al controlador para obtener todos los comentarios
     res.status(200).json(comments); // Devolver los comentarios como respuesta
   } catch (error) {
     res.status(500).json({ message: error.message }); // Manejar cualquier error que ocurra durante la obtención de los comentarios

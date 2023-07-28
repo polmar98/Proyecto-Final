@@ -88,8 +88,8 @@ Hotel.belongsTo(City, { foreignKey: "idCity", targetKey: "id" });
 Package.hasMany(Activity, { foreignKey: "idPackage", sourceKey: "id" });
 Activity.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 
-User.hasMany(Comment, { foreignKey: "idUser", sourceKey: "id" });
-Comment.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
+User.hasMany(Comment, { foreignKey: "uidUser", sourceKey: "uid" });
+Comment.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
 
 User.hasMany(ShoppingCar, { foreignKey: "uidUser", sourceKey: "uid" });
 ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
@@ -97,8 +97,8 @@ ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
 ShoppingCar.hasMany(ItemsShoppingCar, {foreignKey: "idShoppingCar",  sourceKey: "id" });
 ItemsShoppingCar.belongsTo(ShoppingCar, { foreignKey: "idShoppingCar",  targetKey: "id" });
 
-User.hasMany(Bill, { foreignKey: "idUser", sourceKey: "id" });
-Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
+User.hasMany(Bill, { foreignKey: "uidUser", sourceKey: "uid" });
+Bill.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
 
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });

@@ -3,33 +3,35 @@ const { Association } = require("sequelize");
 
 // Controlador para crear nuevos comentarios
 const createComment = async (datos) => {
-    const { userId, testimony, idPackage } = datos;
+    const { uidUser, testimony, idPackage } = datos;
 
     // Verificar si falta algún elemento obligatorio
-    if (!userId || !testimony || !idPackage) {
+    if (!uidUser || !testimony || !idPackage) {
       return { message: 'Falta uno o más elementos obligatorios'};
-    }
-
+    };
+    
     // Verificar si el usuario existe
-    const existingUser = await User.findByPk(userId);
+    const existingUser = await User.findOne({where: {uid: uidUser}});
     if (!existingUser) {
       return { message: 'El usuario no existe' };
-    }
+    };
+
 
     // verificar si existe el paquete
     const existingPackage = await Package.findByPk(idPackage);
     if (!existingPackage) {
       return { message: 'El paquete no existe' };
     }  
-    const newComment = await Comment.create({ idUser: userId, testimony, idPackage });
+    const newComment = await Comment.create({ uidUser, testimony, idPackage });
     return newComment;
 
 };
 
 // Controlador para obtener todos los comentarios
 const getAllComments = async () => {
+   console.log("aqui");
     const comments = await Comment.findAll({
-       include: [ { association: "User", attributes: ["id", "name", "lastName", "avatar"]},
+       include: [ { association: "User", attributes: ["uidUser", "name", "lastName", "avatar"]},
                   { association: "Package", attributes: ["id", "title", "idCity"]} ]
     });
     return comments;
@@ -38,7 +40,7 @@ const getAllComments = async () => {
 // Controlador para obtener un comentario por su ID
 const getCommentById = async (id) => {
     const comment = await Comment.findByPk(id, {
-      include: [{ association: "User", attributes: ["id", "name", "lastName", "avatar"] },
+      include: [{ association: "User", attributes: ["uidUser", "name", "lastName", "avatar"] },
                 { association: "Package", attributes: ["id", "title", "idCity"]}]
     }); // Buscar el comentario por su ID en la base de datos
     return comment;
@@ -50,17 +52,17 @@ const getCommentByIdPackage = async(id) => {
    const idPac = Number(id);
    const comment = await Comment.findAll(
       {where: {idPackage: idPac},
-      include: [{ association: "User", attributes: ["id", "name", "lastName", "avatar"] },]
+      include: [{ association: "User", attributes: ["uidUser", "name", "lastName", "avatar"] },]
     });
    return comment;
 };
 
 //Controlador para obtener todos los comentarios de un usuario
-const getCommentByIdUser = async(id) => {
-  if(id == undefined) { return {message: "No ha definido Id del Usuario"}};
-  const idU = Number(id);
+const getCommentByIdUser = async(search) => {
+  if(search == undefined) { return {message: "No ha definido uid del Usuario"}};
+
   const comment = await Comment.findAll(
-     {where: {idUser: idU},
+     {where: {uidUser: search},
      include: [{ association: "Package", attributes: ["id", "title", "idCity"] },]
    });
   return comment;

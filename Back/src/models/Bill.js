@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },
+      uidUser: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     { timestamps: true }
   );
