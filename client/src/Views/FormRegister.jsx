@@ -100,12 +100,12 @@ const RegisterPage = () => {
     }
   };
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   const handleGithub = async () => {
     try {
       const result = await signInWithGithub();
-      console.log(result);
+      // console.log(result);
       if (result) {
         const tokenResponse = result._tokenResponse;
         dispatch(
@@ -131,9 +131,10 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result) {
         const tokenResponse = result._tokenResponse;
-
+        // console.log(tokenResponse);
         dispatch(
           addUser({
+            profile: 1,
             uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
