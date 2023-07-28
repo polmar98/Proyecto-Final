@@ -1,9 +1,9 @@
-import React, { useContext} from "react";
+import React, { useContext, useState} from "react";
 import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
-import { remove_one_from_cart } from "../Redux/ShoppingCart/shoppingCartActions";
+import { remove_one_from_cart} from "../Redux/ShoppingCart/shoppingCartActions";
 
 
 // const CartItem = ({ props }) => {
@@ -83,10 +83,25 @@ import { remove_one_from_cart } from "../Redux/ShoppingCart/shoppingCartActions"
 const CartItem = ({ props }) => {
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch()
-  console.log(props);
-
   const navigate = useNavigate();
-  // const user = useSelector((state) => state.users.user);
+  const [currentAmount, setCurrentAmount] = useState(1);
+  
+  // console.log(props);
+  
+  
+  //chequea que haya props, sino rompe.
+  if (!props) {
+    return <div>Cargando...</div>;
+  }
+
+  
+  //maneja el input de cantidad, ver funcion. hay que desarrollarla en el componente padre shoppingcart.
+  const handleChange = (e) => {
+    const newAmount = parseInt(e.target.value);
+    setCurrentAmount(newAmount);
+    // handleAmountChange(props.idProduct, newAmount);
+  };
+  
 
   function clearItem(itemToRemove) {
     const userConfirm = window.confirm(
@@ -106,12 +121,13 @@ const CartItem = ({ props }) => {
 
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
+      navigate("/shoppingCart");
     }
     else if (userConfirm && currentUser) {
       dispatch(remove_one_from_cart(itemToRemove));
+      navigate("/shoppingCart");
     } else return;
 
-    navigate("/shoppingCart");
   }
 
   return (
@@ -139,7 +155,10 @@ const CartItem = ({ props }) => {
                 <input
                   type="number"
                   min="1"
-                  value={props.amount}
+                  max="100"
+                  name= "amount"
+                  value={currentAmount}
+                  onChange={(event) => handleChange(event)}
                   className="w-16 mt-1 border rounded-md p-1"
                 />
               </div>
