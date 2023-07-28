@@ -1,8 +1,12 @@
 import React from "react";
 
-const Flights =  ({tour, airlinename }) => {
+const Flights =  ({tour, airline }) => {
     const {outboundFlight, returnFlight} = tour;
-    const {airlineName} = airlinename
+    const {airlineName} = airline
+
+    if(!airline){
+      return <div> cargando... </div>
+    }
 
     return (
 

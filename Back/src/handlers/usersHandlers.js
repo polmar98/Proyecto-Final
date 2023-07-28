@@ -10,7 +10,15 @@ const {
 const router = Router();
 
 // Crear un nuevo usuario
-router.post('/', createUser);
+router.post('/', async(req, res) => {
+   const datos = req.body;
+   try {
+      const result = await createUser(datos);
+      res.status(200).json(result);
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+});
 
 
 // Obtener todos los usuarios

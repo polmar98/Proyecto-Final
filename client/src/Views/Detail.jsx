@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { authContext } from "../Context/authContext";
 import Footer from "../Components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,24 +14,30 @@ import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
 import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 import NavBar from "../Components/NavBar";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
+  const { currentUser } = useContext(authContext);
+
   const { id } = useParams();
-  const user = useSelector((state) => state.users.user);
-  // console.log("USER:1223322332323 ", user);
+  // const user = useSelector((state) => state.users.user);
+
+  console.log("USER EN DETAIL: ", currentUser);
   // const user = 31;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
+  const car = useSelector((state) => state.carrito.cart);
   console.log("EL ID", idCart);
+  console.log("EL CART DE MIERDA ", car);
 
   //airline nombre
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
   const airlineName = airlineData ? airlineData.name : "Desconocida";
-  // console.log('aerolinea', airlineName)
+  console.log('aerolinea', airlineName)
 
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
@@ -52,28 +59,40 @@ function Detail() {
     dispatch(getPackageById(id));
     dispatch(fetchAirlines());
     dispatch(fetchHotels());
+
+    if (currentUser) {
+      dispatch(userShopping(currentUser.uid));
+    }
     // dispatch(fetchComments())
-    dispatch(clearPackageDetails());
     return () => {
+      dispatch(clearPackageDetails());
       // dispatch(clearPackageDetails());
     };
-  }, [id, dispatch]);
+  }, [id, dispatch, currentUser]);
 
   // item para guardar en el carrito
   const item = {
-    idUser: user,
-    items: [
-      {
-        image: tour.image,
-        amount: 1,
-        unitPrice: tour.standarPrice,
-        totalPrice: tour.promotionPrice,
-        typeProduct: 1,
-        idProduct: tour.id,
-        title: tour.title,
-      },
-    ],
+    amount: 1,
+    unitPrice: tour.standarPrice,
+    totalPrice: tour.standarPrice,
+    typeProduct: 1,
+    idProduct: tour.id,
+    title: tour.title,
+    image: tour.image,
   };
+
+  //   idUser: user,
+  //   items: [
+  //     {
+  //       amount: 1,
+  //       unitPrice: tour.standarPrice,
+  //       totalPrice: tour.standarPrice,
+  //       typeProduct: 1,
+  //       idProduct: tour.id,
+  //       title: tour.title,
+  //     },
+  //   ],
+  // };
   // {
   // 	 "idUser": 1,
   // 	 "items": [
@@ -115,7 +134,7 @@ function Detail() {
   }
 
   //! german
-  async function guardarEnBDD() {
+  async function guardarEnBDD(item) {
     if (idCart) {
       const response1 = await fetch(
         `http://localhost:3002/shoppingCar/${idCart}`,
@@ -138,7 +157,8 @@ function Detail() {
     // if (user) {
     if (idCart !== 0) {
       dispatch(add_to_cart(item));
-      guardarEnBDD();
+      guardarEnBDD(item);
+      dispatch(userShopping(currentUser.uid));
     } else {
       // }
       // } else {
@@ -195,7 +215,7 @@ function Detail() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 fontPoppins mt-6">
-          <Flights tour={tour} airlinename={airlineName} />
+          <Flights tour={tour} airline={airlineName} />
 
           <div className="text-right w-full flex flex-col justify-between bg-white mt-4 ">
             <h2 className="text-s font-medium">{tour.description}</h2>

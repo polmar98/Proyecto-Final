@@ -9,6 +9,7 @@ import { useAuth } from "../Context/authContext";
 
 function NavBar() {
   const cartItems = useSelector((state) => state.carrito.cart);
+  console.log();
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -19,10 +20,10 @@ function NavBar() {
     console.log("logout");
   };
 
-  const totalItemsInCart = cartItems.reduce(
-    (total, item) => total + item.amount,
-    0
-  );
+  // const totalItemsInCart = cartItems.reduce(
+  //   (total, item) => total + item.amount,
+  //   0
+  // );
 
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)

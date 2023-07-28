@@ -4,23 +4,15 @@ const { User } = require("../database.js");
 
 
 // Controller Nuevo Usuario 
-const createUser = async (req, res) => {
-  try {
-    const { uid, profile, name, lastName, email, password } = req.body;
-    /* console.log({ profile, name, lastName, email, password }); */
+const createUser = async (datos) => {
+     const { uid, profile, name, lastName, email } = datos;
+     //console.log(datos);
+     if(!uid || !profile || !email) {
+        return {message: "Datos Basicos incompletos"};
+     };
 
-    const newUser = await User.create({
-      uid, 
-      profile,
-      name,
-      lastName,
-      email,
-      password,
-    });
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+     const newUser = await User.create({ uid, profile, name, lastName, email, password: "" });
+     return newUser;
 };
 
 

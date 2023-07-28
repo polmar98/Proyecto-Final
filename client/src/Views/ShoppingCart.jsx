@@ -1,8 +1,13 @@
+import React, { useContext, useEffect } from "react";
+import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
 import { useSelector, useDispatch } from "react-redux";
-import { clean_cart } from "../Redux/ShoppingCart/shoppingCartActions";
+import {
+  clean_cart,
+  userShopping,
+} from "../Redux/ShoppingCart/shoppingCartActions";
 import { Link } from "react-router-dom";
 import {
   AiOutlineCheckCircle,
@@ -11,37 +16,51 @@ import {
 } from "react-icons/ai";
 
 const ShoppingCart = () => {
+  const { currentUser } = useContext(authContext);
+  const idCart = useSelector((state) => state.carrito.idCart);
+
   let cartItems = useSelector((state) => state.carrito.cart);
-  const user = useSelector((state) => state.users.user);
+  console.log("estado global", cartItems);
+  // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
-  const items = user ? cartItems : localStorageItems;
+  const items = currentUser ? cartItems : localStorageItems;
 
-  const calculateTotal = (items) => {
-    let total = 0;
-    console.log(items);
-    items?.forEach((item) => (total += item.price * item.quantity));
-    return total.toFixed(2);
-  };
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(userShopping(currentUser.uid));
+    }
+  }, [dispatch, currentUser]);
 
+  //
+ 
   function clearCart() {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
     );
-    if (userConfirm && !user) {
+    if (userConfirm && !currentUser) {
       localStorage.clear("carrito");
       navigate("/shoppingCart");
       alert("El carrito fue vaciado con éxito.");
     }
-    if (userConfirm && user) {
-      dispatch(clean_cart()).catch((error) => {
+    if (userConfirm && currentUser) {
+      dispatch(clean_cart(idCart)).catch((error) => {
         alert("Oops! Algo salió mal. Intentalo nuevamente.");
+        navigate("/shoppingCart");
+        alert("El carrito fue vaciado con éxito.");
       });
     } else return;
   }
 
-  console.log(items);
+  function calculateTotal(items){
+    const total = items.reduce((acc, el) => {
+      return acc + el.unitPrice * el.amount;
+    }, 0);
+    return total;
+  }
+  
+  // console.log(items);
 
   return (
     <div>
@@ -52,7 +71,11 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem key={index} props={el} />
+              <CartItem
+                key={index}
+                item={el}
+                cart={idCart}
+              />
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link
@@ -63,7 +86,9 @@ const ShoppingCart = () => {
                 Seguir comprando
               </Link>
               <button
-                onClick={clearCart}
+                onClick={() => {
+                  clearCart();
+                }}
                 className="text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded flex items-center transition-colors duration-300"
               >
                 <AiOutlineDelete className="mr-2" />

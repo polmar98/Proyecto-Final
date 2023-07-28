@@ -7,7 +7,7 @@ import {
   SEARCH_USERS,
   LOGIN_USER,
   LOGIN_USER_ERROR,
-  CHECKUSER_SHOPPING,
+  // CHECKUSER_SHOPPING,
 } from "./usersActions";
 
 const initialState = {
@@ -30,6 +30,7 @@ const usersReducer = (state = initialState, action) => {
     case ADD_USER:
       return {
         ...state,
+        user: action.payload.id,
       };
     case GET_USER_BY_ID:
       return {
@@ -54,7 +55,7 @@ const usersReducer = (state = initialState, action) => {
     case LOGIN_USER:
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.id,
       };
     case LOGIN_USER_ERROR:
       return {
@@ -62,11 +63,11 @@ const usersReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    case CHECKUSER_SHOPPING:
-      return {
-        ...state,
-        user: action.payload,
-      };
+    // case CHECKUSER_SHOPPING:
+    //   return {
+    //     ...state,
+    //     user: action.payload,
+    //   };
 
     default:
       return state;

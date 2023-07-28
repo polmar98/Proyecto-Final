@@ -10,6 +10,7 @@ import { loginUser } from "../Redux/Users/usersActions";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/authContext";
 import { toast } from "react-toastify";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 import { GrFormClose } from "react-icons/gr";
 
 const LoginPage = () => {
@@ -62,7 +63,7 @@ const LoginPage = () => {
     }
     try {
       await login(email, password);
-      dispatch(loginUser(user));
+      dispatch(loginUser(user), userShopping(user));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -87,6 +88,7 @@ const LoginPage = () => {
   const handleGoogle = async () => {
     try {
       await signInWithGoogle();
+      dispatch(userShopping(user));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);

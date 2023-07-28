@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sale from "../Components/Sale";
 import { authContext } from "../Context/authContext";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Home() {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchPackages());
+    if (currentUser) {
+      dispatch(userShopping(currentUser.uid));
+    }
 
     if (!user && !localStorage.getItem("carrito")) {
       //si no hay login y no existe el elemento carrito cuando carga el home

@@ -12,7 +12,7 @@ import { useAuth } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import validateForm from "../Utils/Validateform";
-
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 const RegisterPage = () => {
   const {
     signInWithGoogle,
@@ -131,15 +131,14 @@ const RegisterPage = () => {
       const result = await signInWithGoogle();
       if (result) {
         const tokenResponse = result._tokenResponse;
-        console.log("result", result);
-        console.log("token", tokenResponse);
+
         dispatch(
           addUser({
             uid: tokenResponse.localId,
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
-            password: tokenResponse.idToken,
+            // password: tokenResponse.idToken,
           })
         );
 

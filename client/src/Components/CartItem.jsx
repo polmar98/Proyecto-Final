@@ -1,6 +1,10 @@
-import { useSelector } from "react-redux";
+import React, { useContext, useState} from "react";
+import { authContext } from "../Context/authContext";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
+import { remove_one_from_cart, set_item} from "../Redux/ShoppingCart/shoppingCartActions";
+
 
 // const CartItem = ({ props }) => {
 //   const user = useSelector((state) => state.users.user);
@@ -76,18 +80,72 @@ import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-i
 //           <FiTrash2 className="mr-2" />
 //         </button>
 
-const CartItem = ({ props }) => {
-  console.log(props);
-
+const CartItem = ({ item, cart }) => {
+  const { currentUser } = useContext(authContext);
+  const dispatch = useDispatch()
   const navigate = useNavigate();
-  const user = useSelector((state) => state.users.user);
+  const [currentAmount, setCurrentAmount] = useState(1);
+  const {idCart} = cart
+  
+  // console.log(props);
+  
+  
+  //chequea que haya props, sino rompe.
+  if (!item) {
+    return <div>Cargando...</div>;
+  }
+
+  function handleAmountChange(idCart, itemToUpdate) {
+    if (currentUser) {
+      dispatch(set_item(idCart, { 
+        amount: currentAmount,
+        unitPrice: item.standarPrice,
+        totalPrice: item.standarPrice,
+        typeProduct: 1,
+        idProduct: item.id,
+        title: item.title,
+        image: item.image,
+      }))
+    } else {
+      const localStorageJSON = localStorage.getItem("carrito");
+      let storedItems = [];
+
+      if (localStorageJSON !== null) {
+        storedItems = JSON.parse(localStorageJSON);
+      }
+
+      const findItem = storedItems.find(
+        (item) => item.items[0].idProduct === item.idProduct
+      );
+
+      if (findItem) {
+        findItem.items[0].amount = currentAmount;
+        const updatedItemsJSON = JSON.stringify(storedItems);
+        localStorage.setItem("carrito", updatedItemsJSON);
+      }
+    }
+  }
+
+
+  
+  //maneja el input de cantidad, ver funcion. hay que desarrollarla en el componente padre shoppingcart.
+  const handleChange = (e) => {
+    const newAmount = parseInt(e.target.value);
+    setCurrentAmount(newAmount);
+    handleAmountChange(idCart, item);
+  };
+
+  const handleBlur = () => {
+    handleAmountChange(idCart, item);
+  };
+  
 
   function clearItem(itemToRemove) {
     const userConfirm = window.confirm(
       "Se eliminará este item del carrito, quieres continuar?"
     );
 
-    if (userConfirm && !user) {
+    if (userConfirm && !currentUser) {
       let localStorageJSON = localStorage.getItem("carrito");
       let storedItems = [];
       if (localStorageJSON !== null) {
@@ -100,58 +158,62 @@ const CartItem = ({ props }) => {
 
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
+      navigate("/shoppingCart");
     }
+    else if (userConfirm && currentUser) {
+      dispatch(remove_one_from_cart(item));
+      navigate("/shoppingCart");
+    } else return;
 
-    navigate("/shoppingCart");
   }
 
   return (
     <div className="bg-white shadow-xl rounded-lg p-6 m-4">
-      {props.items &&
-        props.items.map((el, index) => (
+      
           <div
-            key={index}
             className="flex items-center justify-between border-b-2 border-gray-200 py-4"
           >
             {/* Agregué un contenedor para la imagen y el título del producto */}
             <div className="flex items-center">
-              {/* <img
-                src={el.image}
-                alt={el.title}
+              <img
+                src={item.image}
+                alt={item.title}
                 className="w-20 h-20 object-cover rounded-lg mr-4"
-              /> */}
-              <h2 className="text-lg">{el.title}</h2>
+              />
+              <h2 className="text-lg">{item.title}</h2>
             </div>
 
             {/* Agregué un contenedor para la cantidad y el precio */}
             <div className="flex items-center">
               <div className="mr-4">
-                <label htmlFor={`amount${index}`} className="block text-sm">
+                <label className="block text-sm">
                   Cantidad:
                 </label>
                 <input
-                  id={`amount${index}`}
                   type="number"
                   min="1"
-                  value={el.amount}
+                  max="100"
+                  name= "amount"
+                  value={currentAmount}
+                  onChange={(event) => handleChange(event)}
+                  onBlur={handleBlur}
                   className="w-16 mt-1 border rounded-md p-1"
                 />
               </div>
               <div>
                 <p className="text-sm">Precio:</p>
-                <p className="text-lg font-semibold">USD {el.unitPrice}</p>
+                <p className="text-lg font-semibold">USD {item.unitPrice}</p>
               </div>
             </div>
 
             {/* Botón de eliminar */}
             <button
               className="text-red-500 hover:text-red-700 transition duration-150 ease-in-out"
-              onClick={() => clearItem(el)}
+              onClick={() => clearItem(item)}
             >
               <FiTrash2 size={24} />
             </button>
           </div>
-        ))}
     </div>
   );
 };
