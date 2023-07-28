@@ -3,7 +3,7 @@ const {getActivity,
     searchNameActivity,
     createActivity,
     getActivityById,
-    deleteActivity,
+    desactivActivity,
     updateActivity,
 } = require('../controllers/activitiesControllers');
 
@@ -48,20 +48,20 @@ router.post('/', async(req, res) =>{
 })
 
 //Ruta para eliminar actividades
-router.delete('/delete/:id', async (req, res) => {
+router.put('/desactive/:id', async (req, res) => {
     const { id } = req.params;
     try {
-     const deleteActi = await deleteActivity(id);
+     const deleteActi = await desactivActivity(id, false);
       res.status(200).json(deleteActi);
     } catch (error) {
       console.log('error');
-      res.status(400).send({ error: 'Delete Fail' });
+      res.status(400).send({ error: 'Desactive Fail' });
     }
   });
 
 router.put('/update/:id', async (req, res) => {
     const { id } = req.params;
-    const newData = req.body; // Espera que los nuevos datos a actualizar se envíen en el cuerpo de la solicitud
+    const {newData} = req.body; // Espera que los nuevos datos a actualizar se envíen en el cuerpo de la solicitud
   
     try {
       const updatedActi = await updateActivity(id, newData);
