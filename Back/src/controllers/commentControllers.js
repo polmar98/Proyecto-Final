@@ -29,7 +29,6 @@ const createComment = async (datos) => {
 
 // Controlador para obtener todos los comentarios
 const getAllComments = async () => {
-   console.log("aqui");
     const comments = await Comment.findAll({
        include: [ { association: "User", attributes: ["uidUser", "name", "lastName", "avatar"]},
                   { association: "Package", attributes: ["id", "title", "idCity"]} ]

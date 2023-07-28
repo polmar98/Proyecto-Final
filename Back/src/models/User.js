@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
       uid: {
         type: DataTypes.STRING, //
         unique: true,
+        alowNull: false,
       },
       profile: {
         type: DataTypes.INTEGER,
