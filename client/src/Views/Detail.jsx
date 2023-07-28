@@ -37,7 +37,7 @@ function Detail() {
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
   const airlineName = airlineData ? airlineData.name : "Desconocida";
-  // console.log('aerolinea', airlineName)
+  console.log('aerolinea', airlineName)
 
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
@@ -215,7 +215,7 @@ function Detail() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 fontPoppins mt-6">
-          <Flights tour={tour} airlinename={airlineName} />
+          <Flights tour={tour} airline={airlineName} />
 
           <div className="text-right w-full flex flex-col justify-between bg-white mt-4 ">
             <h2 className="text-s font-medium">{tour.description}</h2>

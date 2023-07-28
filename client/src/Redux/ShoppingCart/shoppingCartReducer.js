@@ -3,6 +3,7 @@ import {
   REMOVE_ONE_FROM_CART,
   CLEAN_CART,
   CHECKUSER_SHOPPING,
+  SET_ITEM
 } from "./shoppingCartActions";
 // import { CHECKUSER_SHOPPING } from "../Users/usersActions";
 // import { getAllPackages } from "../Selectors/cartSelectors";
@@ -37,6 +38,19 @@ const shoppingCartReducer = (state = initialState, action) => {
         cart: [...state.cart, action.payload.ItemsShoppingCars],
         idCart: action.payload.id,
       };
+
+      case SET_ITEM:
+        let item = state.cart.find(el => el.productId === action.payload.productId)
+        if(item){
+          return {
+            ...state,
+            cart: [...state.cart, {...item, amount: action.payload.amount} ]
+          }
+        }
+        return {
+          ...state,
+          
+        }
 
     case REMOVE_ONE_FROM_CART:
       let deleteOne = state.cart.filter((el) => el.idProduct !== action.payload.idProduct);

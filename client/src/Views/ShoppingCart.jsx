@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   clean_cart,
   userShopping,
+  set_item,
 } from "../Redux/ShoppingCart/shoppingCartActions";
 import { Link } from "react-router-dom";
 import {
@@ -20,7 +21,7 @@ const ShoppingCart = () => {
   const idCart = useSelector((state) => state.carrito.idCart);
 
   let cartItems = useSelector((state) => state.carrito.cart);
-  console.log('estado global', cartItems)
+  console.log("estado global", cartItems);
   // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,12 +34,29 @@ const ShoppingCart = () => {
     }
   }, [dispatch, currentUser]);
 
-  // const calculateTotal =   (items) => {
-  //   let total   = 0;
-  //   console.log(items);
-  //   items?.forEach((item) => (total += item.price * item.quantity));
-  //   return total.toFixed(2);
-  // };
+  //manejar el cambio de la cantidad de items
+  function handleAmountChange(idProduct, newAmount) {
+    if (currentUser) {
+      dispatch(set_item(idCart, idProduct, newAmount));
+    } else {
+      const localStorageJSON = localStorage.getItem("carrito");
+      let storedItems = [];
+
+      if (localStorageJSON !== null) {
+        storedItems = JSON.parse(localStorageJSON);
+      }
+
+      const findItem = storedItems.find(
+        (item) => item.items[0].idProduct === idProduct
+      );
+
+      if (findItem) {
+        findItem.items[0].amount = newAmount;
+        const updatedItemsJSON = JSON.stringify(storedItems);
+        localStorage.setItem("carrito", updatedItemsJSON);
+      }
+    }
+  }
 
   function clearCart() {
     const userConfirm = window.confirm(
@@ -52,9 +70,10 @@ const ShoppingCart = () => {
     if (userConfirm && currentUser) {
       dispatch(clean_cart(idCart)).catch((error) => {
         alert("Oops! Algo salió mal. Intentalo nuevamente.");
+        navigate("/shoppingCart");
+        alert("El carrito fue vaciado con éxito.");
       });
-    } 
-    else return;
+    } else return;
   }
 
   // console.log(items);
@@ -68,7 +87,11 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem key={index} props={el} />
+              <CartItem
+                key={index}
+                props={el}
+                handleAmountChange={handleAmountChange}
+              />
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link
@@ -79,7 +102,9 @@ const ShoppingCart = () => {
                 Seguir comprando
               </Link>
               <button
-                onClick={() => {clearCart()}}
+                onClick={() => {
+                  clearCart();
+                }}
                 className="text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded flex items-center transition-colors duration-300"
               >
                 <AiOutlineDelete className="mr-2" />
