@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { createComment, getAllComments,
-        getCommentById, getCommentByIdPackage,
+        getCommentById, getCommentByIdActivity,
         getCommentByIdUser, deleteComment,
-        updateComment } = require('../controllers/commentControllers.js');
+        updateComment } = require('../controllers/activityCommentsControllers');
 const router = Router();
 
 // Ruta para crear comments 
@@ -26,11 +26,11 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Ruta para obtener todos los comentarios de un mismo paquete
-router.get('/package/:id', async (req, res) => {
+// Ruta para obtener todos los comentarios de una misma actividad
+router.get('/Activity/:id', async (req, res) => {
   const {id}= req.params;
   try {
-    const comments = await getCommentByIdPackage(id); // Llamar al controlador para obtener todos los comentarios
+    const comments = await getCommentByIdActivity(id); // Llamar al controlador para obtener todos los comentarios
     res.status(200).json(comments); // Devolver los comentarios como respuesta
   } catch (error) {
     res.status(500).json({ message: error.message }); // Manejar cualquier error que ocurra durante la obtención de los comentarios
