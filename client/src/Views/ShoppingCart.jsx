@@ -15,6 +15,7 @@ import {
   AiOutlineShopping,
   AiOutlineDelete,
 } from "react-icons/ai";
+import { save_in_db } from "../Redux/ShoppingCart/shoppingCartActions";
 
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
@@ -62,6 +63,12 @@ const ShoppingCart = () => {
         return acc + (el.unitPrice || 0) * (el.amount || 1);
       }, 0);
       return total;
+    }
+  }
+
+  function handlePayment() {
+    if(!currentUser && (!items || items === localStorageItems)){
+      navigate('/login');
     }
   }
 
@@ -114,7 +121,8 @@ const ShoppingCart = () => {
                   {/* $ {(calculateTotal(items) * 1.1).toFixed(2)} */}
                 </span>
               </div>
-              <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">
+              <button onClick= {() => {handlePayment()}}
+              className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">
                 <AiOutlineCheckCircle className="mr-2" />
                 Completar el pago
               </button>

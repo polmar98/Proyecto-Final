@@ -120,6 +120,7 @@ function Detail() {
   //agregar items al localStorage
   function addNewItem(item) {
     let localStorageJSON = localStorage.getItem("carrito");
+    localStorage.setItem('itemAmount_' + item.idProduct, item.amount);
     // console.log('JSON', localStorageJSON)
     let storedItems = [];
     if (localStorageJSON !== null) {

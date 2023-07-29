@@ -30,18 +30,20 @@ const shoppingCartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [...state.cart, action.payload.ItemsShoppingCars],
-        idCart: action.payload.id,
+        idCart: action.payload.car.id,
       };
 
-    case SET_ITEM:
-      state.cart.forEach((el) => {
-        if (el.productId === action.payload.productId)
-          el.amount = action.payload.amount;
-        console.log("Que cosa:", el);
 
-        console.log("Que cosa?:", action.payload.amount);
-        el.totalPrice = el.unitPrice * el.amount;
-      });
+    case SET_ITEM:
+        state.cart?.forEach((el) => {
+          if (el.productId === action.payload.productId)
+            el.amount = action.payload.amount;
+          console.log("Que cosa:", el);
+  
+          console.log("Que cosa?:", action.payload.amount);
+          el.totalPrice = el.unitPrice * el.amount;
+        });
+      
       return {
         ...state,
         cart: [...state.cart],
@@ -53,7 +55,7 @@ const shoppingCartReducer = (state = initialState, action) => {
       );
       return {
         ...state,
-        cart: deleteOne,
+        cart: [...deleteOne],
       };
 
     case CLEAN_CART:
@@ -64,8 +66,8 @@ const shoppingCartReducer = (state = initialState, action) => {
     case CHECKUSER_SHOPPING:
       return {
         ...state,
-        idCart: action.payload.id,
-        cart: action.payload.ItemsShoppingCars,
+        idCart: action.payload.car.id,
+        cart: action.payload.car.ItemsShoppingCars,
       };
 
     default:
