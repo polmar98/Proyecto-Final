@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
 import {
   remove_one_from_cart,
@@ -165,9 +166,11 @@ const CartItem = ({ item, cart }) => {
 
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
+      toast.success("Item eliminado.")
       navigate("/shoppingCart");
     } else if (userConfirm && currentUser) {
       dispatch(remove_one_from_cart(item));
+      toast.success("Item eliminado.")
       navigate("/shoppingCart");
     } else return;
   }

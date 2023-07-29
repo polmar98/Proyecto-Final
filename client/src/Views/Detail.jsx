@@ -247,7 +247,7 @@ function Detail() {
 
         <Hotels hotel={hotelData} />
 
-        <Activities activity={tour} addNew={addNewItem} />
+        <Activities activity={tour} addNew={changeNavigate} />
       </div>
 
       <Footer />
