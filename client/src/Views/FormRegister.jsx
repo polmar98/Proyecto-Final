@@ -153,9 +153,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col lg:flex-row h-screen">
       {/* Columna Izquierda */}
-      <div className="flex flex-col w-1/2">
+      <div className="flex flex-col w-full lg:w-1/2">
         {/* Logo */}
         <div className="p-6">
           <img className="h-12" src={logo} alt="Logo" />
@@ -165,7 +165,7 @@ const RegisterPage = () => {
         <div className="mx-auto my-auto p-10 w-full md:w-2/3">
           {/* Titulos */}
           <div className="flex justify-between mb-5">
-            <h2 className="text-gray-700 text-lg font-bold ">Registrarse</h2>
+            <h2 className="text-gray-700 text-lg font-bold">Registrarse</h2>
             <Link to="/login">
               <h2 className="text-blue-600 text-base font-normal tracking-wide hover:underline cursor-pointer">
                 Ingresar
@@ -281,8 +281,8 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      {/* Columna Derecha */}
-      <div className="hidden w-1/2 lg:block p-8 overflow-hidden">
+      {/* Columna Derecha (Oculto en móvil y tablet) */}
+      <div className="hidden lg:block lg:w-1/2 p-8 overflow-hidden">
         <img
           className="object-contain rounded h-full w-full"
           src={sideImage}
