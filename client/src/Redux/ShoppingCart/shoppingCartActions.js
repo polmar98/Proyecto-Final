@@ -55,7 +55,7 @@ export const remove_one_from_cart = (item) => {
   return async (dispatch) => {
     try {
       await axios.delete(
-        `http://localhost:3002/shoppingCar/`, {data: item}
+        `http://localhost:3002/shoppingCar/`, {item}
       )
       return dispatch({
         type: REMOVE_ONE_FROM_CART,

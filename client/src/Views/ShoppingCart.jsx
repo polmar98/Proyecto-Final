@@ -3,6 +3,7 @@ import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
   clean_cart,
@@ -41,14 +42,14 @@ const ShoppingCart = () => {
     );
     if (userConfirm && !currentUser) {
       localStorage.clear("carrito");
+      toast.success("El carrito fue vaciado con éxito.");
       navigate("/shoppingCart");
-      alert("El carrito fue vaciado con éxito.");
     }
     if (userConfirm && currentUser) {
       dispatch(clean_cart(idCart)).catch((error) => {
-        alert("Oops! Algo salió mal. Intentalo nuevamente.");
+        toast.error("Oops! Algo salió mal. Intentalo nuevamente.");
+        toast.success("El carrito fue vaciado con éxito.")
         navigate("/shoppingCart");
-        alert("El carrito fue vaciado con éxito.");
       });
     } else return;
   }
