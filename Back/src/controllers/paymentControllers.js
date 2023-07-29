@@ -5,22 +5,31 @@ const {
   PAYPAL_API_SECRET,
 } = require("../payPalConfig");
 
-const createOrder = async (order) => {
-   // toda esta parte pide el token a la api de paypal
-   const params = new URLSearchParams();         
-   params.append("grant_type", "client_credentials")
-   const token = await axios.post("https://api-m.sandbox.paypal.com/v1/oauth2/token", params, {
-      headers: {
-         "Content-Type": "applicaction/x-www-form-urlencoded"
-      },
-      auth:{
-         username:PAYPAL_API_CLIENT,
-         password:PAYPAL_API_SECRET,
-      }
-   } )
-   const {access_token} = token.data;
 
-   // Acá enviamos la orden de compra a paypal 
+
+
+const createOrder = async (order) => {
+
+  //función requerida para solicitar token de paypal
+  const params = new URLSearchParams();
+  params.append("grant_type", "client_credentials");
+  const access = await axios.post(
+    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    params,
+    {
+      headers: {
+        "Content-Type": "applicaction/x-www-form-urlencoded",
+      },
+      auth: {
+        username: PAYPAL_API_CLIENT,
+        password: PAYPAL_API_SECRET,
+      },
+    }
+  );
+
+  const {access_token} = access.data;
+  
+  // Acá enviamos la orden de compra a paypal
   const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
     headers: {
       authorization: `Bearer ${access_token} `,
@@ -29,16 +38,48 @@ const createOrder = async (order) => {
   return response.data;
 };
 
-const payOrder = async () => {
-  return "paid order";
+const captureOrder = async (token) => {
+
+  //función requerida para solicitar token de paypal
+  const params = new URLSearchParams();
+  params.append("grant_type", "client_credentials");
+  const access = await axios.post(
+    "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    params,
+    {
+      headers: {
+        "Content-Type": "applicaction/x-www-form-urlencoded",
+      },
+      auth: {
+        username: PAYPAL_API_CLIENT,
+        password: PAYPAL_API_SECRET,
+      },
+    }
+  );
+
+  const {access_token} = access.data;
+console.log(access_token);
+
+  //Acá pedimos la captura de la orden a paypal
+  const response = await axios.post(
+    `${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
+    {},
+    {
+      headers: {
+        authorization: `Bearer ${access_token} `,
+      },
+    }
+  );
+  //acá hay que redireccionar a alguna vista que diga ya estas listo para viajar
+  console.log(response.data);
+  return response.data;
+
 };
 
-const cancelOrder = async () => {
-  return "canceled order";
-};
+
 
 module.exports = {
   createOrder,
-  payOrder,
-  cancelOrder,
+  captureOrder,
+  
 };

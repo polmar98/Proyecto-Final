@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createOrder, payOrder, cancelOrder} = require ("../controllers/paymentControllers");
+const { createOrder, captureOrder, cancelOrder} = require ("../controllers/paymentControllers");
 
 const router = Router();
 
@@ -7,6 +7,8 @@ const router = Router();
 
 router.post('/create-order', async (req, res)=>{
     try{
+
+        //json de prueba para una orden
         const order = {
             intent: "CAPTURE",
             purchase_units: [
@@ -38,7 +40,10 @@ router.post('/create-order', async (req, res)=>{
 
 router.get('/pay-order', async (req, res)=>{
     try{
-        const result = await payOrder();
+        const { token } = req.query;
+
+        console.log(token);
+        const result = await captureOrder(token);
        res.status(200).json(result)
     }
     catch(error) {
@@ -48,10 +53,10 @@ router.get('/pay-order', async (req, res)=>{
 
 router.get('/cancel-order', async (req, res)=>{
     try{
-        const result = await cancelOrder();
-       res.status(200).json(result)
-    }
-    catch (error) {
+        //revisar la ruta para que redireccione al carrito 
+        res.redirect("/shoppingCar");
+
+    }catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
