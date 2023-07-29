@@ -8,6 +8,7 @@ import Admin from "./Views/Admin";
 import About from "./Views/About";
 import LandingPage from "./Views/Landing";
 import ShoppingCart from "./Views/ShoppingCart";
+import UserProfile from "./Views/UserProfile";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,6 +28,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/about" element={<About />} />
         <Route path="/shoppingCart" element={<ShoppingCart />} />
+        <Route path="/userProfile" element={<UserProfile />} />
       </Routes>
     </div>
   );

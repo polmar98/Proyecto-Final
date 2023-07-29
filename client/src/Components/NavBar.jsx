@@ -45,7 +45,7 @@ function NavBar() {
   // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
 
   return (
-    <div className="flex flex-row p-5">
+    <div className="flex flex-row p-5 h-24 z-50">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
 
       <div className="basis-1/2">
