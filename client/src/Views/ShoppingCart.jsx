@@ -27,6 +27,8 @@ const ShoppingCart = () => {
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
   const items = currentUser ? cartItems : localStorageItems;
+
+  console.log('items', items)
   useEffect(() => {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
@@ -54,7 +56,7 @@ const ShoppingCart = () => {
   }
 
   function calculateTotal(items) {
-    const total = items.reduce((acc, el) => {
+    const total = items?.reduce((acc, el) => {
       return acc + el.unitPrice * el.amount;
     }, 0);
     return total;

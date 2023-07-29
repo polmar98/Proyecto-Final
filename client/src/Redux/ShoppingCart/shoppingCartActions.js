@@ -19,7 +19,7 @@ export const add_to_cart = (item) => {
 export const set_item = (idCart, item) => {
   return async (dispatch) => {
     try {
-      const cosa = await axios.put(
+      await axios.put(
         `http://localhost:3002/shoppingCar/${idCart}`,
         item
       );
@@ -41,7 +41,7 @@ export const userShopping = (uid) => {
         `http://localhost:3002/shoppingCar/user/${uid}`
       );
       const data = response.data;
-      // console.log("esto es data de action:", data);
+      console.log("esto es data de action:", data);
       return dispatch({
         type: CHECKUSER_SHOPPING,
         payload: data,
