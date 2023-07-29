@@ -47,9 +47,9 @@ const getUserByUid = async (uid) => {
 
 
 // Controller para modificar un usuario existente
-const updateUser = async (id, newData) => {
+const updateUser = async (uid, newData) => {
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findOne({ where: { uid: uid } });
 
     if (!user) {
       throw new Error("Usuario no encontrado");

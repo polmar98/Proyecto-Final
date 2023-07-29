@@ -53,12 +53,12 @@ router.get("/:uid", async (req, res) => {
 });
 
 // Ruta para modificar un usuario por su id
-router.put("/:id", async (req, res) => {
-  const id = req.params.id;
+router.put("/:uid", async (req, res) => {
+  const {uid} = req.params;
   const newData = req.body; // Los datos que se desean modificar se enviarán en el cuerpo de la solicitud.
 
   try {
-    const result = await updateUser(id, newData);
+    const result = await updateUser(uid, newData);
     res.json(result);
   } catch (error) {
     console.error("Error al modificar el usuario:", error);
