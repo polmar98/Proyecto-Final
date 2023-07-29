@@ -37,6 +37,7 @@ const RegisterPage = () => {
     lastName: "",
     email: "",
     password: "",
+    uid: "",
   });
   const { name, lastName, email, password } = user;
 
@@ -139,6 +140,7 @@ const RegisterPage = () => {
             name: tokenResponse.firstName,
             lastName: tokenResponse.lastName,
             email: tokenResponse.email,
+            profile: 1,
             // password: tokenResponse.idToken,
           })
         );
