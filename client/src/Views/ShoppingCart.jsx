@@ -18,22 +18,22 @@ import {
 
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
-  const idCart = useSelector((state) => state.carrito.idCart);
-
   let cartItems = useSelector((state) => state.carrito.cart);
-  // console.log("estado global", cartItems);
   // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
-  const items = currentUser ? cartItems : localStorageItems;
+  // const items = currentUser ? cartItems : localStorageItems;
+  const items = currentUser ? cartItems : localStorageItems || [];
   useEffect(() => {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
     }
   }, [dispatch, currentUser]);
+  const idCart = useSelector((state) => state.carrito.idCart);
 
   //
+  // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
 
   function clearCart() {
     const userConfirm = window.confirm(
@@ -47,17 +47,22 @@ const ShoppingCart = () => {
     if (userConfirm && currentUser) {
       dispatch(clean_cart(idCart)).catch((error) => {
         toast.error("Oops! Algo salió mal. Intentalo nuevamente.");
-        toast.success("El carrito fue vaciado con éxito.")
+        toast.success("El carrito fue vaciado con éxito.");
         navigate("/shoppingCart");
       });
     } else return;
   }
 
   function calculateTotal(items) {
-    const total = items.reduce((acc, el) => {
-      return acc + el.unitPrice * el.amount;
-    }, 0);
-    return total;
+    // console.log("ITEMS EN SHOPING CART", items);
+    if (!items) {
+      return 0;
+    } else {
+      const total = items.reduce((acc, el) => {
+        return acc + (el.unitPrice || 0) * (el.amount || 1);
+      }, 0);
+      return total;
+    }
   }
 
   return (
@@ -96,17 +101,17 @@ const ShoppingCart = () => {
               <h1 className="text-lg font-bold mb-4">Resumen de compra</h1>
               <div className="flex justify-between mb-2">
                 <span>Subtotal</span>
-                <span>$ {calculateTotal(items)}</span>
+                {/* <span>$ {calculateTotal(items)}</span> */}
               </div>
               <div className="flex justify-between mb-2">
                 <span>Impuestos (10%)</span>
-                <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span>
+                {/* <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span> */}
               </div>
               <hr className="border-t border-gray-200" />
               <div className="flex justify-between mt-2">
                 <span className="font-bold">Total</span>
                 <span className="font-bold">
-                  $ {(calculateTotal(items) * 1.1).toFixed(2)}
+                  {/* $ {(calculateTotal(items) * 1.1).toFixed(2)} */}
                 </span>
               </div>
               <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">

@@ -17,7 +17,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("flowbite/plugin"), require("@tailwindcss/forms")],
   content: [
     // ...
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",

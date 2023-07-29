@@ -84,14 +84,15 @@ import {
 //           <FiTrash2 className="mr-2" />
 //         </button>
 
-const CartItem = ({ item, cart }) => {
+const CartItem = (props) => {
+  const { item } = props;
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentAmount, setCurrentAmount] = useState(1);
   const idCart = useSelector((state) => state.carrito.idCart);
   // const { idCart } = cart;
-  console.log("esto es item desde cartitem", item);
+  // console.log("esto es item desde cartitem", item);
 
   // console.log(props);
 
@@ -166,11 +167,11 @@ const CartItem = ({ item, cart }) => {
 
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
-      toast.success("Item eliminado.")
+      toast.success("Item eliminado.");
       navigate("/shoppingCart");
     } else if (userConfirm && currentUser) {
       dispatch(remove_one_from_cart(item));
-      toast.success("Item eliminado.")
+      toast.success("Item eliminado.");
       navigate("/shoppingCart");
     } else return;
   }
