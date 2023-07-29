@@ -47,12 +47,13 @@ export const fetchUsers = () => {
 export const addUser = (newUser) => {
   return async (dispatch) => {
     try {
+      //console.log("ESTO ES USER:", newUser);
       const userResponse = await axios.post(
         "http://localhost:3002/users",
         newUser
       );
       const user = userResponse.data;
-      console.log("ESTO ES USER:", user);
+      
       dispatch({
         type: ADD_USER,
         payload: user,
