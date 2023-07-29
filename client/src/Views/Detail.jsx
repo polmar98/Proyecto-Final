@@ -166,7 +166,7 @@ function Detail() {
       addNewItem(item);
       // console.log('detail', localStorage)
     }
-    navigate("/shoppingCart");
+    // navigate("/shoppingCart");
   }
 
   // if (loading) {
