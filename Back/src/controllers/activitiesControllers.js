@@ -66,3 +66,5 @@ module.exports = {
     desactivActivity,
     updateActivity,
 }
+
+
