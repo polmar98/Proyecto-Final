@@ -111,10 +111,12 @@ const RegisterPage = () => {
         const tokenResponse = result._tokenResponse;
         dispatch(
           addUser({
+            uid: tokenResponse.localId,
             name: tokenResponse.displayName,
             lastName: "",
             email: tokenResponse.email,
             password: tokenResponse.localId,
+            profile: 1,
           })
         );
 

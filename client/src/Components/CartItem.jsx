@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
@@ -84,21 +84,35 @@ import {
 //           <FiTrash2 className="mr-2" />
 //         </button>
 
-const CartItem = ({ item, cart }) => {
+const CartItem = (props) => {
+  const { item } = props;
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const [currentAmount, setCurrentAmount] = useState(1);
+  const [totalPriceState, setTotalPrice] = useState(1)
   const idCart = useSelector((state) => state.carrito.idCart);
+  
   // const { idCart } = cart;
-  console.log("esto es item desde cartitem", item);
+  // console.log("esto es item desde cartitem", item);
 
   // console.log(props);
+  useEffect(() => {
+    const storedAmount = localStorage.getItem('itemAmount_' + item.idProduct);
+    if (storedAmount) {
+      setCurrentAmount(parseInt(storedAmount));
+      setTotalPrice(parseInt(item.unitPrice) * parseInt(storedAmount));
+    }
+  }, [item.idProduct, item.amount, item.unitPrice]);
 
   //chequea que haya props, sino rompe.
   if (!item) {
     return <div>Cargando...</div>;
   }
+  
+
+
 
   function handleAmountChange(idCart, itemToUpdate) {
     const numero = Number(item.unitPrice);
@@ -118,21 +132,25 @@ const CartItem = ({ item, cart }) => {
         })
       );
     } else {
+  
       const localStorageJSON = localStorage.getItem("carrito");
       let storedItems = [];
 
       if (localStorageJSON !== null) {
         storedItems = JSON.parse(localStorageJSON);
       }
-
+    
       const findItem = storedItems.find(
-        (item) => item.items[0].idProduct === item.idProduct
+        (el) => el.idProduct === itemToUpdate.idProduct
       );
 
       if (findItem) {
-        findItem.items[0].amount = currentAmount;
+        findItem.amount = currentAmount;
+        localStorage.setItem("itemAmount_" + item.idProduct, currentAmount);
+        findItem.totalPrice = totalPriceState;
         const updatedItemsJSON = JSON.stringify(storedItems);
         localStorage.setItem("carrito", updatedItemsJSON);
+        
       }
     }
   }
@@ -140,7 +158,9 @@ const CartItem = ({ item, cart }) => {
   //maneja el input de cantidad, ver funcion. hay que desarrollarla en el componente padre shoppingcart.
   const handleChange = (e) => {
     const newAmount = parseInt(e.target.value);
+    const total = parseInt(item.unitPrice * newAmount)
     setCurrentAmount(newAmount);
+    setTotalPrice(total)
     handleAmountChange(idCart, item);
   };
 
@@ -160,17 +180,20 @@ const CartItem = ({ item, cart }) => {
         storedItems = JSON.parse(localStorageJSON);
       }
 
-      const filteredCart = storedItems.filter(
-        (item) => item.items[0].idProduct !== itemToRemove.idProduct
-      );
+      // console.log('item a remover', storedItems)
 
+      const filteredCart = storedItems.filter(
+        (item) => item.idProduct !== itemToRemove.idProduct
+      );
+      
+      localStorage.clear("itemAmount_" + item.idProduct);
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
-      toast.success("Item eliminado.")
+      toast.success("Item eliminado.");
       navigate("/shoppingCart");
     } else if (userConfirm && currentUser) {
       dispatch(remove_one_from_cart(item));
-      toast.success("Item eliminado.")
+      toast.success("Item eliminado.");
       navigate("/shoppingCart");
     } else return;
   }

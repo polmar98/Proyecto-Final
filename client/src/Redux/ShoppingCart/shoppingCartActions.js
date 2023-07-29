@@ -16,6 +16,7 @@ export const add_to_cart = (item) => {
   };
 };
 
+
 export const set_item = (idCart, item) => {
   return async (dispatch) => {
     try {
@@ -56,9 +57,9 @@ export const userShopping = (uid) => {
 export const remove_one_from_cart = (item) => {
   return async (dispatch) => {
     try {
-      await axios.delete(
-        `http://localhost:3002/shoppingCar/`, {item}
-      )
+      await axios.delete(`http://localhost:3002/shoppingCar/`, item);
+      console.log("ESTO ES item en la action DELETE", item);
+
       return dispatch({
         type: REMOVE_ONE_FROM_CART,
         payload: item,

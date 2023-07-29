@@ -1,79 +1,83 @@
 //Este modelo almacenara los paquetes turisticos
 
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-   sequelize.define('Package', {
-     id: {
+  sequelize.define(
+    "Package",
+    {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
-     },
-     title: {
+        autoIncrement: true,
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
-     },
-     description: {
+      },
+      description: {
         type: DataTypes.TEXT,
         allowNull: true,
-     },
-     initialDate: {
+      },
+      initialDate: {
         type: DataTypes.STRING,
         allowNull: false,
-     },
-     finalDate: {
+      },
+      finalDate: {
         type: DataTypes.STRING,
         allowNull: false,
-     },
-     totalLimit: {
+      },
+      totalLimit: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 100,
-     },
-     bookings: {
+      },
+      bookings: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
-     },
-     standarPrice: {
+      },
+      standarPrice: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         defaultValue: 0,
-     },
-     promotionPrice: {
+      },
+      promotionPrice: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        defaultValue: 0,       
-     },
-     duration: {
+        defaultValue: 0,
+      },
+      duration: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 0,        
-     },
-     outboundFlight: {
+        defaultValue: 0,
+      },
+      outboundFlight: {
         type: DataTypes.STRING,
         allowNull: false,
-     },
-     returnFlight: {
+      },
+      returnFlight: {
         type: DataTypes.STRING,
         allowNull: false,
-     },
-     image: {
+      },
+      image: {
         type: DataTypes.TEXT,
         allowNull: true,
-     },
-     qualification: {
+      },
+      qualification: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         defaultValue: 0,
-     },
-     active: {
+      },
+      active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-     },
-     service: {
+      },
+      service: {
         type: DataTypes.STRING,
         allowNull: true,
-     } 
-  },{ timestamps: false });
+      },
+    },
+    { timestamps: false }
+  );
 };

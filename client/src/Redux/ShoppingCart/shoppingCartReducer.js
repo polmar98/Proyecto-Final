@@ -33,6 +33,7 @@ const shoppingCartReducer = (state = initialState, action) => {
         idCart: action.payload.car.id,
       };
 
+
     case SET_ITEM:
         state.cart?.forEach((el) => {
           if (el.productId === action.payload.productId)

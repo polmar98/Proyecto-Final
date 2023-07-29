@@ -1,0 +1,59 @@
+const { Router } = require('express');
+const { createOrder, payOrder, cancelOrder} = require ("../controllers/paymentControllers");
+
+const router = Router();
+
+
+
+router.post('/create-order', async (req, res)=>{
+    try{
+        const order = {
+            intent: "CAPTURE",
+            purchase_units: [
+                {
+                    amount: {
+                        currency_code: "USD",
+                        value: "299.99",
+                    },
+                    description: "paquete a cancún"
+                }
+            ],
+            application_context: {
+                brand_name: "wanderlust.com",
+                landing_page: "LOGIN",
+                user_action: "PAY_NOW",
+                return_url:"http://localhost:3002/payment/pay-order",
+                cancel_url: "http://localhost:3002/payment/cancel-order"
+            }
+        };
+
+        // const { order } = req.body; descomentar luego de hacer pruebas con el json order
+        const result = await createOrder(order);
+       res.status(200).json(result)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/pay-order', async (req, res)=>{
+    try{
+        const result = await payOrder();
+       res.status(200).json(result)
+    }
+    catch(error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/cancel-order', async (req, res)=>{
+    try{
+        const result = await cancelOrder();
+       res.status(200).json(result)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+module.exports = router;
