@@ -19,7 +19,7 @@ router.post('/create-order', async (req, res)=>{
                 }
             ],
             application_context: {
-                brand_name: "wnaderlust.com",
+                brand_name: "wanderlust.com",
                 landing_page: "LOGIN",
                 user_action: "PAY_NOW",
                 return_url:"http://localhost:3002/payment/pay-order",

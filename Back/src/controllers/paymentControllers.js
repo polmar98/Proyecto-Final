@@ -6,8 +6,8 @@ const {
 } = require("../payPalConfig");
 
 const createOrder = async (order) => {
-
-   const params = new URLSearchParams();
+   // toda esta parte pide el token a la api de paypal
+   const params = new URLSearchParams();         
    params.append("grant_type", "client_credentials")
    const token = await axios.post("https://api-m.sandbox.paypal.com/v1/oauth2/token", params, {
       headers: {
@@ -19,6 +19,8 @@ const createOrder = async (order) => {
       }
    } )
    const {access_token} = token.data;
+
+   // Acá enviamos la orden de compra a paypal 
   const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
     headers: {
       authorization: `Bearer ${access_token} `,
