@@ -3,7 +3,7 @@ import {
   REMOVE_ONE_FROM_CART,
   CLEAN_CART,
   CHECKUSER_SHOPPING,
-  SET_ITEM
+  SET_ITEM,
 } from "./shoppingCartActions";
 // import { CHECKUSER_SHOPPING } from "../Users/usersActions";
 // import { getAllPackages } from "../Selectors/cartSelectors";
@@ -15,9 +15,8 @@ const initialState = {
 
 const shoppingCartReducer = (state = initialState, action) => {
   switch (action.type) {
-   
     case ADD_TO_CART:
-      // console.log('el reducer', action.payload)
+      // console.log("el reducer", action.payload);
       // const itemexists = state.cart.find((el) => el.idProduct === action.payload.idProduct);
       // if (itemexists) {
       //   return {
@@ -34,20 +33,24 @@ const shoppingCartReducer = (state = initialState, action) => {
         idCart: action.payload.id,
       };
 
-      case SET_ITEM:
-        state.cart.forEach((el)=> {
-          if(el.productId === action.payload.productId)
-              el.amount = action.payload.amount
-              el.totalPrice = el.unitPrice * el.amount
-        })
-          return {
-            ...state,
-            cart: [...state.cart]
-          }
-        
+    case SET_ITEM:
+      state.cart.forEach((el) => {
+        if (el.productId === action.payload.productId)
+          el.amount = action.payload.amount;
+        console.log("Que cosa:", el);
+
+        console.log("Que cosa?:", action.payload.amount);
+        el.totalPrice = el.unitPrice * el.amount;
+      });
+      return {
+        ...state,
+        cart: [...state.cart],
+      };
 
     case REMOVE_ONE_FROM_CART:
-      let deleteOne = state.cart.filter((el) => el.idProduct !== action.payload.idProduct);
+      let deleteOne = state.cart.filter(
+        (el) => el.idProduct !== action.payload.idProduct
+      );
       return {
         ...state,
         cart: deleteOne,

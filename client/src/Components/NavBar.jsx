@@ -6,6 +6,7 @@ import { BsCart4 } from "react-icons/bs";
 import { authContext } from "../Context/authContext";
 import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../Context/authContext";
+import UserProfile from "../Views/UserProfile";
 
 function NavBar() {
   const cartItems = useSelector((state) => state.carrito.cart);
@@ -45,7 +46,7 @@ function NavBar() {
   // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
 
   return (
-    <div className="flex flex-row p-5">
+    <div className="flex flex-row p-5 h-24 z-50">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
 
       <div className="basis-1/2">
@@ -106,6 +107,14 @@ function NavBar() {
               </button>
               {isOpen && (
                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                  <Link
+                    to="/userProfile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
+                    //onclick close modal
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    Profile
+                  </Link>
                   <Link
                     to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"

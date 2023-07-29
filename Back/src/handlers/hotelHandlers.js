@@ -4,7 +4,7 @@ const {getHotel,
     createHotel,
     getHotelById,
     bulkCreateHotels,
-    deleteHotel,
+    desactivHotel,
     updateHotel
 } = require('../controllers/hotelsControllers');
 
@@ -61,21 +61,21 @@ router.post('/massive', async (req, res) => {
   }
   });
 
-  //Ruta para eliminar actividades
-router.delete('/delete/:id', async (req, res) => {
+  //Ruta para desactivar hoteles
+router.put('/desactive/:id', async (req, res) => {
   const { id } = req.params;
   try {
-   const deleteHo = await deleteHotel(id);
+   const deleteHo = await desactivHotel(id, false);
     res.status(200).json(deleteHo);
   } catch (error) {
     console.log('error');
-    res.status(400).send({ error: 'Delete Fail' });
+    res.status(400).send({ error: 'Desactive Fail' });
   }
 });
 
 router.put('/update/:id', async (req, res) => {
   const { id } = req.params;
-  const newData = req.body; // Espera que los nuevos datos a actualizar se envíen en el cuerpo de la solicitud
+  const {newData} = req.body; // Espera que los nuevos datos a actualizar se envíen en el cuerpo de la solicitud
 console.log(req.body);
   try {
     const updatedHo = await updateHotel(id, newData);

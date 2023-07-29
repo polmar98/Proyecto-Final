@@ -6,7 +6,7 @@ export const REMOVE_ALL_FROM_CART = "REMOVE_ALL_FROM_CART";
 export const CLEAN_CART = "CLEAN_CART";
 export const CHECKUSER_SHOPPING = "CHECKUSER_SHOPPING";
 export const SAVE_ITEM_DB = "SAVE_ITEM_DB";
-export const SET_ITEM = "SET_ITEM"
+export const SET_ITEM = "SET_ITEM";
 
 //agrega el item al estado global
 export const add_to_cart = (item) => {
@@ -18,18 +18,20 @@ export const add_to_cart = (item) => {
 
 export const set_item = (idCart, item) => {
   return async (dispatch) => {
-    try{
-      await axios.put(`http://localhost:3002/shoppingCar/${idCart}`, {data:item})
-      
+    try {
+      const cosa = await axios.put(
+        `http://localhost:3002/shoppingCar/${idCart}`,
+        item
+      );
       return dispatch({
         type: SET_ITEM,
-        payload: item
-      })
-    } catch(error) {
-      console.log(error.message)
+        payload: item,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
-  }
-}
+  };
+};
 
 //trae la info de X carrito
 export const userShopping = (uid) => {
@@ -55,33 +57,29 @@ export const remove_one_from_cart = (item) => {
   return async (dispatch) => {
     try {
       await axios.delete(
-        `http://localhost:3002/shoppingCar/`, {data: item}
+        `http://localhost:3002/shoppingCar/`, {item}
       )
       return dispatch({
         type: REMOVE_ONE_FROM_CART,
         payload: item,
       });
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-      console.log(error)
-    }
-  }
+  };
 };
 
 //vacía el carrito
 export const clean_cart = (idCart) => {
   return async (dispatch) => {
     try {
-       await axios.delete(
-      `http://localhost:3002/shoppingCar/${idCart}`
-      );
+      await axios.delete(`http://localhost:3002/shoppingCar/${idCart}`);
       // const data = response.data;
       return dispatch({
         type: CLEAN_CART,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  
+  };
 };

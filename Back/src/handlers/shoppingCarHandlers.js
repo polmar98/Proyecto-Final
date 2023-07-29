@@ -5,7 +5,7 @@ const {
   addItemsShoppingCar,
   deleteItemsShoppingCar,
   getShoppingCarById,
-  getAllShoppingCar,
+  getShoppingCarByUser,
   emptyShoppingCar,
 } = require("../controllers/shoppingCarControllers");
 
@@ -27,15 +27,15 @@ router.get("/", async (req, res) => {
   const xquery = req.query;
   console.log(xquery);
   try {
-    result = await getAllShoppingCar(xquery);
+    result = await getShoppingCar(xquery);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-//esta ruta busca un carrito por el ID
-router.get("/:uid", async (req, res) => {
+//esta ruta busca un carrito por el ID del carrito
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     result = await getShoppingCarById(id);
@@ -49,7 +49,7 @@ router.get("/:uid", async (req, res) => {
 router.get("/user/:uid", async (req, res) => {
   const { uid } = req.params;
   try {
-    result = await getShoppingCar(uid);
+    result = await getShoppingCarByUser(uid);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });

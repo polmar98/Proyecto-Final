@@ -3,6 +3,7 @@ import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
   clean_cart,
@@ -20,13 +21,12 @@ const ShoppingCart = () => {
   const idCart = useSelector((state) => state.carrito.idCart);
 
   let cartItems = useSelector((state) => state.carrito.cart);
-  console.log("estado global", cartItems);
+  // console.log("estado global", cartItems);
   // const user = useSelector((state) => state.users.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
   const items = currentUser ? cartItems : localStorageItems;
-
   useEffect(() => {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
@@ -34,33 +34,31 @@ const ShoppingCart = () => {
   }, [dispatch, currentUser]);
 
   //
- 
+
   function clearCart() {
     const userConfirm = window.confirm(
       "Se eliminará todo el contenido del carrito. Quieres continuar?"
     );
     if (userConfirm && !currentUser) {
       localStorage.clear("carrito");
+      toast.success("El carrito fue vaciado con éxito.");
       navigate("/shoppingCart");
-      alert("El carrito fue vaciado con éxito.");
     }
     if (userConfirm && currentUser) {
       dispatch(clean_cart(idCart)).catch((error) => {
-        alert("Oops! Algo salió mal. Intentalo nuevamente.");
+        toast.error("Oops! Algo salió mal. Intentalo nuevamente.");
+        toast.success("El carrito fue vaciado con éxito.")
         navigate("/shoppingCart");
-        alert("El carrito fue vaciado con éxito.");
       });
     } else return;
   }
 
-  function calculateTotal(items){
+  function calculateTotal(items) {
     const total = items.reduce((acc, el) => {
       return acc + el.unitPrice * el.amount;
     }, 0);
     return total;
   }
-  
-  // console.log(items);
 
   return (
     <div>
@@ -71,11 +69,7 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem
-                key={index}
-                item={el}
-                cart={idCart}
-              />
+              <CartItem key={index} item={el} cart={idCart} />
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link

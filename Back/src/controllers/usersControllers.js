@@ -1,20 +1,25 @@
 const { User } = require("../database.js");
 
-//  Controller Nuevo Usuario google 
+//  Controller Nuevo Usuario google
 
-
-// Controller Nuevo Usuario 
+// Controller Nuevo Usuario
 const createUser = async (datos) => {
-     const { uid, profile, name, lastName, email } = datos;
-     //console.log(datos);
-     if(!uid || !profile || !email) {
-        return {message: "Datos Basicos incompletos"};
-     };
+  const { uid, profile, name, lastName, email } = datos;
+  //console.log(datos);
+  if (!uid || !profile || !email) {
+    return { message: "Datos Basicos incompletos" };
+  }
 
-     const newUser = await User.create({ uid, profile, name, lastName, email, password: "" });
-     return newUser;
+  const newUser = await User.create({
+    uid,
+    profile,
+    name,
+    lastName,
+    email,
+    password: "",
+  });
+  return newUser;
 };
-
 
 // Controller llamado a todos los Usuarios
 const getAllUsers = async () => {
@@ -32,8 +37,8 @@ const deleteUser = async (uid) => {
 };
 
 // Controller llamdo a usuario por Id
-const getUserById = async (uid) => {
-  const user = await User.findByPk(uid);
+const getUserByUid = async (uid) => {
+  const user = await User.findOne({ where: { uid: uid } });
   if (!user) {
     throw new Error("Usuario no encontrado");
   }
@@ -44,5 +49,5 @@ module.exports = {
   createUser,
   getAllUsers,
   deleteUser,
-  getUserById,
+  getUserByUid,
 };

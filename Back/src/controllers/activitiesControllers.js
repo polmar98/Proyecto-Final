@@ -34,11 +34,11 @@ const createActivity = async (name, image, price, included, duration, idPackage)
    
 };
 
-//funcion para borrar actividades
-const deleteActivity = async (id) => {
-     await Activity.destroy({ where: { id: id,}, });
-    const deleteActivity = await Activity.findAll();
-    return deleteActivity;
+//funcion para desactivar actividades
+const desactivActivity = async (id, available) => {
+  await Activity.update({ available: available }, { where: { id: id } });
+  const activDesa = await Activity.findByPk(id);
+  return activDesa;
 }
 
 
@@ -63,6 +63,6 @@ module.exports = {
     searchNameActivity,
     createActivity,
     getActivityById,
-    deleteActivity,
+    desactivActivity,
     updateActivity,
 }
