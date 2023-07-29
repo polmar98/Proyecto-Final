@@ -19,6 +19,7 @@ const ShoppingCarModels = require("./models/ShoppingCar");
 const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
 const BillModels = require("./models/Bill");
 const ItemsBillModels = require("./models/ItemsBill");
+const ItineraryModels = require("./models/Itinerary");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -41,6 +42,7 @@ ShoppingCarModels(sequelize);
 ItemsShoppingCarModels(sequelize);
 BillModels(sequelize);
 ItemsBillModels(sequelize);
+ItineraryModels(sequelize);
 
 const {
   TypePackage,
@@ -59,6 +61,7 @@ const {
   ItemsShoppingCar,
   Bill,
   ItemsBill,
+  Itinerary,
 } = sequelize.models;
 
 // establecemos las relaciones
@@ -120,5 +123,6 @@ module.exports = {
   ItemsShoppingCar,
   Bill,
   ItemsBill,
+  Itinerary,
   conn: sequelize,
 };
