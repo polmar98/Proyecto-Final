@@ -23,16 +23,28 @@ const updateTotal = async (idCar) => {
 
 //esta funcion agrega items al carrito existente
 const addItemsShoppingCar = async (item, id) => {
-  const { amount, unitPrice,  totalPrice,
-          typeProduct,  idProduct,  title,  image,
+  const {
+    amount,
+    unitPrice,
+    totalPrice,
+    typeProduct,
+    idProduct,
+    title,
+    image,
   } = item;
 
-  if ( !amount ||  !unitPrice ||  !totalPrice ||
-       !typeProduct ||  !idProduct ||  !title ||
-       !id ||  !image
+  if (
+    !amount ||
+    !unitPrice ||
+    !totalPrice ||
+    !typeProduct ||
+    !idProduct ||
+    !title ||
+    !id ||
+    !image
   ) {
     return { message: "Informacion Incompleta" };
-  };
+  }
   const idCar = Number(id);
   //buscamos si ya existe el articulo dentro de los ya grabados
   const existe = await ItemsShoppingCar.findOne({
@@ -56,12 +68,12 @@ const addItemsShoppingCar = async (item, id) => {
     //si ya existe actualizamos la cantidad
     const rows = ItemsShoppingCar.update(item, { where: { id: existe.id } });
     const carUpdate = await updateTotal(idCar);
-  };
+  }
   //ahora devolvemos todo la info del carrito actualizado
   const car = await ShoppingCar.findByPk(idCar, {
-    include: { model: ItemsShoppingCar }
+    include: { model: ItemsShoppingCar },
   });
-  return {car};
+  return car;
 };
 
 
@@ -83,7 +95,7 @@ const addShoppingCar = async (uid) => {
 const deleteItemsShoppingCar = async (item) => {
   if (!item.idProduct || !item.typeProduct || !item.idShoppingCar) {
     return "Datos Incompletos para la eliminacion";
-  };
+  }
   //eliminamos los items del carro de compras
   const existe = await ItemsShoppingCar.findOne({
     where: {
@@ -98,11 +110,11 @@ const deleteItemsShoppingCar = async (item) => {
   //actualizamos el nuevo valor del carrito de compras
   const carUpdate = updateTotal(item.idShoppingCar);
   //hora devolvemos todo la info del carrito actualizada
-  const idCar=item.idShoppingCar;
+  const idCar = item.idShoppingCar;
   const car = await ShoppingCar.findByPk(idCar, {
-    include: { model: ItemsShoppingCar }
+    include: { model: ItemsShoppingCar },
   });
-  return {car};
+  return car;
 };
 
 
@@ -111,11 +123,12 @@ const getShoppingCarByUser = async (uid) => {
   if (!uid) return { message: "Uid de Usuario No definido" };
 
   // Busca el carrito por uidUser
-  const car = await ShoppingCar.findOne({where: {uidUser: uid}, 
-    include: {model: ItemsShoppingCar}
+  const car = await ShoppingCar.findOne({
+    where: { uidUser: uid },
+    include: { model: ItemsShoppingCar },
   });
   if (!car) return { message: "Carrito no encontrado" };
-  return { car };
+  return car;
 };
 
 
@@ -123,12 +136,12 @@ const getShoppingCarByUser = async (uid) => {
 const getShoppingCarById = async (id) => {
   const idCar = Number(id);
   const newCar = await ShoppingCar.findByPk(idCar, {
-    include: { model: ItemsShoppingCar }
+    include: { model: ItemsShoppingCar },
   });
-  if(!car) return {message: "Carrito inexistente"};
-  return {car};
-
+  if (!car) return { message: "Carrito inexistente" };
+  return car;
 };
+
 
 //esta ruta vacia completamente el carrito
 const emptyShoppingCar = async (id) => {
@@ -138,15 +151,16 @@ const emptyShoppingCar = async (id) => {
   });
   const carUpdate = await updateTotal(idCar);
   const car = await ShoppingCar.findByPk(idCar, {
-    include: { model: ItemsShoppingCar }
+    include: { model: ItemsShoppingCar },
   });
-  return {car};
+  return car;
 };
 
+
 //esta ruta devuelve todos los carritos
-const getShoppingCar = async() => {
-   const carritos = ShoppingCar.findAll();
-   return carritos;
+const getShoppingCar = async () => {
+  const carritos = ShoppingCar.findAll();
+  return carritos;
 };
 
 
