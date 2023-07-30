@@ -137,6 +137,7 @@ const getShoppingCarById = async (id) => {
   return car;
 };
 
+
 //esta ruta vacia completamente el carrito
 const emptyShoppingCar = async (id) => {
   const idCar = Number(id);
@@ -149,6 +150,7 @@ const emptyShoppingCar = async (id) => {
   });
   return car;
 };
+
 
 //esta ruta devuelve todos los carritos
 const getShoppingCar = async () => {
