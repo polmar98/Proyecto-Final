@@ -70,9 +70,7 @@ router.put("/:id", async (req, res) => {
 
 //esta ruta permite eliminar items del carrito de compras
 router.delete("/item/:id", async (req, res) => {
-  // console.log("REQ BODY:", req.params);
-  const { id } = req.params;
-  console.log("item en back shoping:", id);
+  const {id} = req.params;
   try {
     result = await deleteItemsShoppingCar(id);
     res.status(200).json(result);

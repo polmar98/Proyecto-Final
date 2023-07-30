@@ -31,4 +31,17 @@ const getAirlines = async(query1) => {
     return resultado;
 };
 
-module.exports = { addAirline, getAirlines };
+const addMassiveAirlines = async(arrayAirlines) => {
+   if(!arrayAirlines) return {message: "Informacion incompleta"};
+   await Airline.bulkCreate(arrayAirlines);
+   return {message: "Aerolineas creadas satisfactoriamente"};
+};
+
+
+const getAirlineById = async(id) => {
+   const idAir = Number(id);
+   const air = await Airline.findByPk(id);
+   return air;
+};
+
+module.exports = { addAirline, getAirlines, addMassiveAirlines, getAirlineById };
