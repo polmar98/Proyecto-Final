@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { authContext } from "../Context/authContext";
+import { toast } from "react-toastify";
 import Footer from "../Components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,18 +13,13 @@ import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
-import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { currentUser } = useContext(authContext);
-
   const { id } = useParams();
-  // const user = useSelector((state) => state.users.user);
 
-  // console.log("USER EN DETAIL: ", currentUser);
-  // const user = 31;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -66,7 +62,7 @@ function Detail() {
     // dispatch(fetchComments())
     return () => {
       dispatch(clearPackageDetails());
-      // dispatch(clearPackageDetails());
+      
     };
   }, [id, dispatch, currentUser]);
 
@@ -81,41 +77,6 @@ function Detail() {
     image: tour.image,
   };
 
-  //   idUser: user,
-  //   items: [
-  //     {
-  //       amount: 1,
-  //       unitPrice: tour.standarPrice,
-  //       totalPrice: tour.standarPrice,
-  //       typeProduct: 1,
-  //       idProduct: tour.id,
-  //       title: tour.title,
-  //     },
-  //   ],
-  // };
-  // {
-  // 	 "idUser": 1,
-  // 	 "items": [
-  // 		  {
-  // 				"amount": 2,
-  // 				"unitPrice": 1499,
-  // 				"totalPrice": 2998,
-  // 				"typeProduct": 1,
-  // 				"idProduct": 1,
-  // 				"title": "Paq. Turistico a Cancun"
-  // 			},
-
-  // 		  {
-  // 				"amount": 2,
-  // 				"unitPrice": 55,
-  // 				"totalPrice": 110,
-  // 				"typeProduct": 2,
-  // 				"idProduct": 3,
-  // 				"title":  "Actividad: Tour al cenote Samaal"
-  // 			}
-  // 	 ]
-
-  // }
 
   //agregar items al localStorage
   function addNewItem(item) {
@@ -152,24 +113,17 @@ function Detail() {
     }
   }
 
-  // Hacer
-  //crear funcion para guardar en bdd una actividad
-  //
 
   function changeNavigate(parametro) {
-    // if (idCart !== 0) {
     if (currentUser) {
-      console.log("EsTO ES CURRENTUSER:", currentUser);
-      // dispatch(add_to_cart(item));
+      // console.log("EsTO ES CURRENTUSER:", currentUser);
       guardarEnBDD(parametro);
       dispatch(userShopping(currentUser.uid));
     } else {
-      // }
-      // } else {
+     
       addNewItem(parametro);
       // console.log('detail', localStorage)
     }
-    // navigate("/shoppingCart");
   }
 
   // if (loading) {
@@ -239,6 +193,7 @@ function Detail() {
               <button
                 onClick={() => {
                   changeNavigate(item);
+                  toast.success("Has agregado un paquete al carrito.");
                 }}
                 className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
               >

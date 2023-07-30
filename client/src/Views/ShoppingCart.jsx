@@ -71,7 +71,7 @@ const ShoppingCart = () => {
       navigate("/login");
     }
   }
-  console.log("ITEMS", items);
+  
   return (
     <div>
       <div className="bg-verdeFooter ">
