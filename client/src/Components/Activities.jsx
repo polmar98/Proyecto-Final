@@ -1,6 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Activities({ activity, addNew }) {
@@ -51,7 +49,7 @@ function Activities({ activity, addNew }) {
                       </p>
                     </div>
                     <div>
-                      {/* <Link to="/search"> */}
+  
                       <button
                         onClick={() => {
                           handleReserveActivity({
@@ -64,7 +62,6 @@ function Activities({ activity, addNew }) {
                             image: el.image,
                           });
                           toast.success("Actividad reservada");
-                          // window.alert("Actividad reservada");
                         }}
                         className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition "
                       >
