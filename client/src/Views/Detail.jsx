@@ -120,7 +120,7 @@ function Detail() {
   //agregar items al localStorage
   function addNewItem(item) {
     let localStorageJSON = localStorage.getItem("carrito");
-    localStorage.setItem('itemAmount_' + item.idProduct, item.amount);
+    localStorage.setItem("itemAmount_" + item.idProduct, item.amount);
     // console.log('JSON', localStorageJSON)
     let storedItems = [];
     if (localStorageJSON !== null) {
@@ -135,7 +135,8 @@ function Detail() {
   }
 
   //! german
-  async function guardarEnBDD(item) {
+  async function guardarEnBDD(parametro) {
+    console.log("item desde actvity", parametro);
     if (idCart) {
       const response1 = await fetch(
         `http://localhost:3002/shoppingCar/${idCart}`,
@@ -144,7 +145,7 @@ function Detail() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(item),
+          body: JSON.stringify(parametro),
         }
       );
       //      console.log(response1);
@@ -155,16 +156,17 @@ function Detail() {
   //crear funcion para guardar en bdd una actividad
   //
 
-  function changeNavigate() {
-    // if (user) {
-    if (idCart !== 0) {
-      dispatch(add_to_cart(item));
-      guardarEnBDD(item);
+  function changeNavigate(parametro) {
+    // if (idCart !== 0) {
+    if (currentUser) {
+      console.log("EsTO ES CURRENTUSER:", currentUser);
+      // dispatch(add_to_cart(item));
+      guardarEnBDD(parametro);
       dispatch(userShopping(currentUser.uid));
     } else {
       // }
       // } else {
-      addNewItem(item);
+      addNewItem(parametro);
       // console.log('detail', localStorage)
     }
     // navigate("/shoppingCart");
@@ -236,7 +238,7 @@ function Detail() {
             <div>
               <button
                 onClick={() => {
-                  changeNavigate();
+                  changeNavigate(item);
                 }}
                 className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
               >

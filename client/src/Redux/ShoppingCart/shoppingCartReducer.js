@@ -29,33 +29,32 @@ const shoppingCartReducer = (state = initialState, action) => {
       // }
       return {
         ...state,
-        cart: [...state.cart, action.payload.ItemsShoppingCars],
-        idCart: action.payload.car.id,
+        // cart: [...state.cart, action.payload],
+        // idCart: action.payload.car.id, // sacar esto
       };
 
-
     case SET_ITEM:
-        state.cart?.forEach((el) => {
-          if (el.productId === action.payload.productId)
-            el.amount = action.payload.amount;
-          console.log("Que cosa:", el);
-  
-          console.log("Que cosa?:", action.payload.amount);
-          el.totalPrice = el.unitPrice * el.amount;
-        });
-      
+      state.cart?.forEach((el) => {
+        if (el.productId === action.payload.productId)
+          el.amount = action.payload.amount;
+        console.log("Que cosa:", el);
+
+        console.log("Que cosa?:", action.payload.amount);
+        el.totalPrice = el.unitPrice * el.amount;
+      });
+
       return {
         ...state,
         cart: [...state.cart],
       };
 
     case REMOVE_ONE_FROM_CART:
-      let deleteOne = state.cart.filter(
-        (el) => el.idProduct !== action.payload.idProduct
-      );
+      // let deleteOne = state.cart.filter(
+      //   (el) => el.idProduct !== action.payload.idProduct
+      // );
       return {
         ...state,
-        cart: [...deleteOne],
+        cart: action.payload,
       };
 
     case CLEAN_CART:
@@ -66,8 +65,8 @@ const shoppingCartReducer = (state = initialState, action) => {
     case CHECKUSER_SHOPPING:
       return {
         ...state,
-        idCart: action.payload.car.id,
-        cart: action.payload.car.ItemsShoppingCars,
+        idCart: action.payload.id,
+        cart: action.payload.ItemsShoppingCars,
       };
 
     default:

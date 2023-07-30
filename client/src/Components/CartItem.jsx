@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiTrash2 } from "react-icons/fi"; // Import the trash icon from react-icons
 import {
@@ -89,17 +89,17 @@ const CartItem = (props) => {
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const [currentAmount, setCurrentAmount] = useState(1);
-  const [totalPriceState, setTotalPrice] = useState(1)
+  const [totalPriceState, setTotalPrice] = useState(1);
   const idCart = useSelector((state) => state.carrito.idCart);
-  
+
   // const { idCart } = cart;
   // console.log("esto es item desde cartitem", item);
 
   // console.log(props);
   useEffect(() => {
-    const storedAmount = localStorage.getItem('itemAmount_' + item.idProduct);
+    const storedAmount = localStorage.getItem("itemAmount_" + item.idProduct);
     if (storedAmount) {
       setCurrentAmount(parseInt(storedAmount));
       setTotalPrice(parseInt(item.unitPrice) * parseInt(storedAmount));
@@ -110,9 +110,6 @@ const CartItem = (props) => {
   if (!item) {
     return <div>Cargando...</div>;
   }
-  
-
-
 
   function handleAmountChange(idCart, itemToUpdate) {
     const numero = Number(item.unitPrice);
@@ -132,14 +129,13 @@ const CartItem = (props) => {
         })
       );
     } else {
-  
       const localStorageJSON = localStorage.getItem("carrito");
       let storedItems = [];
 
       if (localStorageJSON !== null) {
         storedItems = JSON.parse(localStorageJSON);
       }
-    
+
       const findItem = storedItems.find(
         (el) => el.idProduct === itemToUpdate.idProduct
       );
@@ -150,7 +146,6 @@ const CartItem = (props) => {
         findItem.totalPrice = totalPriceState;
         const updatedItemsJSON = JSON.stringify(storedItems);
         localStorage.setItem("carrito", updatedItemsJSON);
-        
       }
     }
   }
@@ -158,9 +153,9 @@ const CartItem = (props) => {
   //maneja el input de cantidad, ver funcion. hay que desarrollarla en el componente padre shoppingcart.
   const handleChange = (e) => {
     const newAmount = parseInt(e.target.value);
-    const total = parseInt(item.unitPrice * newAmount)
+    const total = parseInt(item.unitPrice * newAmount);
     setCurrentAmount(newAmount);
-    setTotalPrice(total)
+    setTotalPrice(total);
     handleAmountChange(idCart, item);
   };
 
@@ -185,7 +180,7 @@ const CartItem = (props) => {
       const filteredCart = storedItems.filter(
         (item) => item.idProduct !== itemToRemove.idProduct
       );
-      
+
       localStorage.clear("itemAmount_" + item.idProduct);
       const updatedItemsJSON = JSON.stringify(filteredCart);
       localStorage.setItem("carrito", updatedItemsJSON);
@@ -202,14 +197,16 @@ const CartItem = (props) => {
     <div className="bg-white shadow-xl rounded-lg p-6 m-4">
       <div className="flex items-center justify-between border-b-2 border-gray-200 py-4">
         {/* Agregué un contenedor para la imagen y el título del producto */}
-        <div className="flex items-center">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-20 h-20 object-cover rounded-lg mr-4"
-          />
-          <h2 className="text-lg">{item.title}</h2>
-        </div>
+        <Link to={`/detail/${item.idProduct}`}>
+          <div className="flex items-center">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-20 h-20 object-cover rounded-lg mr-4"
+            />
+            <h2 className="text-lg">{item.title}</h2>
+          </div>
+        </Link>
 
         {/* Agregué un contenedor para la cantidad y el precio */}
         <div className="flex items-center">
