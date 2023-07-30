@@ -20,6 +20,7 @@ const updateTotal = async (idCar) => {
   }
 };
 
+
 //esta funcion agrega items al carrito existente
 const addItemsShoppingCar = async (item, id) => {
   const {
@@ -89,31 +90,27 @@ const addShoppingCar = async (uid) => {
   return { idcar: newCar.id };
 };
 
+
 //esta rutina elimina items del carrito de compras
-const deleteItemsShoppingCar = async (item) => {
-  if (!item.idProduct || !item.typeProduct || !item.idShoppingCar) {
-    return "Datos Incompletos para la eliminacion";
-  }
+const deleteItemsShoppingCar = async (id) => {
+ 
   //eliminamos los items del carro de compras
-  const existe = await ItemsShoppingCar.findOne({
-    where: {
-      idShoppingCar: item.idShoppingCar,
-      typeProduct: item.typeProduct,
-      idProduct: item.idProduct,
-    },
-  });
+  const idItem = Number(id);
+  const existe = await ItemsShoppingCar.findByPk(idItem);
+  const idCar = existe.idShoppingCar;
+
   if (existe !== null) {
     await existe.destroy();
-  };
+  }
   //actualizamos el nuevo valor del carrito de compras
   const carUpdate = updateTotal(idCar);
   //hora devolvemos todo la info del carrito actualizada
-
   const car = await ShoppingCar.findByPk(idCar, {
     include: { model: ItemsShoppingCar },
   });
   return car;
 };
+
 
 //esta rutina devuelve el carrito identificado por el UID del usuario
 const getShoppingCarByUser = async (uid) => {
@@ -127,6 +124,7 @@ const getShoppingCarByUser = async (uid) => {
   if (!car) return { message: "Carrito no encontrado" };
   return car;
 };
+
 
 //esta rutina devuelve el carrito identificado por ID del carrito
 const getShoppingCarById = async (id) => {
