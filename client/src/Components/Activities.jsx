@@ -1,6 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Activities({ activity, addNew }) {
@@ -51,30 +49,25 @@ function Activities({ activity, addNew }) {
                       </p>
                     </div>
                     <div>
-                      <Link to="/search">
-                        <button
-                          onClick={() => {
-                              handleReserveActivity(
-                            
-                                {
-                                  amount: 1,
-                                  unitPrice: activity.standarPrice,
-                                  totalPrice: activity.standarPrice,
-                                  typeProduct: 2,
-                                  idProduct: activity.id,
-                                  title: activity.title,
-                                  image: activity.image,
-                                }
-                              )
-                              toast.success("Actividad reservada");
-                              // window.alert("Actividad reservada");
-                          
-                          }}
-                          className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition "
-                        >
-                          Reservar
-                        </button>
-                      </Link>
+  
+                      <button
+                        onClick={() => {
+                          handleReserveActivity({
+                            amount: 1,
+                            unitPrice: el.price,
+                            totalPrice: el.price,
+                            typeProduct: 2,
+                            idProduct: el.id,
+                            title: el.name,
+                            image: el.image,
+                          });
+                          toast.success("Actividad reservada");
+                        }}
+                        className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition "
+                      >
+                        Reservar
+                      </button>
+                      {/* </Link> */}
                     </div>
                   </div>
                 ) : (

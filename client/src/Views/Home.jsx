@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 import SearchBar from "../Components/SearchBar";
 import ContFilter from "../Components/ContFilter";
 import Footer from "../Components/Footer";
-
+import { set_item } from "../Redux/ShoppingCart/shoppingCartActions";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +15,8 @@ function Home() {
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.packages.packagesList);
   const user = useSelector((state) => state.users.user);
+  const idCart = useSelector((state) => state.carrito.idCart);
+
   const { currentUser } = useContext(authContext);
   console.log(currentUser);
   if (currentUser) {
@@ -34,6 +36,22 @@ function Home() {
     if (!user && !localStorage.getItem("carrito")) {
       //si no hay login y no existe el elemento carrito cuando carga el home
       localStorage.setItem("carrito", "[]"); //lo crea. Recibe como 1er arg la clave y 2do arg el valor, que es un array vacio al ppio
+    }
+    if (
+      currentUser &&
+      localStorage.getItem("carrito") &&
+      localStorage.getItem("carrito").length > 0
+    ) {
+      const JSstorage = JSON.parse(localStorage.getItem("carrito"));
+      console.log("ellocalstorageenhome", JSstorage);
+      dispatch(userShopping(currentUser.uid));
+      const mapeo = JSstorage.forEach((el) => {
+        console.log("CADA ELEMENTO", el);
+        dispatch(set_item(idCart, el));
+      });
+      // console.log("MAPEO", mapeo);
+      // dispatch(set_item(idCart, JSstorage));
+      localStorage.clear("carrito");
     }
   }, [dispatch, user]);
 

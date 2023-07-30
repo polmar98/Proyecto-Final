@@ -89,25 +89,21 @@ const addShoppingCar = async (uid) => {
 };
 
 //esta rutina elimina items del carrito de compras
-const deleteItemsShoppingCar = async (item) => {
-  if (!item.idProduct || !item.typeProduct || !item.idShoppingCar) {
-    return "Datos Incompletos para la eliminacion";
-  }
+const deleteItemsShoppingCar = async (id) => {
+  // if (!item.idProduct || !item.typeProduct || !item.idShoppingCar) {
+  //   return "Datos Incompletos para la eliminacion";
+  // }
   //eliminamos los items del carro de compras
-  const existe = await ItemsShoppingCar.findOne({
-    where: {
-      idShoppingCar: item.idShoppingCar,
-      typeProduct: item.typeProduct,
-      idProduct: item.idProduct,
-    },
-  });
+  const idItem = Number(id);
+  const existe = await ItemsShoppingCar.findByPk(idItem);
+  const idCar = existe.idShoppingCar;
+
   if (existe !== null) {
     await existe.destroy();
   }
   //actualizamos el nuevo valor del carrito de compras
-  const carUpdate = updateTotal(item.idShoppingCar);
+  const carUpdate = updateTotal(idCar);
   //hora devolvemos todo la info del carrito actualizada
-  const idCar = item.idShoppingCar;
   const car = await ShoppingCar.findByPk(idCar, {
     include: { model: ItemsShoppingCar },
   });

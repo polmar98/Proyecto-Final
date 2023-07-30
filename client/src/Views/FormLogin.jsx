@@ -84,11 +84,12 @@ const LoginPage = () => {
       console.log(error);
     }
   };
+  // console.log("esto es currentuser:", currentUser);
 
   const handleGoogle = async () => {
     try {
       await signInWithGoogle();
-      dispatch(userShopping(user));
+      dispatch(userShopping(currentUser.uid));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);

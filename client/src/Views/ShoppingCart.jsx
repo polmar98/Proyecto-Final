@@ -59,7 +59,7 @@ const ShoppingCart = () => {
     if (!items) {
       return 0;
     } else {
-      const total = items.reduce((acc, el) => {
+      const total = items?.reduce((acc, el) => {
         return acc + (el.unitPrice || 0) * (el.amount || 1);
       }, 0);
       return total;
@@ -67,11 +67,11 @@ const ShoppingCart = () => {
   }
 
   function handlePayment() {
-    if(!currentUser && (!items || items === localStorageItems)){
-      navigate('/login');
+    if (!currentUser && (!items || items === localStorageItems)) {
+      navigate("/login");
     }
   }
-
+  
   return (
     <div>
       <div className="bg-verdeFooter ">
@@ -108,21 +108,25 @@ const ShoppingCart = () => {
               <h1 className="text-lg font-bold mb-4">Resumen de compra</h1>
               <div className="flex justify-between mb-2">
                 <span>Subtotal</span>
-                {/* <span>$ {calculateTotal(items)}</span> */}
+                <span>$ {calculateTotal(items)}</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>Impuestos (10%)</span>
-                {/* <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span> */}
+                <span>$ {(calculateTotal(items) * 0.1).toFixed(2)}</span>
               </div>
               <hr className="border-t border-gray-200" />
               <div className="flex justify-between mt-2">
                 <span className="font-bold">Total</span>
                 <span className="font-bold">
-                  {/* $ {(calculateTotal(items) * 1.1).toFixed(2)} */}
+                  $ {(calculateTotal(items) * 1.1).toFixed(2)}
                 </span>
               </div>
-              <button onClick= {() => {handlePayment()}}
-              className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300">
+              <button
+                onClick={() => {
+                  handlePayment();
+                }}
+                className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300"
+              >
                 <AiOutlineCheckCircle className="mr-2" />
                 Completar el pago
               </button>

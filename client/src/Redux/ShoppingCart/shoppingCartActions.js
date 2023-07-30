@@ -10,20 +10,17 @@ export const SET_ITEM = "SET_ITEM";
 
 //agrega el item al estado global
 export const add_to_cart = (item) => {
+  // console.log("esto es item en add to cart:", item);
   return {
     type: ADD_TO_CART,
     payload: item,
   };
 };
 
-
 export const set_item = (idCart, item) => {
   return async (dispatch) => {
     try {
-      await axios.put(
-        `http://localhost:3002/shoppingCar/${idCart}`,
-        item
-      );
+      await axios.put(`http://localhost:3002/shoppingCar/${idCart}`, item);
       return dispatch({
         type: SET_ITEM,
         payload: item,
@@ -36,13 +33,14 @@ export const set_item = (idCart, item) => {
 
 //trae la info de X carrito
 export const userShopping = (uid) => {
+  // console.log("uid en ACTION:", uid);
   return async (dispatch) => {
     try {
       const response = await axios.get(
         `http://localhost:3002/shoppingCar/user/${uid}`
       );
       const data = response.data;
-      console.log("esto es data de action:", data);
+      // console.log("esto es data de action:", data);
       return dispatch({
         type: CHECKUSER_SHOPPING,
         payload: data,
@@ -55,14 +53,19 @@ export const userShopping = (uid) => {
 
 //elimina un item
 export const remove_one_from_cart = (item) => {
+  // console.log("ESTO ES item en la action DELETE", item);
+  const { id } = item;
+  // console.log("ESTO ES item en la action DELETE", id);
+
   return async (dispatch) => {
     try {
-      await axios.delete(`http://localhost:3002/shoppingCar/`, item);
-      console.log("ESTO ES item en la action DELETE", item);
-
+      const response = await axios.delete(
+        `http://localhost:3002/shoppingCar/item/${id}`
+      );
+      // console.log("LA RESP DE LA ELIMINACION", response.data);
       return dispatch({
         type: REMOVE_ONE_FROM_CART,
-        payload: item,
+        payload: response.data.ItemsShoppingCars,
       });
     } catch (error) {
       console.log(error);

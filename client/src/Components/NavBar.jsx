@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BsCart4 } from "react-icons/bs";
@@ -7,8 +7,9 @@ import { authContext } from "../Context/authContext";
 import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../Context/authContext";
 import UserProfile from "../Views/UserProfile";
-
+import { useNavigate } from "react-router-dom";
 function NavBar() {
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.cart);
   console.log();
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
@@ -19,6 +20,7 @@ function NavBar() {
     event.preventDefault();
     logout();
     console.log("logout");
+    navigate("/home");
   };
 
   // const totalItemsInCart = cartItems.reduce(
