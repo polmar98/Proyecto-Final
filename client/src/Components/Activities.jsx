@@ -1,16 +1,60 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { authContext } from "../Context/authContext";
+import { useDispatch, useSelector } from "react-redux";
+// import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import {add_to_cart} from '../Redux/ShoppingCart/shoppingCartActions';
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
-function Activities({ activity, addNew }) {
+function Activities({ activity }) {
   const { Activities } = activity;
-  const user = useSelector((state) => state.users.user);
-  // const { addNewItem } = addNewItem;
-  console.log("actividades en Act: ", Activities); // aca llegan las 4 actividades
+  const dispatch = useDispatch();
+  const idCart = useSelector((state) => state.carrito.idCart);
+  const car = useSelector((state) => state.carrito.cart);
+  const { currentUser } = useContext(authContext);
+  console.log('el carrito logueada', car)
+  
+ console.log("actividades en Act: ", Activities); // aca llegan las 4 actividades
 
   const handleReserveActivity = (selectedActivity) => {
-    addNew(selectedActivity);
+    //addNew(selectedActivity);
+    const item = selectedActivity;
+    console.log('actividad reservada', selectedActivity)
+
+    if (currentUser) {
+      dispatch(add_to_cart(item));
+      guardarEnBDD(item);
+      dispatch(userShopping(currentUser.uid));
+    } else {
+        addNewItem(item);
+    }
   };
+
+
+  const guardarEnBDD = async(item) => {
+     const response1 = await fetch(
+          `http://localhost:3002/shoppingCar/${idCart}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json",},
+            body: JSON.stringify(item),
+          }
+     );
+  };
+  
+  //agregar items al localStorage
+  function addNewItem(item) {
+    let localStorageJSON = localStorage.getItem("carrito");
+    let storedItems = [];
+    if (localStorageJSON !== null) {
+      storedItems = JSON.parse(localStorageJSON); //convierte a JS
+    }
+    storedItems.push(item);
+    const updatedItemsJSON = JSON.stringify(storedItems);
+     localStorage.setItem("carrito", updatedItemsJSON); //lo convierte a json
+  };
+
+
   return (
     <>
       <h2 className="text-xl font-bold mb-4 mt-12 text-left fontPoppins">
@@ -50,33 +94,29 @@ function Activities({ activity, addNew }) {
                       </p>
                     </div>
                     <div>
-                      <Link to="/search">
+
                         <button
                           onClick={() => {
-                            {
-                              handleReserveActivity({
-                                idUser: user,
-                                items: [
-                                  {
-                                    amount: 1,
-                                    unitPrice: el.price,
-                                    totalPrice: el.price,
-                                    typeProduct: 2,
-                                    idProduct: el.id,
-                                    title: el.name,
-                                  },
-                                ],
-                              });
-                            }
-                            {
-                              window.alert("Actividad reservada");
-                            }
+                              handleReserveActivity(
+                                {
+                                  amount: 1,
+                                  unitPrice: Number(el.price),
+                                  totalPrice: Number(el.price),
+                                  typeProduct: 2,
+                                  idProduct:el.id,
+                                  title: el.name,
+                                  image: el.image,
+                                }
+                              )
+                              toast.success("Actividad reservada");
+                              // window.alert("Actividad reservada");
+                          
                           }}
                           className="p-1 text-yellow-500 fontPoppinsB scale-150 rounded bg-red-600 hover:rotate-12 transition "
                         >
                           Reservar
                         </button>
-                      </Link>
+                     
                     </div>
                   </div>
                 ) : (

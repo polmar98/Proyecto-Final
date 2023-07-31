@@ -1,16 +1,17 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("Comment", {
+  sequelize.define("Review", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         unique: true,
     },
-    testimony: {
-        type: DataTypes.TEXT,
+    calification: {
+        type: DataTypes.DECIMAL,
         allowNull: false,
+        defaultValue: 0,
     },
     uidUser: {
         type: DataTypes.STRING,

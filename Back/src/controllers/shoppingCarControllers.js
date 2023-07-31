@@ -20,20 +20,6 @@ const updateTotal = async (idCar) => {
   }
 };
 
-//esta rutina devuelve el carrito de compras que el usuario tenga guardado y pendiente
-const getShoppingCar = async (uid) => {
-  if (!uid) return { message: "Usuario No definido" };
-
-  //buscamos carrito pendiente
-  const carrito = await ShoppingCar.findOne({
-    where: { uidUser: uid, state: 0 },
-    include: { model: ItemsShoppingCar },
-  });
-
-  if (carrito == null)
-    return { message: "Usuario No tiene Carrito registrado" };
-  return carrito;
-};
 
 //esta funcion agrega items al carrito existente
 const addItemsShoppingCar = async (item, id) => {
@@ -59,7 +45,6 @@ const addItemsShoppingCar = async (item, id) => {
   ) {
     return { message: "Informacion Incompleta" };
   }
-
   const idCar = Number(id);
   //buscamos si ya existe el articulo dentro de los ya grabados
   const existe = await ItemsShoppingCar.findOne({
@@ -75,77 +60,82 @@ const addItemsShoppingCar = async (item, id) => {
     image,
     idShoppingCar: idCar,
   };
-
   //si no existe lo agregamos a los items
   if (existe == null) {
     const itemAdd = await ItemsShoppingCar.create(newItem);
-    const carUpdate = await updateTotal(idCar);
-    return { message: "Registro agregado al carrito" };
   } else {
     //si ya existe actualizamos la cantidad
     const rows = ItemsShoppingCar.update(item, { where: { id: existe.id } });
-    const carUpdate = await updateTotal(idCar);
-    return { message: "Registro Modificado" };
-  }
+ 
+  };
+  const carUpdate = await updateTotal(idCar);
+  console.log(carUpdate);
+  //ahora devolvemos todo la info del carrito actualizado
+  const car = await ShoppingCar.findByPk(idCar, {
+    include: { model: ItemsShoppingCar },
+  });
+  return car;
 };
 
 //esta funcion crea un carrito nuevo para el usuario registrado
 const addShoppingCar = async (uid) => {
   if (!uid) return { message: "Uid de Usuario No definido" };
-
   // Busca el usuario por uid
   const user = await User.findOne({ where: { uid: uid } });
-
   if (!user) return { message: "Usuario no encontrado" };
-
   // Usa el uid del usuario para crear el carrito de compras
   const [newCar, created] = await ShoppingCar.findOrCreate({
-    where: { state: 0, idBill: 0, fullValue: 0, uidUser: uid },
+    where: { state: 0, idBill: 0, fullValue: 0, uidUser: uid, idUser: user.id },
   });
-
   return { idcar: newCar.id };
 };
 
-//esta rutina elimina items del carrito de compras
-const deleteItemsShoppingCar = async (item) => {
-  if (!item.idProduct || !item.typeProduct || !item.idShoppingCar) {
-    return "Datos Incompletos para la eliminacion";
-  }
 
-  console.log(item);
+//esta rutina elimina items del carrito de compras
+const deleteItemsShoppingCar = async (id) => {
+ 
   //eliminamos los items del carro de compras
-  const existe = await ItemsShoppingCar.findOne({
-    where: {
-      idShoppingCar: item.idShoppingCar,
-      typeProduct: item.typeProduct,
-      idProduct: item.idProduct,
-    },
-  });
+  const idItem = Number(id);
+  const existe = await ItemsShoppingCar.findByPk(idItem);
+  const idCar = existe.idShoppingCar;
+
   if (existe !== null) {
     await existe.destroy();
   }
   //actualizamos el nuevo valor del carrito de compras
-  const carUpdate = updateTotal(item.idShoppingCar);
-  return "Registro eliminado";
+  const carUpdate = updateTotal(idCar);
+  //hora devolvemos todo la info del carrito actualizada
+  const car = await ShoppingCar.findByPk(idCar, {
+    include: { model: ItemsShoppingCar },
+  });
+  return car;
 };
 
-//esta rutina devuelve el carrito identificado por el ID
-const getShoppingCarById = async (uid) => {
+
+//esta rutina devuelve el carrito identificado por el UID del usuario
+const getShoppingCarByUser = async (uid) => {
   if (!uid) return { message: "Uid de Usuario No definido" };
 
   // Busca el carrito por uidUser
-  const car = await ShoppingCar.findOne({ where: { uidUser: uid, state: 0 } });
-
+  const car = await ShoppingCar.findOne({
+    where: { uidUser: uid },
+    include: { model: ItemsShoppingCar },
+  });
   if (!car) return { message: "Carrito no encontrado" };
-
-  return { idcar: car.id };
+  return car;
 };
 
-//esta rutina devuelve todos los carritos filtrados por un query
-const getAllShoppingCar = async (xquery) => {
-  const carritos = await ShoppingCar.findAll({ where: xquery });
-  return carritos;
+
+//esta rutina devuelve el carrito identificado por ID del carrito
+const getShoppingCarById = async (id) => {
+  const idCar = Number(id);
+  const car = await ShoppingCar.findByPk(idCar, {
+    include: { model: ItemsShoppingCar },
+  });
+  if (!car) return { message: "Carrito inexistente" };
+  return car;
 };
+
 
 //esta ruta vacia completamente el carrito
 const emptyShoppingCar = async (id) => {
@@ -154,7 +144,17 @@ const emptyShoppingCar = async (id) => {
     where: { idShoppingCar: idCar },
   });
   const carUpdate = await updateTotal(idCar);
-  return { message: "Carrito Vaciado" };
+  const car = await ShoppingCar.findByPk(idCar, {
+    include: { model: ItemsShoppingCar },
+  });
+  return car;
+};
+
+
+//esta ruta devuelve todos los carritos
+const getShoppingCar = async () => {
+  const carritos = ShoppingCar.findAll();
+  return carritos;
 };
 
 module.exports = {
@@ -163,6 +163,6 @@ module.exports = {
   addItemsShoppingCar,
   deleteItemsShoppingCar,
   getShoppingCarById,
-  getAllShoppingCar,
+  getShoppingCarByUser,
   emptyShoppingCar,
 };

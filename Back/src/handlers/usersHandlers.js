@@ -2,16 +2,23 @@ const { Router } = require("express");
 const {
   getAllUsers,
   deleteUser,
-  getUserById,
+  getUserByUid,
   createUser,
+  updateUser
 } = require("../controllers/usersControllers");
-
 
 const router = Router();
 
 // Crear un nuevo usuario
-router.post('/', createUser);
-
+router.post("/", async (req, res) => {
+  const datos = req.body;
+  try {
+    const result = await createUser(datos);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // Obtener todos los usuarios
 router.get("/", async (req, res) => {
@@ -26,7 +33,7 @@ router.get("/", async (req, res) => {
 // Eliminar un usuario por su uid
 router.delete("/:id", async (req, res) => {
   try {
-    const {uid} = req.params;
+    const { uid } = req.params;
     await deleteUser(uid);
     res.status(200).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
@@ -35,13 +42,27 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Obtener un usuario por su uid
-router.get("/:id", async (req, res) => {
+router.get("/:uid", async (req, res) => {
   try {
     const { uid } = req.params;
-    const user = await getUserById(uid);
+    const user = await getUserByUid(uid);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Ruta para modificar un usuario por su id
+router.put("/:uid", async (req, res) => {
+  const {uid} = req.params;
+  const newData = req.body; // Los datos que se desean modificar se enviarán en el cuerpo de la solicitud.
+
+  try {
+    const result = await updateUser(uid, newData);
+    res.json(result);
+  } catch (error) {
+    console.error("Error al modificar el usuario:", error);
+    res.status(500).json({ error: "Hubo un problema al modificar el usuario" });
   }
 });
 

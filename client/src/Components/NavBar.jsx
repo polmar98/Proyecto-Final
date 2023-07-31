@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BsCart4 } from "react-icons/bs";
 import { authContext } from "../Context/authContext";
 import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../Context/authContext";
-
+import UserProfile from "../Views/UserProfile";
+import { useNavigate } from "react-router-dom";
 function NavBar() {
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.cart);
   console.log();
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
@@ -18,6 +20,7 @@ function NavBar() {
     event.preventDefault();
     logout();
     console.log("logout");
+    navigate("/home");
   };
 
   // const totalItemsInCart = cartItems.reduce(
@@ -45,7 +48,7 @@ function NavBar() {
   // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
 
   return (
-    <div className="flex flex-row p-5">
+    <div className="flex flex-row p-5 h-24 z-50">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
 
       <div className="basis-1/2">
@@ -106,6 +109,14 @@ function NavBar() {
               </button>
               {isOpen && (
                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                  <Link
+                    to="/userProfile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
+                    //onclick close modal
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    Profile
+                  </Link>
                   <Link
                     to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"

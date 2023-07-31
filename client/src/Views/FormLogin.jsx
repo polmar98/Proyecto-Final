@@ -63,7 +63,7 @@ const LoginPage = () => {
     }
     try {
       await login(email, password);
-      dispatch(loginUser(user), userShopping(user));
+      dispatch(loginUser(user), userShopping(currentUser.uid));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -84,11 +84,12 @@ const LoginPage = () => {
       console.log(error);
     }
   };
+  // console.log("esto es currentuser:", currentUser);
 
   const handleGoogle = async () => {
     try {
       await signInWithGoogle();
-      dispatch(userShopping(user));
+      dispatch(userShopping(currentUser.uid));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
@@ -108,7 +109,7 @@ const LoginPage = () => {
   return (
     <div className="flex h-screen">
       {/* Columna Izquierda */}
-      <div className="flex flex-col w-1/2">
+      <div className="flex flex-col w-full lg:w-1/2">
         {/* Logo */}
         <div className="p-6">
           <img className="h-12" src={logo} alt="Logo" />
@@ -174,40 +175,28 @@ const LoginPage = () => {
             </h1>
 
             {isModalOpen && (
-              <div className="fixed z-10 inset-0 overflow-y-auto">
-                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                  <div
-                    className="fixed inset-0 transition-opacity"
-                    aria-hidden="true"
-                  >
-                    <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              <div className="fixed z-10 inset-0 flex items-center justify-center bg-opacity-50 bg-gray-900">
+                <div className="mx-4 bg-white rounded-lg w-full sm:w-4/5 md:w-3/5 lg:w-2/5 p-6">
+                  <div className="flex justify-end">
+                    <button onClick={() => setIsModalOpen(false)}>
+                      <GrFormClose size={24} />
+                    </button>
                   </div>
-
-                  <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6">
-                    <div className="flex justify-end">
-                      <button onClick={() => setIsModalOpen(false)}>
-                        <GrFormClose size={24} />
-                      </button>
-                    </div>
-                    <div className="mt-3 text-center sm:mt-5">
-                      <h3
-                        className="text-lg leading-6 font-medium text-gray-900"
-                        id="modal-title"
-                      >
-                        ¿Olvidaste tu contraseña?
-                      </h3>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Ingresa tu correo electrónico y te enviaremos un
-                          enlace para restablecer tu contraseña.
-                        </p>
-                        <input
-                          value={emailModal}
-                          onChange={(e) => setEmailModal(e.target.value)}
-                          placeholder="Correo electrónico"
-                          className="px-4 py-3 border rounded border-gray-300 text-gray-500 text-sm font-normal h-12 w-full mt-4"
-                        />
-                      </div>
+                  <div className="mt-3 text-center sm:mt-5">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                      ¿Olvidaste tu contraseña?
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Ingresa tu correo electrónico y te enviaremos un enlace
+                        para restablecer tu contraseña.
+                      </p>
+                      <input
+                        value={emailModal}
+                        onChange={(e) => setEmailModal(e.target.value)}
+                        placeholder="Correo electrónico"
+                        className="px-4 py-3 border rounded border-gray-300 text-gray-500 text-sm font-normal h-12 w-full mt-4"
+                      />
                     </div>
                     <div className="mt-5 sm:mt-6">
                       <button
@@ -222,6 +211,7 @@ const LoginPage = () => {
                 </div>
               </div>
             )}
+
             {/* Espaciado */}
             <div className="mt-10">
               {/* Separador */}
@@ -267,7 +257,7 @@ const LoginPage = () => {
       </div>
 
       {/* Columna Derecha */}
-      <div className="hidden w-1/2 lg:block p-8 overflow-hidden">
+      <div className="hidden lg:block lg:w-1/2 p-8 overflow-hidden">
         <img
           className="object-contain rounded h-full w-full"
           src={sideImage}

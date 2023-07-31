@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { authContext } from "../Context/authContext";
+import { toast } from "react-toastify";
 import Footer from "../Components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,18 +13,13 @@ import { fetchHotels } from "../Redux/Hotels/hotelsActions";
 import Flights from "../Components/Flights";
 import Hotels from "../Components/Hotels";
 import Activities from "../Components/Activities";
-import { add_to_cart } from "../Redux/ShoppingCart/shoppingCartActions";
 import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
 function Detail() {
   const { currentUser } = useContext(authContext);
-
   const { id } = useParams();
-  const user = useSelector((state) => state.users.user);
 
-  console.log("USER EN DETAIL: ", user);
-  // const user = 31;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,7 +33,7 @@ function Detail() {
   const airlines = useSelector((state) => state.airlines.airlinesList);
   const airlineData = airlines.find((el) => el.id === tour.idAirline);
   const airlineName = airlineData ? airlineData.name : "Desconocida";
-  // console.log('aerolinea', airlineName)
+  console.log("aerolinea", airlineName);
 
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
@@ -64,11 +60,11 @@ function Detail() {
       dispatch(userShopping(currentUser.uid));
     }
     // dispatch(fetchComments())
-    dispatch(clearPackageDetails());
     return () => {
-      // dispatch(clearPackageDetails());
+      dispatch(clearPackageDetails());
+      
     };
-  }, [id, dispatch]);
+  }, [id, dispatch, currentUser]);
 
   // item para guardar en el carrito
   const item = {
@@ -81,45 +77,11 @@ function Detail() {
     image: tour.image,
   };
 
-  //   idUser: user,
-  //   items: [
-  //     {
-  //       amount: 1,
-  //       unitPrice: tour.standarPrice,
-  //       totalPrice: tour.standarPrice,
-  //       typeProduct: 1,
-  //       idProduct: tour.id,
-  //       title: tour.title,
-  //     },
-  //   ],
-  // };
-  // {
-  // 	 "idUser": 1,
-  // 	 "items": [
-  // 		  {
-  // 				"amount": 2,
-  // 				"unitPrice": 1499,
-  // 				"totalPrice": 2998,
-  // 				"typeProduct": 1,
-  // 				"idProduct": 1,
-  // 				"title": "Paq. Turistico a Cancun"
-  // 			},
-
-  // 		  {
-  // 				"amount": 2,
-  // 				"unitPrice": 55,
-  // 				"totalPrice": 110,
-  // 				"typeProduct": 2,
-  // 				"idProduct": 3,
-  // 				"title":  "Actividad: Tour al cenote Samaal"
-  // 			}
-  // 	 ]
-
-  // }
 
   //agregar items al localStorage
   function addNewItem(item) {
     let localStorageJSON = localStorage.getItem("carrito");
+    localStorage.setItem("itemAmount_" + item.idProduct, item.amount);
     // console.log('JSON', localStorageJSON)
     let storedItems = [];
     if (localStorageJSON !== null) {
@@ -134,7 +96,8 @@ function Detail() {
   }
 
   //! german
-  async function guardarEnBDD(item) {
+  async function guardarEnBDD(parametro) {
+    console.log("item desde actvity", parametro);
     if (idCart) {
       const response1 = await fetch(
         `http://localhost:3002/shoppingCar/${idCart}`,
@@ -143,38 +106,38 @@ function Detail() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(item),
+          body: JSON.stringify(parametro),
         }
       );
+      //      console.log(response1);
     }
   }
 
-  // Hacer
-  //crear funcion para guardar en bdd una actividad
-  //
 
-  function changeNavigate() {
-    // if (user) {
-    if (idCart !== 0) {
-      dispatch(add_to_cart(item));
-      guardarEnBDD(item);
-      dispatch(userShopping(user));
+  function changeNavigate(parametro) {
+    if (currentUser) {
+      // console.log("EsTO ES CURRENTUSER:", currentUser);
+      if(!car.some(el => el.idProduct === item.idProduct)){
+        guardarEnBDD(parametro);
+        dispatch(userShopping(currentUser.uid));
+      } else {
+        guardarEnBDD({...parametro, amount: parametro.amount + 1})
+        dispatch(userShopping(currentUser.uid))
+      }
+
     } else {
-      // }
-      // } else {
-      addNewItem(item);
+      addNewItem(parametro);
       // console.log('detail', localStorage)
     }
-    navigate("/shoppingCart");
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
-  //       Cargando...
-  //     </div>
-  //   );
-  // }
+  if (!tour) {
+    return (
+      <div className="flex items-center justify-center h-screen text-4xl text-green-800">
+        Cargando...
+      </div>
+    );
+  }
   // if (rejected) {
   //   return (
   //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
@@ -215,7 +178,7 @@ function Detail() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 fontPoppins mt-6">
-          <Flights tour={tour} airlinename={airlineName} />
+          <Flights tour={tour} airline={airlineName} />
 
           <div className="text-right w-full flex flex-col justify-between bg-white mt-4 ">
             <h2 className="text-s font-medium">{tour.description}</h2>
@@ -234,7 +197,8 @@ function Detail() {
             <div>
               <button
                 onClick={() => {
-                  changeNavigate();
+                  changeNavigate(item);
+                  toast.success("Has agregado un paquete al carrito.");
                 }}
                 className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
               >
@@ -246,7 +210,7 @@ function Detail() {
 
         <Hotels hotel={hotelData} />
 
-        <Activities activity={tour} addNew={addNewItem} />
+        <Activities activity={tour} />
       </div>
 
       <Footer />

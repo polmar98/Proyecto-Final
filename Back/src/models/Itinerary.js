@@ -1,21 +1,19 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  sequelize.define("Comment", {
-    id: {
+  sequelize.define(
+    "Itinerary",
+    {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        unique: true,
-    },
-    testimony: {
+      },
+      itinerary: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
     },
-    uidUser: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-  },{timestamps: true});
+    { timestamps: false }
+  );
 };

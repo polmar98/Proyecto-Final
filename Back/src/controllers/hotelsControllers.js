@@ -45,20 +45,19 @@ const bulkCreateHotels = async (hotelsData) => {
   };
 
 
-//Funcion para eliminar hotel
-const deleteHotel = async (id) => {
-  await Hotel.destroy({ where: { id: id,}, });
- const deleteHotel = await Hotel.findAll();
- return deleteHotel;
+//Funcion para desactivar el hotel
+const desactivHotel = async (id, available) => {
+  await Hotel.update({ available: available }, { where: { id: id } });
+ const desacHotel = await Hotel.findByPk(id);
+ return desacHotel;
 }
 
 //funcion para editar actividades
 const updateHotel = async (id, newData) => {
-  // Utiliza el método update de Sequelize para modificar los datos en la base de datos
+  // Metodo para modificar los datos
   await Hotel.update(newData, {
     where: { id: id },
   });
-  
   // Después de la actualización, obtén los datos actualizados
   const updatedHotel = await Hotel.findByPk(id);
   return updatedHotel;
@@ -70,6 +69,6 @@ module.exports={
     getHotelById,
     createHotel,
     bulkCreateHotels,
-    deleteHotel,
+    desactivHotel,
     updateHotel,
 }

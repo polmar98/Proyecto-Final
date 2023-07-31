@@ -1,12 +1,12 @@
-const { Comment, User, Package } = require('../database');
+const { ActivityComment, User, Activity } = require('../database');
 const { Association } = require("sequelize");
 
 // Controlador para crear nuevos comentarios
 const createComment = async (datos) => {
-    const { uidUser, testimony, idPackage } = datos;
+    const { uidUser, testimony, idActivity } = datos;
 
     // Verificar si falta algún elemento obligatorio
-    if (!uidUser || !testimony || !idPackage) {
+    if (!uidUser || !testimony || !idActivity) {
       return { message: 'Falta uno o más elementos obligatorios'};
     };
     
@@ -17,40 +17,40 @@ const createComment = async (datos) => {
     };
     const idUser = existingUser.id;
 
-    // verificar si existe el paquete
-    const existingPackage = await Package.findByPk(idPackage);
-    if (!existingPackage) {
-      return { message: 'El paquete no existe' };
+    // verificar si existe la actividad
+    const existingActivity = await Activity.findByPk(idActivity);
+    if (!existingActivity) {
+      return { message: 'La actividad no existe' };
     }  
-    const newComment = await Comment.create({ idUser, uidUser, testimony, idPackage });
+    const newComment = await ActivityComment.create({ idUser, uidUser, testimony, idActivity });
     return newComment;
 
 };
 
 // Controlador para obtener todos los comentarios
 const getAllComments = async () => {
-    const comments = await Comment.findAll({
+    const comments = await ActivityComment.findAll({
        include: [ { association: "User", attributes: ["uid", "name", "lastName", "avatar", "id"]},
-                  { association: "Package", attributes: ["id", "title", "idCity"]} ]
+                  { association: "Activity", attributes: ["id", "name", "duration", "price", "idPackage"]} ]
     });
     return comments;
  };
 
 // Controlador para obtener un comentario por su ID
 const getCommentById = async (id) => {
-    const comment = await Comment.findByPk(id, {
+    const comment = await ActivityComment.findByPk(id, {
       include: [{ association: "User", attributes: ["uid", "name", "lastName", "avatar", "id"] },
-                { association: "Package", attributes: ["id", "title", "idCity"]}]
+                { association: "Activity", attributes: ["id", "name", "duration", "price", "idPackage"]}]
     }); // Buscar el comentario por su ID en la base de datos
     return comment;
  };
 
- //Controlador para obtener todos los comentarios de un paquete por el IdPackage
-const getCommentByIdPackage = async(id) => {
-   if(id == undefined) { return {message: "No ha definido Id del Paquete"}};
-   const idPac = Number(id);
-   const comment = await Comment.findAll(
-      {where: {idPackage: idPac},
+ //Controlador para obtener todos los comentarios de una actividad por el Id de la actividad
+const getCommentByIdActivity = async(id) => {
+   if(id == undefined) { return {message: "No ha definido Id de la actividad"}};
+   const idAct = Number(id);
+   const comment = await ActivityComment.findAll(
+      {where: {idActivity: idAct},
       include: [{ association: "User", attributes: ["uid", "name", "lastName", "avatar", "id"] },]
     });
    return comment;
@@ -60,9 +60,9 @@ const getCommentByIdPackage = async(id) => {
 const getCommentByIdUser = async(uid) => {
   if(uid == undefined) { return {message: "No ha definido uid del Usuario"}};
 
-  const comment = await Comment.findAll(
+  const comment = await ActivityComment.findAll(
      {where: {uidUser: uid},
-     include: [{ association: "Package", attributes: ["id", "title", "idCity"] },]
+     include: [{ association: "Activity", attributes: ["id", "name", "duration", "price", "idPackage"] },]
    });
   return comment;
 };
@@ -70,7 +70,7 @@ const getCommentByIdUser = async(uid) => {
 //controlador para eliminar un comentario
 const deleteComment = async(id) => {
    const idC = Number(id);
-   const registro = await Comment.findByPk(idC);
+   const registro = await ActivityComment.findByPk(idC);
    if (registro !== null) {
       await registro.destroy();
       return {message: "Comentario Eliminado"};
@@ -82,7 +82,7 @@ const deleteComment = async(id) => {
 const updateComment = async(id, datos) => {
    const idC = Number(id);
    const {testimony} = datos;
-   const actualizado = await Comment.update({testimony}, {where: {id: idC}});
+   const actualizado = await ActivityComment.update({testimony}, {where: {id: idC}});
    return actualizado;
 };
 
@@ -90,7 +90,7 @@ module.exports = {
     createComment,
     getAllComments,
     getCommentById,
-    getCommentByIdPackage,
+    getCommentByIdActivity,
     getCommentByIdUser,
     deleteComment,
     updateComment,
