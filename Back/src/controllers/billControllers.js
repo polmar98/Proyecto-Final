@@ -1,4 +1,5 @@
 const {Bill, ItemsBill, ShoppingCar, ItemsShoppingCar} = require("../database");
+const { Association } = require("sequelize");
 
 //esta funcion agrega una nueva factura
 const addBill = async(idCar) => {
@@ -25,7 +26,8 @@ const addBill = async(idCar) => {
         subtotal: car.fullValue,
         taxes: impuesto,
         fullValue: vtotal,
-        uidUser: car.uidUser
+        uidUser: car.uidUser,
+        idUser: car.idUser,
     };
     //grabamos nuevo registro en tabla Bill
     const nBill = await Bill.create(newBill);
@@ -60,8 +62,10 @@ const getBillById = async(id) => {
    if(!id) return {message: "Id no definido"};
    const idBill = Number(id);
    const fact = await Bill.findByPk(idBill, {
-      include: {model: ItemsBill}
-   });
+      include: [
+         {model: ItemsBill},
+         {association: "User", attributes: ['name', 'lastName', 'email', 'address', 'phoneNumber', 'dni']},
+   ]});
    return fact;
 };
 
@@ -83,7 +87,12 @@ const emptyShoppingCar = async (id) => {
 
   //esta ruta devuelve todas las facturas grabadas
   const getAllBill = async() => {
-     const facturas = await Bill.findAll({ include: {model: ItemsBill}});
+     const facturas = await Bill.findAll({ include:
+       [
+         {model: ItemsBill},
+         {association: "User", attributes: ['name', 'lastName', 'email', 'address', 'phoneNumber', 'dni']},
+
+      ]});
      return facturas;
   };
 
