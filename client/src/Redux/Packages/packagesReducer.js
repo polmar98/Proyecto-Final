@@ -42,7 +42,8 @@ const packagesReducer = (state = initialState, action) => {
         ...state,
         packagesList: action.payload,
         packagesFiltered: action.payload,
-        allPackages:action.payload
+        allPackages:action.payload,
+        packagesSearch:action.payload
       };
       case FETCH_ORIGIN_CITIES:
       return {
@@ -118,34 +119,42 @@ const packagesReducer = (state = initialState, action) => {
           };
     
           case SET_ORIGIN_CITY_FILTER:
-            const selectedOriginCityName = action.payload;
-            let filteredByOriginCity;
-          
-            if (selectedOriginCityName !== "Todos") {
-              const selectedOriginCity = state.originCitiesList.find((city) => city.name === selectedOriginCityName);
-              const selectedOriginCityId = selectedOriginCity ? selectedOriginCity.id : null;
-          
-              // Aplicar el filtro de ciudad de origen sobre los países filtrados previamente (packagesFiltered)
-              filteredByOriginCity = state.packagesFiltered.filter((pkg) => pkg.originCity === selectedOriginCityId);
-            } else {
-              // Si se selecciona "Todos", mantener el filtro de ciudad de destino si existe
-              filteredByOriginCity = state.packagesFiltered;
-            }
-          
-            // Combinar el filtro de ciudad de destino si existe
-            if (state.filters.cityFilter !== "Todos") {
-              filteredByOriginCity = filteredByOriginCity.filter((pkg) => pkg.City.name === state.filters.cityFilter);
-            }
-          
-            return {
-              ...state,
-              packagesFiltered: filteredByOriginCity,
-              packagesSearch: filteredByOriginCity,
-              filters: {
-                ...state.filters,
-                originCityFilter: action.payload,
-              },
-            };
+  const selectedOriginCityName = action.payload;
+  const cityFilter = state.filters.cityFilter;
+
+  if (selectedOriginCityName === "Todos") {
+    // Si se selecciona "Todos" en el filtro de ciudad de origen
+    // Mostramos los paquetes filtrados previamente por ciudad de destino (cityFilter)
+    const filteredByCity = cityFilter === "Todos"
+      ? state.allPackages // Si también se selecciona "Todos" en el filtro de ciudad de destino, mostramos todos los paquetes
+      : state.allPackages.filter((pkg) => pkg.City.name === cityFilter);
+
+    return {
+      ...state,
+      filteredPackages: filteredByCity,
+      filters: {
+        ...state.filters,
+        originCityFilter: action.payload,
+      },
+    };
+  } else {
+    const selectedOriginCity = state.originCitiesList.find((city) => city.name === selectedOriginCityName);
+    const selectedOriginCityId = selectedOriginCity ? selectedOriginCity.id : null;
+
+    // Aplicamos el filtro de ciudad de origen y ciudad de destino (si no es "Todos")
+    const filteredByOriginCity = cityFilter === "Todos"
+      ? state.allPackages.filter((pkg) => pkg.originCity === selectedOriginCityId)
+      : state.allPackages.filter((pkg) => pkg.originCity === selectedOriginCityId && pkg.City.name === cityFilter);
+
+    return {
+      ...state,
+      filteredPackages: filteredByOriginCity,
+      filters: {
+        ...state.filters,
+        originCityFilter: action.payload,
+      },
+    };
+  }
       
     case SET_DURATION_FILTER:
       let orderDuration;
@@ -201,7 +210,7 @@ const packagesReducer = (state = initialState, action) => {
   
         if (state.filters.cityFilter === "Todos") {
           // Si el filtro de ciudad es "Todos", aplicar el filtro de precio desde todos los paquetes
-          filteredByPrice = state.allPackages.filter((pkg) => {
+          filteredByPrice = state.packagesSearch.filter((pkg) => {
             const packagePrice = parseFloat(pkg.standarPrice);
             return packagePrice >= priceRangeFilter[0] && packagePrice <= priceRangeFilter[1];
           });
