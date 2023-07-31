@@ -117,22 +117,27 @@ function Detail() {
   function changeNavigate(parametro) {
     if (currentUser) {
       // console.log("EsTO ES CURRENTUSER:", currentUser);
-      guardarEnBDD(parametro);
-      dispatch(userShopping(currentUser.uid));
+      if(!car.some(el => el.idProduct === item.idProduct)){
+        guardarEnBDD(parametro);
+        dispatch(userShopping(currentUser.uid));
+      } else {
+        guardarEnBDD({...parametro, amount: parametro.amount + 1})
+        dispatch(userShopping(currentUser.uid))
+      }
+
     } else {
-     
       addNewItem(parametro);
       // console.log('detail', localStorage)
     }
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
-  //       Cargando...
-  //     </div>
-  //   );
-  // }
+  if (!tour) {
+    return (
+      <div className="flex items-center justify-center h-screen text-4xl text-green-800">
+        Cargando...
+      </div>
+    );
+  }
   // if (rejected) {
   //   return (
   //     <div className="flex items-center justify-center h-screen text-4xl text-green-800">
@@ -205,7 +210,7 @@ function Detail() {
 
         <Hotels hotel={hotelData} />
 
-        <Activities activity={tour} addNew={changeNavigate} />
+        <Activities activity={tour} />
       </div>
 
       <Footer />

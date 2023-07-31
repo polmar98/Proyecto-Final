@@ -15,7 +15,7 @@ import {
   AiOutlineShopping,
   AiOutlineDelete,
 } from "react-icons/ai";
-import { save_in_db } from "../Redux/ShoppingCart/shoppingCartActions";
+
 
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
@@ -81,7 +81,7 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem key={index} item={el} cart={idCart} />
+              <CartItem key={index} item={el} cart={idCart} amount={el.amount}/>
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link

@@ -12,12 +12,12 @@ import {
 
 
 const CartItem = (props) => {
-  const { item } = props;
+  const { item, amount } = props;
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [currentAmount, setCurrentAmount] = useState(1);
+  const [currentAmount, setCurrentAmount] = useState(amount);
   const [totalPriceState, setTotalPrice] = useState(1);
   const idCart = useSelector((state) => state.carrito.idCart);
 
@@ -45,7 +45,7 @@ const CartItem = (props) => {
           amount: currentAmount,
           unitPrice: numero,
           totalPrice: numero * currentAmount,
-          typeProduct: 1,
+          typeProduct: item.typeProduct,
           idProduct: item.idProduct,
           title: item.title,
           image: item.image,

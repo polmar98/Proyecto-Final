@@ -63,6 +63,7 @@ const shoppingCartReducer = (state = initialState, action) => {
         cart: [],
       };
     case CHECKUSER_SHOPPING:
+      // console.log('el action payload', action.payload)
       return {
         ...state,
         idCart: action.payload.id,

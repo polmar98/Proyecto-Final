@@ -63,7 +63,7 @@ const LoginPage = () => {
     }
     try {
       await login(email, password);
-      dispatch(loginUser(user), userShopping(user));
+      dispatch(loginUser(user), userShopping(currentUser.uid));
     } catch (error) {
       setErrorMsg(error.message);
       console.log(error);
