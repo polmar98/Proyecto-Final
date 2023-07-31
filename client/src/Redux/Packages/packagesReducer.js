@@ -150,7 +150,7 @@ const packagesReducer = (state = initialState, action) => {
     case SET_DURATION_FILTER:
       let orderDuration;
       if (state.filters.cityFilter === "Todos") {
-        orderDuration = state.allPackages.slice().sort((a, b) => {
+        orderDuration = state.packagesFiltered.slice().sort((a, b) => {
           if (a.duration < b.duration) {
             return action.payload === "Menor-Mayor" ? 1 : -1;
           }
@@ -176,21 +176,24 @@ const packagesReducer = (state = initialState, action) => {
         packagesSearch: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
         packagesFiltered: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
       };
-    case SET_PRICE_FILTER:
-      let orderPrice;
-      if (action.payload === "MenorPrecio") {
-        orderPrice = state.packagesFiltered.slice().sort((a, b) => a.standarPrice - b.standarPrice);
-      } else if (action.payload === "MayorPrecio") {
-        orderPrice = state.packagesFiltered.slice().sort((a, b) => b.standarPrice - a.standarPrice);
-      } else {
-        orderPrice = state.packagesFiltered;
-      }
-      return {
-        ...state,
-        packagesList: action.payload === "precios" ? orderPrice : state.packagesFiltered,
-        packagesSearch: action.payload === "precios" ? orderPrice : state.packagesFiltered,
-        packagesFiltered: orderPrice,
-      };
+      case SET_PRICE_FILTER:
+        let orderPrice;
+        const packagesFilteredCopy = [...state.packagesFiltered]; // Copia del array para no modificar el estado original
+  
+        if (action.payload === "MenorPrecio") {
+          orderPrice = packagesFilteredCopy.sort((a, b) => a.standarPrice - b.standarPrice);
+        } else if (action.payload === "MayorPrecio") {
+          orderPrice = packagesFilteredCopy.sort((a, b) => b.standarPrice - a.standarPrice);
+        } else {
+          orderPrice = packagesFilteredCopy;
+        }
+  
+        return {
+          ...state,
+          packagesList: action.payload === "precios" ? orderPrice : packagesFilteredCopy,
+          packagesSearch: action.payload === "precios" ? orderPrice : packagesFilteredCopy,
+          packagesFiltered: orderPrice,
+        };
 
       case SET_PRICE_RANGE_FILTER:
         const priceRangeFilter = action.payload;

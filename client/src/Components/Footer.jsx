@@ -15,7 +15,7 @@ function Footer() {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Links
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 dark:text-gray-500 font-medium">
                 <li className="mb-4">
                   <Link to="/" className="hover:underline">
                     Home
@@ -38,7 +38,7 @@ function Footer() {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Services
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 dark:text-gray-500 font-medium">
                 <li className="mb-4">
                   <a
                     href="https://github.com/polmar98/Proyecto-Final"
@@ -60,7 +60,7 @@ function Footer() {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Contact
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <a href="#" className="hover:underline">
                     Privacy Policy
@@ -77,7 +77,7 @@ function Footer() {
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          <span className="text-sm text-gray-400 sm:text-center dark:text-gray-500">
             © 2023{" "}
             <a href="" className="hover:underline">
               Wanderlust™
@@ -87,7 +87,7 @@ function Footer() {
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"
@@ -106,7 +106,7 @@ function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"
@@ -121,7 +121,7 @@ function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"
@@ -140,7 +140,7 @@ function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"
@@ -159,7 +159,7 @@ function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <svg
                 className="w-4 h-4"
