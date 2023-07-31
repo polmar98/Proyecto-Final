@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SearchPackagesByCountry } from "../Redux/Packages/packagesActions";
 import { useLocation, useNavigate } from "react-router-dom";
-// import logo from "../Utils/Img/logo.png";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar() {
@@ -17,6 +16,7 @@ export default function SearchBar() {
 
   const handleSearch = () => {
     if (country.trim() !== "") {
+    
       // Si se ingresa un país en el campo de búsqueda, realizamos la búsqueda y navegamos a SearchResult
       dispatch(SearchPackagesByCountry(country));
       setCountry("");
@@ -34,21 +34,16 @@ export default function SearchBar() {
     }
   };
 
-  // const isSearchResult = location.pathname === "/search";
 
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
-      {/* <div className="ml-auto">
-      {isSearchResult && (
-      <img onClick={() => navigate("/home")} src= {logo} alt="logo" className="w-8 h-auto cursor-pointer" />
-    )}
-      </div> */}
+      
 
       <div className="flex-grow">
         <input
           type="text"
           placeholder="A donde ..."
-          className="bg-white rounded p-2 m-2 text-lg w-full focus:outline-none text-gray-700"
+          className="bg-white rounded p-2 m-2 text-lg w-full focus:outline-none text-gray-700 fontPoppins"
           value={country}
           onChange={handleInputChange}
         />

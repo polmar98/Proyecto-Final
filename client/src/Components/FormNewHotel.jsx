@@ -29,39 +29,66 @@ export default function FormNewHoltel({onHideForm}){
 
 
        
-  function handleHotelChange (e){
-    const { name, value } = e.target;
-    setNewHotel({
-      ...newHotel,
-      [name]:value
-    })}
-
-    const handleImageChange = (event) => {
+      function handleImageChangeFromComputer(event) {
         const { files } = event.target;
         const imageFiles = Array.from(files);
-        const imageUrls = imageFiles.map((file) => URL.createObjectURL(file));
         setNewHotel({
           ...newHotel,
-          image: imageUrls,
+          image: [...newHotel.image, ...imageFiles],
         });
-      };
-
-function handleSubmit (e){
-    e.preventDefault();
-    dispatch(addHotels(newHotel));
-    setNewHotel({
-        name:"",
-        image:[],
-        calification:0,
-        stars:0,
-        details:"",
-        idCity:0,
+      }
+    
+      function handleImageUrlChange(event) {
+        const { value } = event.target;
+        // Filtrar las URLs ingresadas por el usuario para evitar cadenas vacías
+        const imageUrls = value.split(",").map((url) => url.trim()).filter(Boolean);
+        setNewHotel({
+          ...newHotel,
+          image: newHotel.image.concat(imageUrls),
+        });
+      }
+    
+   
+  
+    function handleHotelChange(e) {
+      const { name, value } = e.target;
+      setNewHotel({
+        ...newHotel,
+        [name]: value,
       });
-      alert("Hotel creado correctamente");
-      dispatch(fetchHotels ())
-      onHideForm()
-}
+    }
 
+    function handleSubmit(e) {
+      e.preventDefault();
+    
+      // Comprobamos si hay imágenes cargadas desde el computador y las convertimos a URLs
+      const imageUrls = newHotel.image.map((image) =>
+        typeof image === "string" ? image : URL.createObjectURL(image)
+      );
+    
+      // Creamos un nuevo objeto newHotel con las URLs de las imágenes
+      const newHotelWithUrls = {
+        ...newHotel,
+        image: imageUrls,
+      };
+    
+      // Enviamos el nuevo objeto con las URLs de las imágenes al servidor
+      dispatch(addHotels(newHotelWithUrls));
+    
+      // Reseteamos el estado del formulario
+      setNewHotel({
+        name: "",
+        image: [],
+        calification: 0,
+        stars: 0,
+        details: "",
+        idCity: 0,
+      });
+    
+      alert("Hotel creado correctamente");
+      dispatch(fetchHotels());
+      onHideForm();
+    }
 
 function handleCancel() {
     onHideForm(); // Llama a la función para ocultar el formulario sin enviar datos.
@@ -148,18 +175,18 @@ className="block mb-2 text-sm font-medium text-gray-600">Imágenes:</label>
         <div>
           <input
             type="file"
-            name="images"
+            name="image"
             accept="image/*"
             multiple
-            onChange={handleImageChange}
+            onChange={handleImageChangeFromComputer}
             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           <p>o</p>
           <input
             type="text"
-            name="imagesUrl"
-            value={newHotel.imagesUrl}
-            onChange={handleHotelChange}
+            name="imageUrls"
+            value={newHotel.image}
+            onChange={handleImageUrlChange}
             placeholder="Ingrese la URL de la imagen"
             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
@@ -167,9 +194,13 @@ className="block mb-2 text-sm font-medium text-gray-600">Imágenes:</label>
 
         <div>
         <h3 className="block mb-2 text-sm font-medium text-gray-600">Imágenes cargadas:</h3>
-        {newHotel.image.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt={`Imagen ${index + 1}`} />
-        ))}
+        {newHotel.image && newHotel.image.length > 0 ? (
+    newHotel.image.map((image, index) => (
+      <img key={index} src={typeof image === "string" ? image : URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
+    ))
+  ) : (
+    <p>No se han cargado imágenes</p>
+  )}
       </div>
 
       <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"onClick={handleSubmit}>
