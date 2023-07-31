@@ -117,8 +117,8 @@ ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
 ShoppingCar.hasMany(ItemsShoppingCar, {foreignKey: "idShoppingCar",  sourceKey: "id" });
 ItemsShoppingCar.belongsTo(ShoppingCar, { foreignKey: "idShoppingCar",  targetKey: "id" });
 
-User.hasMany(Bill, { foreignKey: "uidUser", sourceKey: "uid" });
-Bill.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
+User.hasMany(Bill, { foreignKey: "idUser", sourceKey: "id" });
+Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });
