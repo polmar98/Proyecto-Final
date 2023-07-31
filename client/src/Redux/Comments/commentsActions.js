@@ -4,11 +4,13 @@ export const FETCH_COMENTS = "FETCH_COMENTS";
 export const ADD_COMENT = "ADD_COMENT";
 export const GET_COMENT_BY_ID = "GET_COMENT_BY_ID";
 export const SEARCH_COMENTS = "SEARCH_COMENTS";
+export const GET_COMENT_BY_PACKAGE = "GET_COMENT_BY_PACKAGE";
 
+//obtiene todos los coments
 export const fetchComents = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get("http://localhost:3002/coments");
+      const response = await axios.get("http://localhost:3002/comments/");
       const data = response.data;
       return dispatch({
         type: FETCH_COMENTS,
@@ -20,11 +22,12 @@ export const fetchComents = () => {
   };
 };
 
+//crea un coment
 export const addComents = (newComent) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:3002/coments",
+        "http://localhost:3002/comments/",
         newComent
       );
       const data = response.data;
@@ -38,13 +41,33 @@ export const addComents = (newComent) => {
   };
 };
 
+//trae un coment por id
 export const getComentById = (id) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`http://localhost:3002/coments/${id}`);
+      const response = await axios.get(`http://localhost:3002/comments/${id}`);
       const data = response.data;
       return dispatch({
         type: GET_COMENT_BY_ID,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+//traer todos los coments de un mismo paquete
+export const getComentByPackage = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/comments/package/${id}`
+      );
+      const data = response.data;
+
+      return dispatch({
+        type: GET_COMENT_BY_PACKAGE,
         payload: data,
       });
     } catch (error) {

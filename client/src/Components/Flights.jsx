@@ -1,10 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const Flights =  ({tour, airline }) => {
+const Flights =  ({tour}) => {
     const {outboundFlight, returnFlight} = tour;
-    const {airlineName} = airline
 
-    if(!airline){
+  
+    const airlines = useSelector((state) => state.airlines.airlinesList);
+    const airlineData = airlines.find((el) => el.id === tour.idAirline);
+    const airlineName = airlineData ? airlineData.name : "Desconocida";
+
+    if(!airlines){
       return <div> cargando... </div>
     }
 
