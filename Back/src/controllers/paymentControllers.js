@@ -5,7 +5,6 @@ const {
   PAYPAL_API_SECRET,
 } = require("../payPalConfig");
 
-
 const createOrder = async (order) => {
   //función requerida para solicitar token de paypal
   const params = new URLSearchParams();
@@ -32,7 +31,9 @@ const createOrder = async (order) => {
       authorization: `Bearer ${access_token} `,
     },
   });
-  return response.data;
+  
+  const payPalUrl = response.data.links[1].href;
+  return payPalUrl;
 };
 
 const captureOrder = async (token) => {
@@ -66,12 +67,11 @@ const captureOrder = async (token) => {
     }
   );
   //acá hay que redireccionar a alguna vista que diga ya estas listo para viajar
-  
-  const {id, status} = response.data;
-  const cleanData = {id, status};
 
-  console.log(cleanData);
-  return (cleanData) ;
+  const { id, status } = response.data;
+  const cleanData = { id, status };
+
+  return cleanData;
 };
 
 module.exports = {
