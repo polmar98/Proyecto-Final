@@ -5,6 +5,7 @@ import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import { CgDanger } from "react-icons/cg";
 import CardItem from "../Components/CardCheckout";
+import { useAuth } from "../Context/authContext";
 import { useSelector, useDispatch } from "react-redux";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 import { create_order } from "../Redux/Checkout/checkoutActions";
@@ -21,6 +22,8 @@ export default function Checkout() {
 
   const idCart = useSelector((state) => state.carrito.idCart);
   const cartItems = useSelector((state) => state.carrito.cart);
+  console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
+  console.log("STO ES idCart DESDE SHOPING CART ", idCart);
   const vatPercentage = 10; // Porcentaje del impuesto
   let totalPrice = cartItems.reduce(
     (sum, item) => sum + parseFloat(item.totalPrice),
@@ -54,7 +57,6 @@ export default function Checkout() {
   function send_order() {
     dispatch(create_order(order));
   }
-
   return (
     <div>
       <div className="bg-verdeFooter">
