@@ -18,12 +18,12 @@ export default function Checkout() {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
     }
-  }, [currentUser]);
+  }, [currentUser, dispatch]);
 
-  const idCart = useSelector((state) => state.carrito.idCart);
+  // const idCart = useSelector((state) => state.carrito.idCart);
   const cartItems = useSelector((state) => state.carrito.cart);
   console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
-  console.log("STO ES idCart DESDE SHOPING CART ", idCart);
+  // console.log("STO ES idCart DESDE SHOPING CART ", idCart);
   const vatPercentage = 10; // Porcentaje del impuesto
   let totalPrice = cartItems.reduce(
     (sum, item) => sum + parseFloat(item.totalPrice),
@@ -33,6 +33,13 @@ export default function Checkout() {
   const finalPrice = totalPrice + vatAmount; // Suma el impuesto al precio total
   const precioFormateado = finalPrice.toFixed(2); // Precio total con impuestos
   const vatFormateado = vatAmount.toFixed(2); // Impuesto formateado
+  const precioJSON = precioFormateado.toString() //precio para colocar en la order
+  console.log('precio final json', precioJSON)
+
+  const itemTitles = cartItems.map(el => el.title).concat().toString()
+  console.log('items a enviar', itemTitles)
+
+
 
   const order = {
     intent: "CAPTURE",
@@ -40,9 +47,9 @@ export default function Checkout() {
       {
         amount: {
           currency_code: "USD",
-          value: "5.00", //aca va totalPrice.toString()
+          value: precioJSON,
         },
-        description: "paquete a cancún", // puede ser un mapeo de todos los titulos de los paquetes y actividades que compro. tienen que ser 2 mapeos xq act y paquete tienen distinta prop para el nombre. aplicarles un concat con una , que los una.
+        description: itemTitles,
       },
     ],
     application_context: {
@@ -57,6 +64,7 @@ export default function Checkout() {
   function send_order() {
     dispatch(create_order(order));
   }
+
   return (
     <div>
       <div className="bg-verdeFooter">
