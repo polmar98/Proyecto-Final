@@ -70,7 +70,7 @@ console.log('eltour', tour)
     amount: 1,
     unitPrice: tour.standarPrice,
     totalPrice: tour.standarPrice,
-    typeProduct: tour.typeProduct,
+    typeProduct: 1,
     idProduct: tour.id,
     title: tour.title,
     image: tour.image,
