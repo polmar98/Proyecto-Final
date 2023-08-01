@@ -16,6 +16,11 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    calification: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      defaultValue: 4,
+    },
 
   },{timestamps: true});
 };

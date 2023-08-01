@@ -2,7 +2,7 @@ const { Association } = require("sequelize");
 const { TypePackage, Package,
         City, Airline,
         Activity, Country,
-        CityOrigin, Comment, Review} = require("../database");
+        CityOrigin, Comment} = require("../database");
         
 const { Op } = require("sequelize");
 
@@ -99,7 +99,6 @@ const viewPackages = async () => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
-      { model: Review},
     ],
   });
   return paquetes;
@@ -118,7 +117,6 @@ const getPackageById = async (idp) => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
-      { model: Review},
     ],
   });
   return paquete;
@@ -143,7 +141,6 @@ const searchPackages = async (search) => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
-      { model: Review},
     ],
   });
   return paquetes;

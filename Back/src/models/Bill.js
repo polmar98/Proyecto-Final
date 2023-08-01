@@ -35,6 +35,16 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      idPaypal: {
+        type: DataTypes.STRING,
+        defaultValue: "00000000000",
+        allowNull: false,
+      },
+      account_id: {
+        type: DataTypes.STRING,
+        defaultValue: "00000000000",
+        allowNull: false,
+      },
     },
     { timestamps: true }
   );
