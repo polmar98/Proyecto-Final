@@ -6,10 +6,7 @@ const {
 } = require("../payPalConfig");
 
 
-
-
 const createOrder = async (order) => {
-
   //función requerida para solicitar token de paypal
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
@@ -27,8 +24,8 @@ const createOrder = async (order) => {
     }
   );
 
-  const {access_token} = access.data;
-  
+  const { access_token } = access.data;
+
   // Acá enviamos la orden de compra a paypal
   const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
     headers: {
@@ -39,7 +36,6 @@ const createOrder = async (order) => {
 };
 
 const captureOrder = async (token) => {
-
   //función requerida para solicitar token de paypal
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
@@ -57,8 +53,7 @@ const captureOrder = async (token) => {
     }
   );
 
-  const {access_token} = access.data;
-
+  const { access_token } = access.data;
 
   //Acá pedimos la captura de la orden a paypal
   const response = await axios.post(
@@ -71,15 +66,15 @@ const captureOrder = async (token) => {
     }
   );
   //acá hay que redireccionar a alguna vista que diga ya estas listo para viajar
-  console.log(response.data);
-  return response.data;
+  
+  const {id, status} = response.data;
+  const cleanData = {id, status};
 
+  console.log(cleanData);
+  return (cleanData) ;
 };
-
-
 
 module.exports = {
   createOrder,
   captureOrder,
-  
 };

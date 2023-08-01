@@ -15,7 +15,7 @@ router.post('/create-order', async (req, res)=>{
                 {
                     amount: {
                         currency_code: "USD",
-                        value: "9.99",
+                        value: "5.00",
                     },
                     description: "paquete a cancún"
                 }
@@ -54,7 +54,7 @@ router.get('/pay-order', async (req, res)=>{
 router.get('/cancel-order', async (req, res)=>{
     try{
         //revisar la ruta para que redireccione al carrito 
-        res.redirect("/shoppingCar");
+        res.redirect("/shoppingCart");
 
     }catch (error) {
         res.status(500).json({ message: error.message });
