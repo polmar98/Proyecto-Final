@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 function NavBar() {
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.cart);
-  console.log();
+  console.log("cartItems", cartItems);
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,11 +23,6 @@ function NavBar() {
     navigate("/home");
   };
 
-  // const totalItemsInCart = cartItems.reduce(
-  //   (total, item) => total + item.amount,
-  //   0
-  // );
-
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
   let storedItems = [];
@@ -35,18 +30,21 @@ function NavBar() {
     storedItems = JSON.parse(localStorageJSON); //convierte a JS
   }
   // console.log("el js", storedItems.length);
-  let cantidadEnCarro = storedItems.length;
-  // let cantidadEnCarro = {};
+  let cantidadEnCarro = 0;
 
-  // let cantidadEnCarro = "";
-  // console.log("CARRO", storedItems.length);
-
-  // if (cartInState) {
-  //   cantidadEnCarro = cartItems;
-  // } else cantidadEnCarro = storedItems.length;
-
-  // estado global tiene? entonces mostrame el estado global, sino, mostrame el localstorage
-
+  if (currentUser) {
+    // Si hay un usuario logueado
+    if (cartItems && cartItems.length > 0) {
+      cantidadEnCarro = cartItems.length;
+    }
+  } else {
+    // Si no hay usuario logueado, verificar localStorage
+    let localStorageJSON = localStorage.getItem("carrito");
+    if (localStorageJSON !== null) {
+      let storedItems = JSON.parse(localStorageJSON);
+      cantidadEnCarro = storedItems.length;
+    }
+  }
   return (
     <div className="flex flex-row p-5 h-24 z-50">
       <div className="mt-0 items-center basis-1/4 logo"> </div>
@@ -154,16 +152,14 @@ function NavBar() {
               </li>
             </>
           )}
-          <li className="ml-5">
+          <li className="ml-5 relative">
             <Link to="/shoppingCart">
               <BsCart4 className="text-3xl text-white" />
-              <div
-                className={`text-white bg-red-400 rounded-3xl pl-2 pr-2 fontPoppinsB border border-solid border-white text-sm ${
-                  cantidadEnCarro ? "border-1" : "border-none"
-                }`}
-              >
-                {cantidadEnCarro ? cantidadEnCarro : ""}
-              </div>
+              {cantidadEnCarro > 0 && (
+                <div className="absolute top-0 right-0 text-white bg-red-400 rounded-full w-6 h-6 flex items-center justify-center fontPoppinsB text-sm border border-solid border-white transform translate-x-1/2 -translate-y-1/2">
+                  {cantidadEnCarro}
+                </div>
+              )}
             </Link>
           </li>
         </ul>

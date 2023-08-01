@@ -3,6 +3,7 @@ import NavBar from "../Components/NavBar";
 import SearchBar from "../Components/SearchBar";
 import ContFilter from "../Components/ContFilter";
 import Footer from "../Components/Footer";
+import Newsletter from "../Components/Newsletter";
 import { set_item } from "../Redux/ShoppingCart/shoppingCartActions";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { useEffect } from "react";
@@ -43,12 +44,12 @@ function Home() {
     ) {
       const JSstorage = JSON.parse(localStorage.getItem("carrito"));
       // console.log("ellocalstorageenhome", JSstorage);
-  
+
       JSstorage.forEach((el) => {
         // console.log("CADA ELEMENTO", el);
         dispatch(set_item(idCart, el));
       });
-    
+
       localStorage.clear("carrito");
     }
   }, [dispatch, currentUser]);
@@ -68,6 +69,9 @@ function Home() {
       </div>
       <div className="mt-16 items-center flex justify-center">
         <ContFilter paquetes={packages} />
+      </div>
+      <div className="mt-16 items-center flex justify-center">
+        <Newsletter />
       </div>
       <div className="mt-[80px]">
         <Footer />
