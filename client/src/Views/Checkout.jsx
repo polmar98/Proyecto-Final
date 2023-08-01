@@ -3,8 +3,37 @@ import { GrPaypal } from "react-icons/gr";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import { CgDanger } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { create_order } from "../Redux/Checkout/checkoutActions";
 
 export default function Checkout() {
+  const dispatch = useDispatch();
+
+  const order = {
+    intent: "CAPTURE",
+    purchase_units: [
+        {
+            amount: {
+                currency_code: "USD",
+                value: "5.00", //aca va totalPrice.toString()
+            },
+            description: "paquete a cancún" // puede ser un mapeo de todos los titulos de los paquetes y actividades que compro. tienen que ser 2 mapeos xq act y paquete tienen distinta prop para el nombre. aplicarles un concat con una , que los una.
+        }
+    ],
+    application_context: {
+        brand_name: "wanderlust.com",
+        landing_page: "LOGIN",
+        user_action: "PAY_NOW",
+        return_url:"http://localhost:3002/payment/pay-order",
+        cancel_url: "http://localhost:3002/payment/cancel-order"
+    }
+};
+
+
+function send_order(){
+  dispatch(create_order(order));
+}
+
   return (
     // add navbar and footer
     <div>
@@ -138,6 +167,7 @@ export default function Checkout() {
               </p>
               <button
                 type="submit"
+                onClick={() => {send_order()}}
                 className="mt-4 inline-flex w-full items-center justify-center rounded bg-paypalYellow py-2.5 px-4 text-base font-semibold tracking-wide text-paypalBlue outline-none ring-offset-2 transition focus:bg-paypalYellow sm:text-lg"
               >
                 <GrPaypal className="mr-2 text-paypalBlue" />

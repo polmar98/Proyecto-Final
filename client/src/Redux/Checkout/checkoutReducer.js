@@ -1,14 +1,21 @@
+import { CREATE_ORDER } from "./checkoutActions"
+
 const initialState = {
     orderId: null,
-    state: ""
+    status: ""
 }
 
 const checkoutReducer = (state = initialState, action) => {
     switch (action.type) {
-        // case GET_STATUS:
-        //     return{...state};
+        case CREATE_ORDER:
+            return{
+                orderId: action.payload.id,
+                status: action.payload.status
+            };
 
         default:
             return {...state}
     }
 }
+
+export default checkoutReducer;
