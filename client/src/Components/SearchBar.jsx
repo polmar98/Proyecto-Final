@@ -16,7 +16,6 @@ export default function SearchBar() {
 
   const handleSearch = () => {
     if (country.trim() !== "") {
-    
       // Si se ingresa un país en el campo de búsqueda, realizamos la búsqueda y navegamos a SearchResult
       dispatch(SearchPackagesByCountry(country));
       setCountry("");
@@ -34,22 +33,22 @@ export default function SearchBar() {
     }
   };
 
-
   return (
     <div className="flex bg-white w-[400px] h-[50px] rounded justify-between items-center">
-      
-
       <div className="flex-grow">
         <input
           type="text"
-          placeholder="A donde ..."
-          className="bg-white rounded p-2 m-2 text-lg w-full focus:outline-none text-gray-700 fontPoppins"
+          placeholder="Search your next travel..."
+          className="focus:outline-none border-none bg-white rounded p-2 m-2 text-sm w-full  text-gray-700 fontPoppins"
           value={country}
           onChange={handleInputChange}
         />
       </div>
       <div>
-        <button className="bg-green-400 rounded p-2 m-2" onClick={handleSearch}>
+        <button
+          className=" focus:outline-none bg-green-400 rounded p-2 m-2"
+          onClick={handleSearch}
+        >
           <FaSearch style={{ fontSize: "20px", color: "white" }} />
         </button>
       </div>
