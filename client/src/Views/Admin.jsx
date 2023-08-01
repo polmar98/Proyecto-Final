@@ -12,6 +12,7 @@ import FormNewCityOrigin from "../Components/FormNewCityOrigin";
 import FormNewCityDestiny from "../Components/FormNewCityDestiny";
 import FormNewAirline from "../Components/FormNewAirline";
 import FormNewHoltel from "../Components/FormNewHotel";
+import FormActivity from "../Components/FormActivitys";
 
 const Form = () => {
   const packages = useSelector((state) => state.packages.packagesList);
@@ -209,6 +210,16 @@ const [destinationCountry, setDestinationCountry] = useState("");
         setShowNewHotelForm(false);
        };
 
+       // Estado para controlar la visibilidad del formulario de nievo hotel
+       const [showActivityForm, setShowActivityForm] = useState(false);
+
+       // Función para mostrar el formulario de nueva Aerolinea
+       const handleShowactivityForm = (e) => {
+         e.preventDefault()
+         setShowActivityForm(true);
+       };
+     
+       
   return (
     <div className="flex h-screen">
       <div className="flex flex-col w-1/2">
@@ -592,29 +603,20 @@ const [destinationCountry, setDestinationCountry] = useState("");
 
 
             </div>
-
-            {/* <div className="mb-5">
-              <label
-                htmlFor="idHotel"
-                className="block mb-2 text-sm font-medium text-gray-600"
-              >
-                Activitys
+            <div>
+              <label htmlFor="activity">
+                Actividades 
               </label>
-              <select
-                name="activitys"
-                id="activitys"
-                value={input.activitys}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">Select a activitys</option>
-                {activitys.map((activitys) => (
-                  <option key={activitys.id} value={activitys.id}>
-                    {activitys.name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
+              <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleShowactivityForm} >
+          <AiOutlinePlusSquare  size={32} color= "white"  /> 
+        </button>
+        <div>
+
+        {showActivityForm && <FormActivity/>}
+        </div>
+            </div>
+
+           
 
             <div className="mb-5">
               <button

@@ -6,6 +6,7 @@ export const GET_CITY_BY_ID = "GET_CITY_BY_ID";
 export const SEARCH_CITIES = "SEARCH_CITIES";
 export const GET_CITY_ORIGIN = "GET_CITY_ORIGIN"
 export const ADD_ORIGIN_CITY = "ADD_ORIGIN_CITY"
+export const FETCH_ORIGIN_CITIES = "FETCH_ORIGIN_CITIES"
 
 export const fetchCities = () => {
   return async (dispatch) => {
@@ -14,6 +15,21 @@ export const fetchCities = () => {
       const data = response.data;
       return dispatch({
         type: FETCH_CITIES,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const fetchOriginCities = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get("http://localhost:3002/cities-origins");
+      const data = response.data;
+      return dispatch({
+        type: FETCH_ORIGIN_CITIES,
         payload: data,
       });
     } catch (error) {

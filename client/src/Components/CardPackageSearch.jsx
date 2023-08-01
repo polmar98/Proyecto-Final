@@ -34,7 +34,7 @@ function Card({
   return (
     <div
       onClick={navigateHandler}
-      className="grid grid-cols-3 border-3 border gray-900 rounded-lg p-5 gap-5 cursor-pointer mx-2 mb-4"
+      className="grid grid-cols-3 border-3 border gray-900 rounded-lg p-5 gap-5 cursor-pointer mx-2 mb-4 shadow-xl card hover:scale-110 hover:z-20 "
     >
       <div className="flex items-center justify-start">
         <img
@@ -44,21 +44,34 @@ function Card({
         />
       </div>
 
-      <div className="text-lg font-bold mt-2 mb-2 w-auto h-auto">
-        <h2 className="text-xl font-bold mb-2">{title}</h2>
-        <h2 className="text-xl text-gray-900">Ciudad: {cityName}</h2>
-        <h2 className="text-xl">Duracion: {duration} dias</h2>
-        <h2 className="text-xl"> Cupos: {totalLimit}</h2>
+      <div className=" font-bold mt-2 mb-2 w-auto h-auto">
+        <div className="mb-1">
+        <h2 className="text-xl font-bold mb-2 fontPoppins">{title}</h2>
+        </div>
+        <div className="mb-4 grid grid-cols-2">
+        <h2 className="text-sm  text-gray-500 fontPoppins">{cityName}</h2>
+        <RatingStars rating={qualification} className="text-sm text-gray-500"/>
+        </div>
+        <div className=" text-sm grid grid-cols-2 items-center mt-2 mb-4">
+          <span></span>
+          
+        </div>
+        <div className="mb-4">
+        <h2 className="text-sm fontPoppins">Duracion: {duration} dias</h2>
+        </div>
+       <div className="mb-4"> 
+        <h2 className="text-xs fontPoppins  text-gray-500"> Cupos: {totalLimit}</h2>
+       </div>
+       
       </div>
 
       <div>
-        <h2 className=" flex items-center justify-end text-lg font-bold mb-4">
+        <div className="mt-28 bg-verdeFooter border gray-900 rounded-lg shadow-xl">
+        <h2 className=" flex items-center justify-center text-lg font-bold fontPoppins text-white">
           Precio: {standarPrice} USD /Por persona
         </h2>
-        <div className="mt-2 text-lg grid grid-cols-2 items-center">
-          <span className="mr-1">Puntuacion: </span>
-          <RatingStars rating={qualification} size="text-2xl" />
         </div>
+
       </div>
     </div>
   );

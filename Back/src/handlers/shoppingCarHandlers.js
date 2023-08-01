@@ -69,11 +69,10 @@ router.put("/:id", async (req, res) => {
 });
 
 //esta ruta permite eliminar items del carrito de compras
-router.delete("/", async (req, res) => {
-  const item = req.body;
-  console.log("item en back shoping:", item);
+router.delete("/item/:id", async (req, res) => {
+  const {id} = req.params;
   try {
-    result = await deleteItemsShoppingCar(item);
+    result = await deleteItemsShoppingCar(id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });

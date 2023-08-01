@@ -22,7 +22,7 @@ const RatingStars = ({ rating, size }) => {
   return (
     <div className="flex items-center">
       <div className="mr-1">{renderStars()}</div>
-      <span className={`text-sm ${size}`}>{rating}</span>
+      <span className={`text-sm text-gray-500 ${size}`}>{rating}</span>
     </div>
   );
 };

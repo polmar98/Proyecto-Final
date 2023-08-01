@@ -20,12 +20,30 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         defaultValue: Date.now, 
       },
+      subtotal: {
+        type: DataTypes.DECIMAL,
+        defaultValue: 0,
+      },
+      taxes: {
+        type: DataTypes.DECIMAL,
+        defaultValue: 0,
+      },
       fullValue: {
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },
       uidUser: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      idPaypal: {
+        type: DataTypes.STRING,
+        defaultValue: "00000000000",
+        allowNull: false,
+      },
+      account_id: {
+        type: DataTypes.STRING,
+        defaultValue: "00000000000",
         allowNull: false,
       },
     },

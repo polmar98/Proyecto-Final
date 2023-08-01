@@ -20,7 +20,6 @@ const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
 const BillModels = require("./models/Bill");
 const ItemsBillModels = require("./models/ItemsBill");
 const ActivityCommentModels = require("./models/ActivityComment");
-const ReviewsModels = require("./models/Review");
 
 const ItineraryModels = require("./models/Itinerary");
 
@@ -46,7 +45,6 @@ ItemsShoppingCarModels(sequelize);
 BillModels(sequelize);
 ItemsBillModels(sequelize);
 ActivityCommentModels(sequelize);
-ReviewsModels(sequelize);
 ItineraryModels(sequelize);
 
 const {
@@ -67,7 +65,6 @@ const {
   Bill,
   ItemsBill,
   ActivityComment,
-  Review,
   Itinerary,
 } = sequelize.models;
 
@@ -88,10 +85,6 @@ Comment.belongsTo(Package, { foreignKey: "idPackage", targetKey: "id" });
 
 Activity.hasMany(ActivityComment, { foreignKey: "idActivity", sourceKey: "id"});
 ActivityComment.belongsTo(Activity, {foreignKey: "idActivity", targetKey: "id"});
-
-Review.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
-Package.hasMany(Review, {foreignKey: "idPackage", sourceKey: "id"});
-Review.belongsTo(Package, {foreignKey: "idPackage", targetKey: "id"});
 
 Country.hasMany(City, { foreignKey: "idCountry", sourceKey: "id" });
 City.belongsTo(Country, { foreignKey: "idCountry", targetKey: "id" });
@@ -117,8 +110,8 @@ ShoppingCar.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
 ShoppingCar.hasMany(ItemsShoppingCar, {foreignKey: "idShoppingCar",  sourceKey: "id" });
 ItemsShoppingCar.belongsTo(ShoppingCar, { foreignKey: "idShoppingCar",  targetKey: "id" });
 
-User.hasMany(Bill, { foreignKey: "uidUser", sourceKey: "uid" });
-Bill.belongsTo(User, { foreignKey: "uidUser", targetKey: "uid" });
+User.hasMany(Bill, { foreignKey: "idUser", sourceKey: "id" });
+Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });
@@ -141,7 +134,6 @@ module.exports = {
   Bill,
   ItemsBill,
   ActivityComment,
-  Review,
   Itinerary,
   conn: sequelize,
 };

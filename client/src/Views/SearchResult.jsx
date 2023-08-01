@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SearchBar from "../Components/SearchBar";
 import Card from "../Components/CardPackageSearch";
 import NavBar from "../Components/NavBar";
+import { FaSync } from "react-icons/fa";
 import {
   fetchPackages,
   SearchPackagesByCountry,
@@ -11,14 +12,29 @@ import {
   setDurationFilter,
   setPriceFilter,
   clearSearchView,
-  reset
+  setPriceRangeFilter,
+  setClearPriceRangeFilter,
+  FilterPackagesByOriginCity,
+  fetchOriginCities,
+  reset,
 } from "../Redux/Packages/packagesActions";
 import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { fetchCities } from "../Redux/Cities/citiesActions";
+import { fetchCountries } from "../Redux/Country/countriesActions";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+
 
 const RESULTS_PER_PAGE = 3;
+
+function normalizeString(str) {
+  return str
+    .normalize("NFD") // Normalizar la cadena para separar los caracteres diacríticos
+    .replace(/[\u0300-\u036f]/g, "") // Eliminar los caracteres diacríticos
+    .toLowerCase(); // Convertir a minúsculas
+}
 
 export default function SearchResult() {
   const dispatch = useDispatch();
@@ -30,11 +46,23 @@ export default function SearchResult() {
   const cities = useSelector((state) => state.cities.citiesList);
   const searchQuery = new URLSearchParams(location.search).get("Country");
   // const filters = useSelector((state) => state.packages.filters);
+  const countries = useSelector((state) => state.countries.countriesList);
+  const [searchedCountry, setSearchedCountry] = useState(
+    searchQuery ? normalizeString(searchQuery) : ""
+  );
+
+  const originCities = useSelector((state) => state.packages.originCitiesList);
+
+  useEffect(() => {
+    setSearchedCountry(searchQuery ? normalizeString(searchQuery) : "");
+  }, [searchQuery]);
 
   useEffect(() => {
     const loadData = async () => {
       await dispatch(fetchPackages());
-      dispatch(SearchPackagesByCountry(searchQuery)); // Siempre llamar a la función SearchPackagesByCountry, incluso si searchQuery es una cadena vacía
+      if (searchQuery) {
+        dispatch(SearchPackagesByCountry(searchQuery));
+      }
     };
     loadData();
 
@@ -44,18 +72,31 @@ export default function SearchResult() {
   }, [dispatch, searchQuery]);
 
   useEffect(() => {
+    dispatch(fetchCountries());
+    dispatch(fetchOriginCities());
+  }, [dispatch]);
+
+  const filteredCities = searchedCountry
+    ? cities.filter((city) => {
+        const country = countries.find(
+          (country) => normalizeString(country.name) === searchedCountry
+        );
+        return country && city.idCountry === country.id;
+      })
+    : cities;
+
+  useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchCities());
   }, [dispatch]);
 
-  // useEffect(()=>{
-  //   return () =>{
-  //     dispatch(clearSearchView(true))
-  //   }
-  // },[])
-
   function handleFilterByCity(e) {
     dispatch(FilterPackagesByCity(e.target.value));
+    setCurrentPage(1);
+  }
+
+  function handleFilterByOriginCity(e) {
+    dispatch(FilterPackagesByOriginCity(e.target.value));
     setCurrentPage(1);
   }
 
@@ -68,7 +109,22 @@ export default function SearchResult() {
     dispatch(setPriceFilter(selectedValue));
   };
 
- 
+  const minPrice = 0.0;
+  const maxPrice = 10000.0;
+  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+
+  const handlePriceRangeFilter = (selectedPriceRange) => {
+    setPriceRange(selectedPriceRange);
+
+    if (
+      selectedPriceRange[0] === minPrice &&
+      selectedPriceRange[1] === maxPrice
+    ) {
+      dispatch(setClearPriceRangeFilter()); // Despachar la acción para eliminar el filtro
+    } else {
+      dispatch(setPriceRangeFilter(selectedPriceRange)); // Despachar la acción con el nuevo valor del rango de precios
+    }
+  };
 
   // Calcular la cantidad total de páginas disponibles
   const totalPages = Math.ceil(
@@ -95,61 +151,135 @@ export default function SearchResult() {
       ? searchResults.slice(startIndex, endIndex)
       : packagesList.slice(startIndex, endIndex);
 
+  useEffect(() => {
+    dispatch(FilterPackagesByCity("Todos"));
+    dispatch(setDurationFilter("Todos"));
+    dispatch(setPriceFilter("precios"));
+    dispatch(setClearPriceRangeFilter());
+    dispatch(FilterPackagesByOriginCity("Todos"));
+  }, [dispatch]);
+
+  function handleReset() {
+    dispatch(reset());
+    dispatch(setClearPriceRangeFilter());
+    setPriceRange([minPrice, maxPrice]);
+  }
+
   return (
     <div className="pt-0">
       <div className="bg-verdeFooter">
         <NavBar />
       </div>
-      <div className="flex items-center justify-center">
-        <div className="mx-auto">
+      <div className="items-center flex justify-center mt-16 mb-8 ">
           <SearchBar />
-
-          <div className="flex justify-evenly p-4">
-        <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
-          <h2 className="font-semibold text-lg mb-2">Ciudad de destino:</h2>
-          <select className="rounded p-1" onChange={handleFilterByCity}>
-            <option value="">Todos</option>
-            {cities.map((city) => {
-              return (
-                <option key={city.id} value={city.name}>
-                  {city.name}
-                </option>
-              );
-            })}
-          </select>
         </div>
-
-        <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
-          <h2 className="font-semibold text-lg mb-2">Duración:</h2>
-          <select className="rounded p-1" onChange={handleDurationFilterChange} >
-            <option value="Todos">---</option>
-            <option value="Menor-Mayor">Mayor-Menor</option>
-            <option value="Mayor-Menor">Menor-Mayor</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2">
-          <h2 className="font-semibold text-lg mb-2">Precio:</h2>
-          {/* value={filters.priceFilter} esto estaba dentro del selec aca abajo, si se lo dejo al aplicar el filtro en
-          el front me queda todo el tiempo en todos (visualmente) no me muestra si es mayor o menor, solo figura todos */}
-          <select className="rounded p-1" onChange={handlePriceFilterChange}>
-            <option value="precios">---</option>
-            <option value="MenorPrecio">Menor</option>
-            <option value="MayorPrecio">Mayor</option>
-          </select>
-        </div>
+      <div className="justify-center flex-col grid grid-cols-4 gap-4 p-2 items-start ml-3 mr-20 ">
        
+        <div className=" flex justify-evenly p-4 w-48 col-span-1 mr-4 flex-col border border-gray-200 rounded-lg bg-verdeFooter">
+        <div>
+            <button className="bg-green-400 rounded p-2 m-2 fontPoppins text-sm ">
+              <FaSync
+                style={{ fontSize: "20px", color: "white" }}
+                onClick={handleReset}
+              />
+            </button>
+          </div>
+
+          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 bg-white mb-2">
+            <h2 className="font-semibold mb-2 fontPoppins text-sm">
+              Ciudad de destino:
+            </h2>
+            <select
+              className="rounded p-1 fontPoppins text-sm"
+              onChange={handleFilterByCity}
+            >
+              <option value="">Todos</option>
+              {filteredCities.map((city) => {
+                return (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2  bg-white mb-2">
+            <h2 className="font-semibold  mb-2 fontPoppins text-sm">
+              Ciudad de salida:
+            </h2>
+            <select
+              className="rounded p-1 fontPoppins text-sm"
+              onChange={handleFilterByOriginCity}
+            >
+              <option value="">Todos</option>
+              {originCities.map((city) => {
+                return (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2  bg-white mb-2">
+            <h2 className="fontPoppins text-sm font-semibold">Presupuesto:</h2>
+            <Slider
+              range
+              min={minPrice}
+              max={maxPrice}
+              value={priceRange}
+              onChange={handlePriceRangeFilter}
+              className="fontPoppins text-sm"
+            />
+            <div className="fontPoppins text-sm font-semibold">
+              Precio mínimo USD: ${priceRange[0]}
+            </div>
+            <div className="fontPoppins text-sm font-semibold">
+              Precio máximo USD: ${priceRange[1]}
+            </div>
+          </div>
+
+          <div className=" mb-2 flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 fontPoppins  bg-white">
+            <h2 className="font-semibold text-sm mb-2 fontPoppins">
+              Duración:
+            </h2>
+            <select
+              className="rounded p-1 fontPoppins text-sm"
+              onChange={handleDurationFilterChange}
+            >
+              <option value="Todos">---</option>
+              <option value="Menor-Mayor">Mayor-Menor</option>
+              <option value="Mayor-Menor">Menor-Mayor</option>
+            </select>
+          </div>
+
+          <div className=" mb-2 flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 fontPoppins  bg-white">
+            <h2 className="font-semibold text-sm mb-2 fontPoppins">Precio:</h2>
+
+            <select
+              className="rounded p-1 fontPoppins text-sm"
+              onChange={handlePriceFilterChange}
+            >
+              <option value="precios">---</option>
+              <option value="MenorPrecio">Mayor</option>
+              <option value="MayorPrecio">Menor</option>
+            </select>
+          </div>
+
+          
+          
+      </div>
+      <div className="flex flex-col col-span-3">
+          {currentResults.map((tour) => (
+            <Card key={tour.id} {...tour}/>
+          ))}
         </div>
 
-          </div>
-      
-      </div>
+        </div>
 
-      <div className="pt-10">
-        {currentResults.map((tour) => (
-          <Card key={tour.id} {...tour} />
-        ))}
-      </div>
+        
 
       {/* Número de la página actual */}
       <div className="flex justify-center  items-center font-bold mt-4">
@@ -157,19 +287,19 @@ export default function SearchResult() {
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className=" bg-green-300 rounded p-2 m-2"
+          className=" bg-green-400 rounded p-2 m-2"
         >
           <FiChevronLeft style={{ fontSize: "20px", color: "white" }} />
         </button>
 
-        <p className="mr-4">
-          Page {currentPage} of {totalPages}
+        <p className="mr-4 fontPoppins text-sm">
+          Pagina {currentPage} de {totalPages}
         </p>
 
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className=" bg-green-300 rounded p-2 m-2"
+          className=" bg-green-400 rounded p-2 m-2 fontPoppins"
         >
           <FiChevronRight style={{ fontSize: "20px", color: "white" }} />
         </button>

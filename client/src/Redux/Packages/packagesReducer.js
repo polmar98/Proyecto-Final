@@ -1,4 +1,3 @@
-
 import {
   FETCH_PACKAGES,
   ADD_PACKAGE,
@@ -9,23 +8,32 @@ import {
   SET_DURATION_FILTER,
   SET_PRICE_FILTER,
   CLEAR_SEARCH_VIEW,
+  SET_PRICE_RANGE_FILTER,
+  SET_CLEAR_PRICE_RANGE_FILTER,
+  SET_ORIGIN_CITY_FILTER,
+  FETCH_ORIGIN_CITIES,
+  RESET
 } from "./packagesActions";
 
 
 
 const initialState = {
+  allPackages:[],
   packagesList: [],
   packagesSearch: [],
   packagesFiltered: [],
   packageDetails: {},
+  originCitiesList:[],
   filters: {
   cityFilter: "",
   durationFilter: "Todos",
-  priceFilter: "TodosPrecio",
- 
-  }
+  priceFilter: "precios",
+  originCityFilter:"Todos",
+  ranPriceFilter:[0.0, 10000.0],
+    }
   
 };
+
 
 const packagesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -34,7 +42,14 @@ const packagesReducer = (state = initialState, action) => {
         ...state,
         packagesList: action.payload,
         packagesFiltered: action.payload,
+        allPackages:action.payload,
+        packagesSearch:action.payload
       };
+      case FETCH_ORIGIN_CITIES:
+      return {
+        ...state,
+        originCitiesList: action.payload,
+      }
     case ADD_PACKAGE:
       return {
         ...state,
@@ -44,14 +59,24 @@ const packagesReducer = (state = initialState, action) => {
         ...state,
         packageDetails: action.payload,
       };
+      
       case SEARCH_PACKAGES:
-
+      if (state.filters.cityFilter === "Todos") {
         return {
           ...state,
           packagesList: action.payload,
           packagesSearch: action.payload,
-          packagesFiltered: action.payload, // <-- Actualizar los paquetes filtrados con los resultados de búsqueda
+          packagesFiltered: action.payload,
         };
+      } else {
+        const filteredByCity = state.allPackages.filter((el) => el.City.name === state.filters.cityFilter);
+        return {
+          ...state,
+          packagesList: action.payload,
+          packagesSearch: action.payload,
+          packagesFiltered: filteredByCity,
+        };
+      }
 
     case CLEAR_PACKAGE_DETAILS:
       return {
@@ -68,162 +93,199 @@ const packagesReducer = (state = initialState, action) => {
         }
 
 
+        case SET_CITY_FILTER:
+          const selectedCityName = action.payload;
+          let filteredByCity;
+    
+          if (selectedCityName !== "Todos") {
+            filteredByCity = state.allPackages.filter((el) => el.City.name === selectedCityName);
+          } else {
+            filteredByCity = state.allPackages;
+          }
+    
+          // Aplicar el filtro de ciudad de origen si es diferente de "Todos"
+          if (state.filters.originCityFilter !== "Todos") {
+            filteredByCity = filteredByCity.filter((pkg) => pkg.originCity === state.filters.originCityFilter);
+          }
+    
+          return {
+            ...state,
+            packagesFiltered: filteredByCity,
+            packagesSearch: filteredByCity,
+            filters: {
+              ...state.filters,
+              cityFilter: action.payload,
+            },
+          };
+    
+          case SET_ORIGIN_CITY_FILTER:
+  const selectedOriginCityName = action.payload;
+  const cityFilter = state.filters.cityFilter;
 
-      case SET_CITY_FILTER:
-        let filteredByCity;
-        
-        if (action.payload !== 'Todos') {
-          filteredByCity = state.packagesList.filter((el) => el.City.name === action.payload);
-        } else {
-          filteredByCity = state.packagesList; // Si selecciona 'Todos', muestra todos los paquetes sin filtrar
-        }
-        
-        return {
-          ...state,
-          packagesFiltered: filteredByCity,
-          packagesSearch:filteredByCity,
-          filters: {
-            ...state.filters,
-            cityFilter: action.payload,
-          },
-        };
+  if (selectedOriginCityName === "Todos") {
+    // Si se selecciona "Todos" en el filtro de ciudad de origen
+    // Mostramos los paquetes filtrados previamente por ciudad de destino (cityFilter)
+    const filteredByCity = cityFilter === "Todos"
+      ? state.allPackages // Si también se selecciona "Todos" en el filtro de ciudad de destino, mostramos todos los paquetes
+      : state.allPackages.filter((pkg) => pkg.City.name === cityFilter);
 
-        case SET_DURATION_FILTER:
+    return {
+      ...state,
+      filteredPackages: filteredByCity,
+      filters: {
+        ...state.filters,
+        originCityFilter: action.payload,
+      },
+    };
+  } else {
+    const selectedOriginCity = state.originCitiesList.find((city) => city.name === selectedOriginCityName);
+    const selectedOriginCityId = selectedOriginCity ? selectedOriginCity.id : null;
 
-        let orderDuration = [...state.packagesList];
-        orderDuration = orderDuration.sort((a, b) => {
-          if(a.duration < b.duration){
+    // Aplicamos el filtro de ciudad de origen y ciudad de destino (si no es "Todos")
+    const filteredByOriginCity = cityFilter === "Todos"
+      ? state.allPackages.filter((pkg) => pkg.originCity === selectedOriginCityId)
+      : state.allPackages.filter((pkg) => pkg.originCity === selectedOriginCityId && pkg.City.name === cityFilter);
+
+    return {
+      ...state,
+      filteredPackages: filteredByOriginCity,
+      filters: {
+        ...state.filters,
+        originCityFilter: action.payload,
+      },
+    };
+  }
+      
+    case SET_DURATION_FILTER:
+      let orderDuration;
+      if (state.filters.cityFilter === "Todos") {
+        orderDuration = state.packagesFiltered.slice().sort((a, b) => {
+          if (a.duration < b.duration) {
             return action.payload === "Menor-Mayor" ? 1 : -1;
           }
-          if(a.duration > b.duration){
+          if (a.duration > b.duration) {
             return action.payload === "Menor-Mayor" ? -1 : 1;
           }
           return 0;
-        })
-
-        return {
-          ...state,
-          packagesList: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
-          packagesSearch:action.payload === "Todos" ? state.packagesFiltered : orderDuration,
-          packagesFiltered:action.payload === "Todos" ? state.packagesFiltered : orderDuration,
-        }
-      // let durationOrden = action.payload;
-      // if (durationOrden === "Menor-Mayor") {
-      //   return {
-      //     ...state,
-      //     packagesFiltered: state.packagesFiltered.sort((a, b) => a.duration - b.duration),
-      //     filters: {
-      //       ...state.filters,
-      //       durationFilter: durationOrden,
-      //     },
-      //   };
-      // } else if (durationOrden === "Mayor-Menor") {
-      //   return {
-      //     ...state,
-      //     packagesFiltered: state.packagesFiltered.sort((a, b) => b.duration - a.duration),
-      //     filters: {
-      //       ...state.filters,
-      //       durationFilter: durationOrden,
-      //     },
-      //   };
-      // }
-      // // Si el durationFilter no coincide con ninguna opción, devolvemos el estado tal como está.
-      // return state;
-
-       
-
-       
-    // case SET_DURATION_FILTER:
-    //   return {
-    //     ...state,
-    //     durationFilter: action.payload,
-    //     packagesFiltered: applyFilters(state, {
-    //       durationFilter: action.payload,
-    //     }),
-    //   };
-    
- 
-    case SET_PRICE_FILTER:
- 
-      let orderPrice = [...state.packagesList];
-        orderPrice = orderPrice.sort((a, b) => {
-          if(a.standarPrice < b.standarPrice){
-            return action.payload === "MenorPrecio" ? -1 : 1;
+        });
+      } else {
+        orderDuration = state.packagesFiltered.slice().sort((a, b) => {
+          if (a.duration < b.duration) {
+            return action.payload === "Menor-Mayor" ? 1 : -1;
           }
-          if(a.standarPrice > b.standarPrice){
-            return action.payload === "MenorPrecio" ? 1 : -1;
+          if (a.duration > b.duration) {
+            return action.payload === "Menor-Mayor" ? -1 : 1;
           }
           return 0;
-        })
-
+        });
+      }
+      return {
+        ...state,
+        packagesList: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+        packagesSearch: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+        packagesFiltered: action.payload === "Todos" ? state.packagesFiltered : orderDuration,
+      };
+      case SET_PRICE_FILTER:
+        let orderPrice;
+        const packagesFilteredCopy = [...state.packagesFiltered]; // Copia del array para no modificar el estado original
+  
+        if (action.payload === "MenorPrecio") {
+          orderPrice = packagesFilteredCopy.sort((a, b) => a.standarPrice - b.standarPrice);
+        } else if (action.payload === "MayorPrecio") {
+          orderPrice = packagesFilteredCopy.sort((a, b) => b.standarPrice - a.standarPrice);
+        } else {
+          orderPrice = packagesFilteredCopy;
+        }
+  
         return {
           ...state,
-          packagesList: action.payload === "precios" ? state.packagesFiltered : orderPrice,
-          packagesSearch: action.payload === "precios" ? state.packagesFiltered : orderPrice,
-          packagesFiltered:action.payload === "precios" ? state.packagesFiltered : orderPrice
-        }
+          packagesList: action.payload === "precios" ? orderPrice : packagesFilteredCopy,
+          packagesSearch: action.payload === "precios" ? orderPrice : packagesFilteredCopy,
+          packagesFiltered: orderPrice,
+        };
 
-     
-
-    //   const sortFilter = action.payload;
-    // if (sortFilter === "MenorPrecio") {
-    //     return {
-    //       ...state,
-    //       packagesFiltered: state.packagesFiltered.sort((a, b) => a.standarPrice - b.standarPrice),
-    //       filters: {
-    //         ...state.filters,
-    //         priceFilter: sortFilter,
-    //       },
-    //     };
-    //   } else if (sortFilter === "MayorPrecio") {
-    //     return {
-    //       ...state,
-    //       packagesFiltered: state.packagesFiltered.sort((a, b) => b.standarPrice - a.standarPrice),
-    //       filters: {
-    //         ...state.filters,
-    //         priceFilter: sortFilter,
-    //       },
-    //     };
-    //   }
-      // Si el sortFilter no coincide con ninguna opción, devolvemos el estado tal como está.
-      // return state;
+      case SET_PRICE_RANGE_FILTER:
+        const priceRangeFilter = action.payload;
+        let filteredByPrice;
   
+        if (state.filters.cityFilter === "Todos") {
+          // Si el filtro de ciudad es "Todos", aplicar el filtro de precio desde todos los paquetes
+          filteredByPrice = state.packagesSearch.filter((pkg) => {
+            const packagePrice = parseFloat(pkg.standarPrice);
+            return packagePrice >= priceRangeFilter[0] && packagePrice <= priceRangeFilter[1];
+          });
+  
+          if (filteredByPrice.length === 0) {
+            alert("No hay paquetes en el presupuesto elegido para la ciudad seleccionada.");
+          }
+  
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              priceRangeFilter: priceRangeFilter,
+            },
+            packagesSearch: filteredByPrice,
+            packagesFiltered: filteredByPrice,
+          };
+        } else {
+          // Si hay un filtro de ciudad aplicado, aplicar el filtro de precio desde los paquetes filtrados por ciudad
+          filteredByPrice = state.packagesFiltered.filter((pkg) => {
+            const packagePrice = parseFloat(pkg.standarPrice);
+            return packagePrice >= priceRangeFilter[0] && packagePrice <= priceRangeFilter[1];
+          });
+  
+          if (filteredByPrice.length === 0) {
+            alert("No hay paquetes en el presupuesto elegido para la ciudad seleccionada.");
+          }
+  
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              priceRangeFilter: priceRangeFilter,
+            },
+            packagesSearch: filteredByPrice,
+            packagesFiltered: filteredByPrice,
+          };
+        }
+  
+  
+    case SET_CLEAR_PRICE_RANGE_FILTER:
+  return {
+    ...state,
+    filters: {
+      ...state.filters,
+      priceRangeFilter: [0.0, 10000.0], // Restablecer el valor inicial del rango de precios
+    },
+    packagesSearch: state.filters.cityFilter // Aplicar el filtro de ciudad nuevamente
+      ? state.allPackages.filter((el) => el.City.name === state.filters.cityFilter)
+      : state.allPackages,
+    packagesFiltered: state.filters.cityFilter // Aplicar el filtro de ciudad nuevamente
+      ? state.allPackages.filter((el) => el.City.name === state.filters.cityFilter)
+      : state.allPackages,
+  };
+
+  case RESET:
+    return {
+      ...state,
+      packagesList: state.allPackages,
+      packagesFiltered: state.allPackages,
+      packagesSearch:state.allPackages,
+
+      filters: {
+        cityFilter: "",
+        durationFilter: "Todos",
+        priceFilter: "precios",
+        originCityFilter:"Todos",
+        ranPriceFilter: [0.0, 10000.0]
+      }
+    };
+   
     default:
       return state;
   }
 };
 
-// function applyFilters(state, newFilters) {
-//   const filters = {
-//     ...state,
-//     ...newFilters,
-//   };
-
-//   let results = [...state.packagesList];
-
-//   if (filters.cityFilter) {
-//     results = results.filter(
-//       (packages) => packages.idCity === Number(filters.cityFilter)
-//     );
-//   }
-
-//   if (filters.durationFilter && filters.durationFilter !== "Todos") {
-//     if (filters.durationFilter === "Menor-Mayor") {
-//       results = [...results].sort((a, b) => a.duration - b.duration);
-//     } else if (filters.durationFilter === "Mayor-Menor") {
-//       results = [...results].sort((a, b) => b.duration - a.duration);
-//     }
-//   }
-
-//   if (filters.priceFilter && filters.priceFilter !== "TodosPrecio") {
-//     if (filters.priceFilter === "MenorPrecio") {
-//       results = [...results].sort((a, b) => a.standarPrice - b.standarPrice);
-//     } else if (filters.priceFilter === "MayorPrecio") {
-//       results = [...results].sort((a, b) => b.standarPrice - a.standarPrice);
-//     }
-//   }
-
-//   return results;
-// }
 
 export default packagesReducer;
