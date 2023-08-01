@@ -1,4 +1,4 @@
-import React, { useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
@@ -31,9 +31,8 @@ const ShoppingCart = () => {
       dispatch(userShopping(currentUser.uid));
     }
   }, [dispatch, currentUser]);
-  
-  const idCart = useSelector((state) => state.carrito.idCart);
 
+  const idCart = useSelector((state) => state.carrito.idCart);
 
   //
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
@@ -65,21 +64,14 @@ const ShoppingCart = () => {
         return acc + (el.unitPrice || 0) * (el.amount || 1);
       }, 0);
       return total;
-
-      
     }
-
   }
 
   function handlePayment() {
     if (!currentUser && (!items || items === localStorageItems)) {
       navigate("/login");
     } else if (currentUser && items) {
-<<<<<<< HEAD
-      navigate("/checkout")
-=======
       navigate("/checkout");
->>>>>>> lucas
     }
   }
 
