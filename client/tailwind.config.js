@@ -8,6 +8,10 @@ module.exports = {
         verdeFooter: "#295943",
         verdeFooterHover: "#1e4735",
         customGray: "#FBFBFB",
+        paypalBlue: "#003087",
+        focusColor: "#00aaff",
+        paypalYellow: "#FFC439",
+        paypalBlue: "#003087",
       },
       fontSize: {
         "2xs": "0.625rem",
