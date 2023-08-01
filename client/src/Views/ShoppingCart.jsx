@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo} from "react";
 import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
@@ -26,13 +26,33 @@ const ShoppingCart = () => {
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
   // const items = currentUser ? cartItems : localStorageItems;
   const items = currentUser ? cartItems : localStorageItems || [];
+
   useEffect(() => {
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
     }
   }, [dispatch, currentUser]);
+  
   const idCart = useSelector((state) => state.carrito.idCart);
 
+
+   // Utilizamos useMemo para calcular el total del carrito
+  //  const total = useMemo(() => {
+  //   if (!items) {
+  //     return 0
+  //   }
+  //   return items?.reduce((acc, el) => {
+  //     return acc + (el.unitPrice || 0) * (el.amount || 1);
+  //   }, 0);
+  // }, [items]);
+
+  // useEffect(() => {
+  //   const totalElement = document.getElementById('total');
+  //   if (totalElement) {
+  //     totalElement.textContent = `Total: $${total.toFixed(2)}`;
+  //     totalElement.focus();
+  //   }
+  // }, [total]);
   //
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
 
@@ -63,12 +83,17 @@ const ShoppingCart = () => {
         return acc + (el.unitPrice || 0) * (el.amount || 1);
       }, 0);
       return total;
+
+      
     }
+
   }
 
   function handlePayment() {
     if (!currentUser && (!items || items === localStorageItems)) {
       navigate("/login");
+    } else if (currentUser && items) {
+      navigate("/checkout")
     }
   }
   
