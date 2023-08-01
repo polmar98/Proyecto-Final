@@ -58,7 +58,7 @@ const captureOrder = async (token) => {
   );
 
   const {access_token} = access.data;
-console.log(access_token);
+
 
   //Acá pedimos la captura de la orden a paypal
   const response = await axios.post(

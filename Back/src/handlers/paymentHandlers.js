@@ -15,7 +15,7 @@ router.post('/create-order', async (req, res)=>{
                 {
                     amount: {
                         currency_code: "USD",
-                        value: "299.99",
+                        value: "9.99",
                     },
                     description: "paquete a cancún"
                 }
