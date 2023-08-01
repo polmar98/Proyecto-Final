@@ -4,10 +4,10 @@ const {addBill, getBillById, getAllBill} = require("../controllers/billControlle
 const router = Router();
 
 //esta ruta permite crear una factura nueva a partir de la info del carrito suministrado por id
-router.post('/:id', async(req, res) => {
-   const {id} = req.params;
+router.post('/', async(req, res) => {
+   const datos = req.body;
    try {
-       const result = await addBill(id);
+       const result = await addBill(datos);
        res.status(200).json(result);
    } catch (error) {
        res.status(500).json({message: error.message});

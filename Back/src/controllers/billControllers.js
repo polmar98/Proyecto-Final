@@ -2,8 +2,9 @@ const {Bill, ItemsBill, ShoppingCar, ItemsShoppingCar} = require("../database");
 const { Association } = require("sequelize");
 
 //esta funcion agrega una nueva factura
-const addBill = async(idCar) => {
-    if(!idCar) return {message: "Id de Carrito No definido"};
+const addBill = async(datos) => {
+    const {idCar, idPaypal, account_id} = datos;
+    if(!idCar || !idPaypal || !account_id) return {message: "Datos Incompletos"};
     //traemos la info del carrito a grabar en la nueva factura
     const car = await ShoppingCar.findByPk(idCar);
     //validamos si el valor total de la factura es mayor que cero
@@ -28,6 +29,8 @@ const addBill = async(idCar) => {
         fullValue: vtotal,
         uidUser: car.uidUser,
         idUser: car.idUser,
+        idPaypal,
+        account_id,
     };
     //grabamos nuevo registro en tabla Bill
     const nBill = await Bill.create(newBill);

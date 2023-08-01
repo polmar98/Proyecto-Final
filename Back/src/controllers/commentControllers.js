@@ -3,10 +3,10 @@ const { Association } = require("sequelize");
 
 // Controlador para crear nuevos comentarios
 const createComment = async (datos) => {
-    const { uidUser, testimony, idPackage } = datos;
+    const { uidUser, testimony, idPackage, calification } = datos;
 
     // Verificar si falta algún elemento obligatorio
-    if (!uidUser || !testimony || !idPackage) {
+    if (!uidUser || !testimony || !idPackage || !calification) {
       return { message: 'Falta uno o más elementos obligatorios'};
     };
     
@@ -22,7 +22,7 @@ const createComment = async (datos) => {
     if (!existingPackage) {
       return { message: 'El paquete no existe' };
     }  
-    const newComment = await Comment.create({ idUser, uidUser, testimony, idPackage });
+    const newComment = await Comment.create({ idUser, uidUser, testimony, idPackage, calification });
     return newComment;
 
 };
