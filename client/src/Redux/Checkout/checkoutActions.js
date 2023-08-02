@@ -3,6 +3,7 @@ import axios from "axios";
 export const CREATE_ORDER = "CREATE_ORDER";
 
 export const create_order = (order) => {
+  // console.log('la orden', order)
   return async (dispatch) => {
     try {
       const response = await axios.post(

@@ -6,10 +6,11 @@ function Review({coments}) {
 //   console.log('review en componente', reviewData)
 
   return (
-    <section className="my-2 dark:bg-verdeFooter dark:text-gray-100 fontPoppins">
-	<div className="mb-2 md:p-10 md:px-12">
-		<h1 className="text-xl font-semibold text-left">Lo que nuestros clientes opinan:</h1>
+	<>
+	<div className="mb-2 mt-8 md:p-2 md:px-2 ">
+		<h1 className="text-xl font-bold text-left fontPoppins">Opiniones de otros viajeros:</h1>
 	</div>
+    <section className="my-2 dark:bg-verdeFooter dark:text-gray-100 fontPoppins">
 
 	<div className="container grid grid-cols-2 gap-4 items-center justify-center mx-auto lg:flex-row lg:flex-wrap lg:justify-evenly lg:px-10">
 		<div className="flex flex-col max-w-sm mx-4 my-2 shadow-lg">
@@ -50,10 +51,9 @@ function Review({coments}) {
 				<p className="text-sm uppercase">23/09/2022</p>
 			</div>
 		</div> 
-
-
 	</div>
 </section>
+</>
     );
   }
   

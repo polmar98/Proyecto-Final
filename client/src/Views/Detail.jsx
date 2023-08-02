@@ -204,13 +204,13 @@ console.log('eltour', tour)
 
         <Hotels hotel={hotelData} />
         
-        <hr className="mt-10"></hr>
-
-        <Review coments={reviewData}/>
-
-        <hr className="mt-10"></hr>
+        <hr className="mt-8"></hr>
 
         <Activities activity={tour} />
+
+        <hr className="mt-8"></hr>
+
+        <Review coments={reviewData}/>
       </div>
 
       <Footer />
