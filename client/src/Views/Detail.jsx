@@ -141,76 +141,96 @@ console.log('eltour', tour)
 
   return (
     <>
-      <div className="bg-verdeFooter border-b border-white">
-        <NavBar />
+      <div className="mb-2 mt-8 md:p-2 md:px-2 ">
+        <h1 className="text-xl font-bold text-left fontPoppins">
+          Opiniones de otros viajeros:
+        </h1>
       </div>
-      <div className="container mx-auto p-4 m-2 w-2/3">
-        <button
-          onClick={() => {
-            navigate(-1);
-            dispatch(clearPackageDetails());
-          }}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-4 rounded-full inline-flex mb-4"
-        >
-          X
-        </button>
-
-        <div className="flex items-center justify-center">
-          <div className="relative">
-            <img
-              src={tour.image}
-              alt="Img not found"
-              className="w-3/4 h-auto rounded-full m-auto shadow-lg"
-            />
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-              <h2 className="text-2xl text-white fontPoppins font-extrabold text-center bg-stone-400 rounded-full bg-stone-600/75 p-2">
-                {tour.title}
-              </h2>
+      <section className="my-2  dark:text-gray-100 fontPoppins">
+        <div className="container grid grid-cols-2 gap-4 items-center justify-center mx-auto lg:flex-row lg:flex-wrap lg:justify-evenly lg:px-10">
+          <div className="flex flex-col max-w-sm mx-4 my-2 shadow-lg rounded-xl ">
+            <div className="px-4 py-12 rounded-t-lg sm:px-8 md:px-12 bg-verdeFooter">
+              <p className="relative px-6 py-1 text-lg italic text-center text-gray-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                  className="w-8 h-8 text-green-600"
+                >
+                  <path d="M232,246.857V16H16V416H54.4ZM48,48H200V233.143L48,377.905Z"></path>
+                  <path d="M280,416h38.4L496,246.857V16H280ZM312,48H464V233.143L312,377.905Z"></path>
+                </svg>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Voluptatibus quibusdam, eligendi exercitationem molestias
+                possimus facere.
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                  className="absolute right-0 w-8 h-8 text-green-600"
+                >
+                  <path d="M280,185.143V416H496V16H457.6ZM464,384H312V198.857L464,54.1Z"></path>
+                  <path d="M232,16H193.6L16,185.143V416H232ZM200,384H48V198.857L200,54.1Z"></path>
+                </svg>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center p-8 rounded-b-lg  text-gray-900">
+              <img
+                src="https://source.unsplash.com/50x50/?portrait?1"
+                alt=""
+                className="w-16 h-16 mb-2 -mt-16 bg-center bg-cover rounded-full bg-gray-500 "
+              />
+              <p className="text-xl font-semibold leadi">Fernando Bouvet</p>
+              <p className="text-sm uppercase">05/03/2022</p>
             </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 fontPoppins mt-6">
-          <Flights tour={tour} />
-
-          <div className="text-right w-full flex flex-col justify-between bg-white mt-4 ">
-            <h2 className="text-s font-medium">{tour.description}</h2>
-            <h2 className="text-s font-base mt-2">{tour.duration} días</h2>
-            <h2 className="text-s font-base">Salida en {tour.initialDate}</h2>
-            {tour.originCity ? <h2 className="text-s font-base">desde {tour.originCity} </h2> : null }
-            <h2 className="text-s font-base">
-              Calificación que le dieron otros viajeros: {tour.qualification}
-            </h2>
-            <h2 className="text-s font-semibold mt-6">
-              USD {tour.standarPrice} -{tipoPaquete}-
-            </h2>
-            <h2 className="text-xs font-medium mb-8">
-              Cupos disponibles: {tour.totalLimit}
-            </h2>
-
-            <div>
-              <button
-                onClick={() => {
-                  changeNavigate(item);
-                  toast.success("Has agregado un paquete al carrito.");
-                }}
-                className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
-              >
-                AGREGAR AL CARRITO
-              </button>
+          <div className="flex flex-col max-w-sm mx-4 my-2 shadow-lg rounded-xl">
+            <div className="px-4 py-12 rounded-t-lg sm:px-8 md:px-12 bg-verdeFooter">
+              <p className="relative px-6 py-1 text-lg italic text-center text-gray-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                  className="w-8 h-8 text-green-600"
+                >
+                  <path d="M232,246.857V16H16V416H54.4ZM48,48H200V233.143L48,377.905Z"></path>
+                  <path d="M280,416h38.4L496,246.857V16H280ZM312,48H464V233.143L312,377.905Z"></path>
+                </svg>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Voluptatibus quibusdam, eligendi exercitationem molestias
+                possimus facere.
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  fill="currentColor"
+                  className="absolute right-0 w-8 h-8 text-green-600"
+                >
+                  <path d="M280,185.143V416H496V16H457.6ZM464,384H312V198.857L464,54.1Z"></path>
+                  <path d="M232,16H193.6L16,185.143V416H232ZM200,384H48V198.857L200,54.1Z"></path>
+                </svg>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center p-8 rounded-b-lg  dark:text-gray-900">
+              <img
+                src="https://source.unsplash.com/50x50/?portrait?2"
+                alt=""
+                className="w-16 h-16 mb-2 -mt-16 bg-center bg-cover rounded-full bg-gray-500 "
+              />
+              <p className="text-xl font-semibold leadi">Carla Petersen</p>
+              <p className="text-sm uppercase">23/09/2022</p>
             </div>
           </div>
         </div>
 
         <Hotels hotel={hotelData} />
         
-        <hr className="mt-8"></hr>
-
-        <Activities activity={tour} />
-
-        <hr className="mt-8"></hr>
+        <hr className="mt-10 mb-10"></hr>
 
         <Review coments={reviewData}/>
+
+        <hr className="mt-10 mb-10"></hr>
+
+        <Activities activity={tour} />
       </div>
 
       <Footer />
@@ -218,4 +238,4 @@ console.log('eltour', tour)
   );
 }
 
-export default Detail;
+export default Review;

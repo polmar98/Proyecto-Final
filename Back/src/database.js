@@ -20,7 +20,6 @@ const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
 const BillModels = require("./models/Bill");
 const ItemsBillModels = require("./models/ItemsBill");
 const ActivityCommentModels = require("./models/ActivityComment");
-
 const ItineraryModels = require("./models/Itinerary");
 
 const sequelize = new Sequelize(
@@ -116,6 +115,11 @@ Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });
 
+User.hasMany(Itinerary, {foreignKey: "idUser", sourceKey: "id"});
+Itinerary.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
+Itinerary.belongsTo(Package, {foreignKey: "idPackage", targetKey: "id"});
+
+//exportamos los modelos 
 module.exports = {
   TypePackage,
   Airline,
