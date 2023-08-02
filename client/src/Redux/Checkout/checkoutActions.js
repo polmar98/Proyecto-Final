@@ -9,11 +9,12 @@ export const create_order = (order) => {
         "http://localhost:3002/payment/create-order",
         order
       );
-      const data = response.data;
+      const paymentLink = response.data;
+      window.location.href = paymentLink;
 
       return dispatch({
         type: CREATE_ORDER,
-        payload: data,
+        payload: paymentLink,
       });
     } catch (error) {
       console.log(error.message);
