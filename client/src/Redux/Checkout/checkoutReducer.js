@@ -6,6 +6,7 @@ const initialState = {
 }
 
 const checkoutReducer = (state = initialState, action) => {
+  
     switch (action.type) {
         case CREATE_ORDER:
             return{
