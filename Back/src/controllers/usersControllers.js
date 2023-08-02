@@ -27,13 +27,23 @@ const getAllUsers = async () => {
   return users;
 };
 
-// Controller eliminar un Usuario
+// Controller borrado logico
 const deleteUser = async (uid) => {
-  const user = await User.findByPk(uid);
-  if (!user) {
-    throw new Error("Usuario no encontrado");
+  try {
+    const user = await User.findByPk(uid);
+
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    // Realiza el borrado lógico estableciendo la columna "locked" en false.
+    await user.update({ locked: false });
+
+    return { message: "Usuario eliminado correctamente (borrado lógico)." };
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+    throw new Error("Hubo un problema al eliminar el usuario.");
   }
-  await user.destroy();
 };
 
 // Controller llamdo a usuario por Id
