@@ -1,9 +1,22 @@
 const axios = require("axios");
+const { PaymentDetail } = require("../database");
+const { Association } = require("../database");
 const {
   PAYPAL_API,
   PAYPAL_API_CLIENT,
   PAYPAL_API_SECRET,
 } = require("../payPalConfig");
+const { DataTypes } = require("sequelize");
+
+const createPaymentDetails = async (idUser, idTransaction, status) => {
+  try {
+    await PaymentDetail.findOrCreate({
+      where: { idUser, idTransaction, status },
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 const createOrder = async (order) => {
   //función requerida para solicitar token de paypal
@@ -31,12 +44,12 @@ const createOrder = async (order) => {
       authorization: `Bearer ${access_token} `,
     },
   });
-  
+
   const payPalUrl = response.data.links[1].href;
   return payPalUrl;
 };
 
-const captureOrder = async (token) => {
+const captureOrder = async (token, idUser) => {
   //función requerida para solicitar token de paypal
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
@@ -66,15 +79,19 @@ const captureOrder = async (token) => {
       },
     }
   );
-  //acá hay que redireccionar a alguna vista que diga ya estas listo para viajar
-
   const { id, status } = response.data;
-  const cleanData = { id, status };
+  const idTransaction = id;
 
-  return cleanData;
+  createPaymentDetails(idUser, idTransaction, status);
+};
+
+const getDetails = async () => {
+  const dbPaymentDetails = await PaymentDetail.findAll();
+  return dbPaymentDetails;
 };
 
 module.exports = {
   createOrder,
   captureOrder,
+  getDetails,
 };
