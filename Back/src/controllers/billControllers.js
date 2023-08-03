@@ -9,6 +9,9 @@ const addBill = async(datos) => {
     const car = await ShoppingCar.findByPk(idCar);
     //validamos si el valor total de la factura es mayor que cero
     if(car.fullValue === 0) return {message: "Valor a facturar no puede ser cero"};
+    //validamos si la transaccion fue completada
+    if(car.state === 0) return {message: "No se ha completado el pago"};
+
     //traemos el ultimo consecutivo numeracion factura 
     let numero = "000000";
     const facturas = await Bill.findAll();
@@ -55,6 +58,7 @@ const addBill = async(datos) => {
     const itemsGrabados = ItemsBill.bulkCreate(array);
     //ahora vaciamos el carrito de compras
     await emptyShoppingCar(idCar);
+    await ShoppingCar.update({state: 0, idTransaction: null, fullValue: 0}, {where: {id: idCar}});
     //devolvemos la factura grabada
     return getBillById(nBill.id);
 };
