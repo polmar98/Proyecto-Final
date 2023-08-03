@@ -58,6 +58,7 @@ export default function Checkout() {
       user_action: "PAY_NOW",
       return_url: "http://localhost:3002/payment/pay-order",
       cancel_url: "http://localhost:3002/payment/cancel-order",
+      current_user: "422AEFAA45UM182", //ACÁ HAY QUE TRAER EL UUID DEL CURRENT USER.
     },
   };
 
@@ -68,7 +69,7 @@ export default function Checkout() {
   return (
     <div>
       <div className="bg-verdeFooter">
-        <NavBar />
+        <NavBar />        
       </div>
       <div class="relative mx-auto w-full bg-white">
         <div class="grid min-h-screen grid-cols-10">

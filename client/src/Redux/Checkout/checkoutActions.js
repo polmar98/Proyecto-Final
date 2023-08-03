@@ -1,9 +1,11 @@
 import axios from "axios";
 
 export const CREATE_ORDER = "CREATE_ORDER";
+export const GET_PAYMENT_DETAIL = "GET_PAYMENT_DETAIL";
+
 
 export const create_order = (order) => {
-  // console.log('la orden', order)
+ 
   return async (dispatch) => {
     try {
       const response = await axios.post(
@@ -11,14 +13,14 @@ export const create_order = (order) => {
         order
       );
       const paymentLink = response.data;
+            let token = paymentLink.split("=");
+      console.log(token);
       window.location.href = paymentLink;
-
-      return dispatch({
-        type: CREATE_ORDER,
-        payload: paymentLink,
-      });
+      
     } catch (error) {
       console.log(error.message);
     }
   };
 };
+
+
