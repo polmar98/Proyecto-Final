@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { PaymentDetail, User } = require("../database");
+const { PaymentDetail, User, ShoppingCar } = require("../database");
 const { Association } = require("../database");
 const {
   PAYPAL_API,
@@ -22,7 +22,12 @@ const createPaymentDetails = async (uidUser, idTransaction, status) => {
        status,
        idUser: usuario.id,
     };
+    console.log(newPay);
     const result = await PaymentDetail.create(newPay);
+    const updateCar = await ShoppingCar.update(
+      {status: 1, idTransaction},
+      {where: {uidUser}}
+    );
     return result;
   } catch (error) {
     return {message: error.message};

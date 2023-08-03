@@ -27,6 +27,11 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL,
         defaultValue: 0,
       },
+      idTransaction: {
+         //almacenara temporalmente el id de la ultima transaccion
+         type: DataTypes.STRING,
+         allowNull: true,
+      },
     },
     { timestamps: true }
   );
