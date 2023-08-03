@@ -10,6 +10,7 @@ import LandingPage from "./Views/Landing";
 import ShoppingCart from "./Views/ShoppingCart";
 import UserProfile from "./Views/UserProfile";
 import Contact from "./Views/Contact";
+import PaymentComplete from "./Components/PaymentComplete";
 import Checkout from "./Views/Checkout";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,6 +34,7 @@ function App() {
         <Route path="/userProfile" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/paymentComplete" element={<PaymentComplete />} />
       </Routes>
     </div>
   );

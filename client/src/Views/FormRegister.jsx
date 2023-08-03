@@ -32,21 +32,21 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = useState({
-    profile: 1,
+    uid: "",
     name: "",
     lastName: "",
     email: "",
     password: "",
-    uid: "",
+    profile: 1,
   });
-  const { name, lastName, email, password } = user;
+  const { name, lastName, email, password, profile } = user;
 
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
     }
     if (currentUser) {
-      navigate("/home"); // redirige a la ruta /home
+      // navigate("/home"); // redirige a la ruta /home
     }
     return () => {
       setErrorMsg("");
@@ -86,14 +86,22 @@ const RegisterPage = () => {
       const res = await register(email, password);
 
       if (res) {
+        const uid = res.user.uid;
+        console.log(uid);
+        const updatedUser = {
+          ...user,
+          uid: uid,
+        };
+        setUser(updatedUser);
+        console.log(updatedUser);
+
         await updateProfile(res.user, {
           displayName: `${name} ${lastName}`,
         });
-        dispatch(addUser(user));
+        dispatch(addUser(updatedUser));
 
         toast.success(`Bienvenido ${name}!`);
         login(email, password);
-        navigate("/home");
       }
     } catch (error) {
       setErrorMsg(error.message);
