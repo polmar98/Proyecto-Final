@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { PaymentDetail } = require("../database");
+const { PaymentDetail, User } = require("../database");
 const { Association } = require("../database");
 const {
   PAYPAL_API,
@@ -8,13 +8,24 @@ const {
 } = require("../payPalConfig");
 const { DataTypes } = require("sequelize");
 
-const createPaymentDetails = async (idUser, idTransaction, status) => {
-  try {
-    await PaymentDetail.findOrCreate({
-      where: { idUser, idTransaction, status },
-    });
+const createPaymentDetails = async (uidUser, idTransaction, status) => {
+   try {
+    //buscamos los datos del usuario
+    const usuario = await User.findOne({where: {uid: uidUser}});
+    if(!usuario) {
+      console.log("Usuario Inexistente");
+      return {message: "Usuario Inexistente"}
+    };
+    const newPay = {
+       uidUser,
+       idTransaction,
+       status,
+       idUser: usuario.id,
+    };
+    const result = await PaymentDetail.create(newPay);
+    return result;
   } catch (error) {
-    console.log(error.message);
+    return {message: error.message};
   }
 };
 
@@ -35,9 +46,7 @@ const createOrder = async (order) => {
       },
     }
   );
-
   const { access_token } = access.data;
-
   // Acá enviamos la orden de compra a paypal
   const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
     headers: {
@@ -49,7 +58,7 @@ const createOrder = async (order) => {
   return payPalUrl;
 };
 
-const captureOrder = async (token, idUser) => {
+const captureOrder = async (token, uidUser) => {
   //función requerida para solicitar token de paypal
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
@@ -68,7 +77,6 @@ const captureOrder = async (token, idUser) => {
   );
 
   const { access_token } = access.data;
-
   //Acá pedimos la captura de la orden a paypal
   const response = await axios.post(
     `${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
@@ -81,8 +89,7 @@ const captureOrder = async (token, idUser) => {
   );
   const { id, status } = response.data;
   const idTransaction = id;
-
-  createPaymentDetails(idUser, idTransaction, status);
+  createPaymentDetails(uidUser, idTransaction, status);
 };
 
 const getDetails = async () => {

@@ -122,6 +122,9 @@ User.hasMany(Itinerary, {foreignKey: "idUser", sourceKey: "id"});
 Itinerary.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
 Itinerary.belongsTo(Package, {foreignKey: "idPackage", targetKey: "id"});
 
+User.hasMany(PaymentDetail, {foreignKey: 'idUser', sourceKey: 'id'});
+PaymentDetail.belongsTo(User, {foreignKey: 'idUser', targetKey: 'id'});
+
 //exportamos los modelos 
 module.exports = {
   TypePackage,

@@ -4,7 +4,7 @@ const {
   captureOrder,
   getDetails,
 } = require("../controllers/paymentControllers");
-let idUser = " ";
+let uidUser = " ";
 const router = Router();
 
 // const order = {
@@ -31,7 +31,7 @@ const router = Router();
 router.post("/create-order", async (req, res) => {
   try {
     const order = req.body;
-    idUser = order.application_context.current_user;
+    uidUser = order.application_context.current_user;
     const result = await createOrder(order);
     res.status(200).json(result);
   } catch (error) {
@@ -42,7 +42,7 @@ router.post("/create-order", async (req, res) => {
 router.get("/pay-order", async (req, res) => {
   try {
     const { token } = req.query;
-    await captureOrder(token, idUser);
+    await captureOrder(token, uidUser);
     //cambiar la ruta a la vista "gracias por tu compra"
     res.status(200).redirect("http://localhost:3000/home");
   } catch (error) {
