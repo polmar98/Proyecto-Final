@@ -1,6 +1,26 @@
 import axios from "axios";
+// import { get } from "../../../../Back/src/handlers/paymentHandlers";
 
+export const GET_PAY_INFO = "GET_PAY_INFO"
 export const CREATE_ORDER = "CREATE_ORDER";
+
+export const get_pay_info = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get("http://localhost:3002/payment/order_info")
+      const data = response.data
+      console.log('la data', data)
+
+      return dispatch({
+        type: GET_PAY_INFO,
+        payload: data
+      })
+      
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+}
 
 export const create_order = (order) => {
   // console.log('la orden', order)
@@ -11,7 +31,17 @@ export const create_order = (order) => {
         order
       );
       const paymentLink = response.data;
+      
+      // const link = paymentLink.split('=')
+      // const token = link[1].toString()
+
+      // console.log('el link de paypal', token)
+
       window.location.href = paymentLink;
+      
+      get_pay_info();
+
+      window.location.href = ("http://localhost:3000/home")
 
       return dispatch({
         type: CREATE_ORDER,
