@@ -1,4 +1,4 @@
-import { GET_PAYMENT_DETAIL } from "./checkoutActions"
+import { GET_PAY_INFO } from "./checkoutActions"
 
 const initialState = {
     orderId: null,
@@ -8,7 +8,7 @@ const initialState = {
 const checkoutReducer = (state = initialState, action) => {
   
     switch (action.type) {
-        case GET_PAYMENT_DETAIL:
+        case GET_PAY_INFO:
             return{
                 orderId: action.payload.id,
                 status: action.payload.status

@@ -10,7 +10,7 @@ function Activities({ activity }) {
   const { Activities } = activity;
   const dispatch = useDispatch();
   const idCart = useSelector((state) => state.carrito.idCart);
-  const car = useSelector((state) => state.carrito.cart);
+  // const car = useSelector((state) => state.carrito.cart);
   const { currentUser } = useContext(authContext);
   // console.log('el carrito logueada', car)
   
