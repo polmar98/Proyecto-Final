@@ -18,6 +18,7 @@ import Review from "../Components/Review";
 import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 
+
 function Detail() {
   const { currentUser } = useContext(authContext);
   const { id } = useParams();
@@ -28,13 +29,18 @@ function Detail() {
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
   const car = useSelector((state) => state.carrito.cart);
+  
   // console.log("EL ID", idCart);
   // console.log("EL CART DE MIERDA ", car);
-console.log('eltour', tour)
+  // console.log('comments', comments)
+ 
+// console.log('eltour', tour)
+// const coment = comments ? comments: "desconocido";
+
+// console.log('el coment', coment)
 
   //reviews
-  const reviewData = tour.Comments ? tour.Comments : "Desconocido";
-  console.log('reviewData', reviewData)
+  // const reviewData = comments ? comments : "Desconocido";
 
 
   //hotelInfo
@@ -53,6 +59,7 @@ console.log('eltour', tour)
     dispatch(getPackageById(id));
     dispatch(fetchAirlines());
     dispatch(fetchHotels());
+    // dispatch(getComentByPackage(id))
     // dispatch(fetchComents())
 
     if (currentUser) {
@@ -204,13 +211,15 @@ console.log('eltour', tour)
 
         <Hotels hotel={hotelData} />
         
-        <hr className="mt-10"></hr>
-
-        <Review coments={reviewData}/>
-
-        <hr className="mt-10"></hr>
+        <hr className="mt-8"></hr>
 
         <Activities activity={tour} />
+
+        <hr className="mt-8"></hr>
+    
+     <Review tour={tour}/> 
+    
+    
       </div>
 
       <Footer />

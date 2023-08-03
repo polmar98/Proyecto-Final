@@ -12,6 +12,11 @@ module.exports = {
         focusColor: "#00aaff",
         paypalYellow: "#FFC439",
         paypalBlue: "#003087",
+        295943: {
+          DEFAULT: "#295943",
+          light: "#62bd8b", // Puedes ajustar este valor según tu preferencia
+          dark: "#1e4735", // Puedes ajustar este valor según tu preferencia
+        },
       },
       fontSize: {
         "2xs": "0.625rem",

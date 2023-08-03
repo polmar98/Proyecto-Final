@@ -20,8 +20,8 @@ const ItemsShoppingCarModels = require("./models/ItemsShoppingCar");
 const BillModels = require("./models/Bill");
 const ItemsBillModels = require("./models/ItemsBill");
 const ActivityCommentModels = require("./models/ActivityComment");
-
 const ItineraryModels = require("./models/Itinerary");
+const PaymentDetailModels = require("./models/PaymentDetail");
 
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_BASE}`,
@@ -46,6 +46,7 @@ BillModels(sequelize);
 ItemsBillModels(sequelize);
 ActivityCommentModels(sequelize);
 ItineraryModels(sequelize);
+PaymentDetailModels(sequelize);
 
 const {
   TypePackage,
@@ -66,6 +67,7 @@ const {
   ItemsBill,
   ActivityComment,
   Itinerary,
+  PaymentDetail,
 } = sequelize.models;
 
 // establecemos las relaciones
@@ -116,6 +118,14 @@ Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });
 
+User.hasMany(Itinerary, {foreignKey: "idUser", sourceKey: "id"});
+Itinerary.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
+Itinerary.belongsTo(Package, {foreignKey: "idPackage", targetKey: "id"});
+
+User.hasMany(PaymentDetail, {foreignKey: 'idUser', sourceKey: 'id'});
+PaymentDetail.belongsTo(User, {foreignKey: 'idUser', targetKey: 'id'});
+
+//exportamos los modelos 
 module.exports = {
   TypePackage,
   Airline,
@@ -135,5 +145,6 @@ module.exports = {
   ItemsBill,
   ActivityComment,
   Itinerary,
+  PaymentDetail,
   conn: sequelize,
 };

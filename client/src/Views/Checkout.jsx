@@ -1,44 +1,75 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { authContext } from "../Context/authContext";
 import { GrPaypal } from "react-icons/gr";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import { CgDanger } from "react-icons/cg";
-import { useDispatch } from "react-redux";
+import CardItem from "../Components/CardCheckout";
+import { useAuth } from "../Context/authContext";
+import { useSelector, useDispatch } from "react-redux";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 import { create_order } from "../Redux/Checkout/checkoutActions";
 
 export default function Checkout() {
+  const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(userShopping(currentUser.uid));
+    }
+  }, [currentUser, dispatch]);
+
+  // const idCart = useSelector((state) => state.carrito.idCart);
+  const cartItems = useSelector((state) => state.carrito.cart);
+  console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
+  // console.log("STO ES idCart DESDE SHOPING CART ", idCart);
+  const vatPercentage = 10; // Porcentaje del impuesto
+  let totalPrice = cartItems.reduce(
+    (sum, item) => sum + parseFloat(item.totalPrice),
+    0
+  );
+  const vatAmount = (totalPrice * vatPercentage) / 100; // Cálculo del impuesto
+  const finalPrice = totalPrice + vatAmount; // Suma el impuesto al precio total
+  const precioFormateado = finalPrice.toFixed(2); // Precio total con impuestos
+  const vatFormateado = vatAmount.toFixed(2); // Impuesto formateado
+  const precioJSON = precioFormateado.toString() //precio para colocar en la order
+  console.log('precio final json', precioJSON)
+
+  const itemTitles = cartItems.map(el => el.title).concat().toString()
+  console.log('items a enviar', itemTitles)
+
+
 
   const order = {
     intent: "CAPTURE",
     purchase_units: [
-        {
-            amount: {
-                currency_code: "USD",
-                value: "5.00", //aca va totalPrice.toString()
-            },
-            description: "paquete a cancún" // puede ser un mapeo de todos los titulos de los paquetes y actividades que compro. tienen que ser 2 mapeos xq act y paquete tienen distinta prop para el nombre. aplicarles un concat con una , que los una.
-        }
+      {
+        amount: {
+          currency_code: "USD",
+          value: precioJSON,
+        },
+        description: itemTitles,
+      },
     ],
     application_context: {
-        brand_name: "wanderlust.com",
-        landing_page: "LOGIN",
-        user_action: "PAY_NOW",
-        return_url:"http://localhost:3002/payment/pay-order",
-        cancel_url: "http://localhost:3002/payment/cancel-order"
-    }
-};
+      brand_name: "wanderlust.com",
+      landing_page: "LOGIN",
+      user_action: "PAY_NOW",
+      return_url: "http://localhost:3002/payment/pay-order",
+      cancel_url: "http://localhost:3002/payment/cancel-order",
+      current_user: "422AEFAA45UM182", //ACÁ HAY QUE TRAER EL UUID DEL CURRENT USER.
+    },
+  };
 
-
-function send_order(){
-  dispatch(create_order(order));
-}
+  function send_order() {
+    dispatch(create_order(order));
+  }
 
   return (
-    // add navbar and footer
     <div>
       <div className="bg-verdeFooter">
-        <NavBar />
+        <NavBar />        
       </div>
       <div class="relative mx-auto w-full bg-white">
         <div class="grid min-h-screen grid-cols-10">
@@ -76,7 +107,7 @@ function send_order(){
                     type="email"
                     id="email"
                     name="email"
-                    placeholder="john.capler@fang.com"
+                    placeholder="example@gmail.com"
                     class="mt-1 block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
@@ -167,7 +198,9 @@ function send_order(){
               </p>
               <button
                 type="submit"
-                onClick={() => {send_order()}}
+                onClick={() => {
+                  send_order();
+                }}
                 className="mt-4 inline-flex w-full items-center justify-center rounded bg-paypalYellow py-2.5 px-4 text-base font-semibold tracking-wide text-paypalBlue outline-none ring-offset-2 transition focus:bg-paypalYellow sm:text-lg"
               >
                 <GrPaypal className="mr-2 text-paypalBlue" />
@@ -187,70 +220,25 @@ function send_order(){
             </div>
             <div class="relative">
               <ul class="space-y-5">
-                <li class="flex justify-between">
-                  <div class="inline-flex">
-                    <img
-                      src="https://images.unsplash.com/photo-1620331311520-246422fd82f9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGhhaXIlMjBkcnllcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                      alt=""
-                      class="max-h-16"
-                    />
-                    <div class="ml-3">
-                      <p class="text-base font-semibold text-white">
-                        Nano Titanium Hair Dryer
-                      </p>
-                      <p class="text-sm font-medium text-white text-opacity-80">
-                        Pdf, doc Kindle
-                      </p>
-                    </div>
-                  </div>
-                  <p class="text-sm font-semibold text-white">$260.00</p>
-                </li>
-                <li class="flex justify-between">
-                  <div class="inline-flex">
-                    <img
-                      src="https://images.unsplash.com/photo-1621607512214-68297480165e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fGhhaXIlMjBkcnllcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                      alt=""
-                      class="max-h-16"
-                    />
-                    <div class="ml-3">
-                      <p class="text-base font-semibold text-white">
-                        Luisia H35
-                      </p>
-                      <p class="text-sm font-medium text-white text-opacity-80">
-                        Hair Dryer
-                      </p>
-                    </div>
-                  </div>
-                  <p class="text-sm font-semibold text-white">$350.00</p>
-                </li>
-                <li class="flex justify-between">
-                  <div class="inline-flex">
-                    <img
-                      src="https://images.unsplash.com/photo-1621607512214-68297480165e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fGhhaXIlMjBkcnllcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                      alt=""
-                      class="max-h-16"
-                    />
-                    <div class="ml-3">
-                      <p class="text-base font-semibold text-white">
-                        Luisia H35
-                      </p>
-                      <p class="text-sm font-medium text-white text-opacity-80">
-                        Hair Dryer
-                      </p>
-                    </div>
-                  </div>
-                  <p class="text-sm font-semibold text-white">$350.00</p>
-                </li>
+                {cartItems.map((item, index) => (
+                  <CardItem
+                    key={index}
+                    image={item.image}
+                    title={item.title}
+                    description={`Amount: ${item.amount}, Unit Price: ${item.unitPrice}`}
+                    price={`$${item.totalPrice}`}
+                  />
+                ))}
               </ul>
               <div class="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
               <div class="space-y-2">
-                <p class="flex justify-between text-lg font-bold text-white">
-                  <span>Total price:</span>
-                  <span>$510.00</span>
-                </p>
                 <p class="flex justify-between text-sm font-medium text-white">
-                  <span>Vat: 10%</span>
-                  <span>$55.00</span>
+                  <span>Vat: {vatPercentage}%</span>
+                  <span>${vatFormateado}</span>
+                </p>
+                <p class="flex justify-between text-lg font-bold text-white">
+                  <span>Total price (incl. VAT):</span>
+                  <span>${precioFormateado}</span>
                 </p>
               </div>
             </div>

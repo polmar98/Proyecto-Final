@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const { conn } = require("../src/database");
 const cors = require("cors");
+const {transporter} =require("./nodemailer")
 
 //midleweares
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -35,4 +36,9 @@ conn.sync({ alter:true }).then(() => {
   server.listen(3002, () => {
     console.log("Server on port 3002");
   });
-});
+})
+.then(async () => {
+  await transporter.verify().then(() => {
+    console.log("Email service: ✅");
+  });
+})

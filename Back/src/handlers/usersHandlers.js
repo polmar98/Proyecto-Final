@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 });
 
 // Eliminar un usuario por su uid
-router.delete("/:id", async (req, res) => {
+router.delete("/:uid", async (req, res) => {
   try {
     const { uid } = req.params;
     await deleteUser(uid);

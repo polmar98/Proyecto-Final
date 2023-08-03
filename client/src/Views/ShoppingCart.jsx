@@ -1,4 +1,4 @@
-import React, { useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { authContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Components/CartItem";
@@ -16,7 +16,6 @@ import {
   AiOutlineDelete,
 } from "react-icons/ai";
 
-
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
   let cartItems = useSelector((state) => state.carrito.cart);
@@ -32,9 +31,8 @@ const ShoppingCart = () => {
       dispatch(userShopping(currentUser.uid));
     }
   }, [dispatch, currentUser]);
-  
-  const idCart = useSelector((state) => state.carrito.idCart);
 
+  const idCart = useSelector((state) => state.carrito.idCart);
 
   //
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
@@ -66,20 +64,17 @@ const ShoppingCart = () => {
         return acc + (el.unitPrice || 0) * (el.amount || 1);
       }, 0);
       return total;
-
-      
     }
-
   }
 
   function handlePayment() {
     if (!currentUser && (!items || items === localStorageItems)) {
       navigate("/login");
     } else if (currentUser && items) {
-      navigate("/checkout")
+      navigate("/checkout");
     }
   }
-  
+
   return (
     <div>
       <div className="bg-verdeFooter ">
@@ -89,7 +84,12 @@ const ShoppingCart = () => {
         <div className="grid grid-cols-5 gap-6">
           <div className="col-span-4">
             {items?.map((el, index) => (
-              <CartItem key={index} item={el} cart={idCart} amount={el.amount}/>
+              <CartItem
+                key={index}
+                item={el}
+                cart={idCart}
+                amount={el.amount}
+              />
             ))}
             <div className="flex justify-between items-center mt-5">
               <Link
@@ -129,15 +129,17 @@ const ShoppingCart = () => {
                   $ {(calculateTotal(items) * 1.1).toFixed(2)}
                 </span>
               </div>
-              <button
-                onClick={() => {
-                  handlePayment();
-                }}
-                className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300"
-              >
-                <AiOutlineCheckCircle className="mr-2" />
-                Completar el pago
-              </button>
+              <Link to="/checkout">
+                <button
+                  onClick={() => {
+                    handlePayment();
+                  }}
+                  className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300"
+                >
+                  <AiOutlineCheckCircle className="mr-2" />
+                  Completar el pago
+                </button>
+              </Link>
             </div>
           </div>
         </div>

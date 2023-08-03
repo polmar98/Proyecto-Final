@@ -10,11 +10,11 @@ function Activities({ activity }) {
   const { Activities } = activity;
   const dispatch = useDispatch();
   const idCart = useSelector((state) => state.carrito.idCart);
-  const car = useSelector((state) => state.carrito.cart);
+  // const car = useSelector((state) => state.carrito.cart);
   const { currentUser } = useContext(authContext);
-  console.log('el carrito logueada', car)
+  // console.log('el carrito logueada', car)
   
- console.log("actividades en Act: ", Activities); // aca llegan las 4 actividades
+//  console.log("actividades en Act: ", Activities); // aca llegan las 4 actividades
 
   const handleReserveActivity = (selectedActivity) => {
     //addNew(selectedActivity);
@@ -57,8 +57,8 @@ function Activities({ activity }) {
 
   return (
     <>
-      <h2 className="text-xl font-bold mb-4 mt-12 text-left fontPoppins">
-        Actividades
+      <h2 className="text-xl font-bold mb-4 mt-8 text-left fontPoppins">
+        Actividades 
       </h2>
       <div className="grid grid-cols-2 gap-4 mt-8">
         {Activities?.map((el) => (
