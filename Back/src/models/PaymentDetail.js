@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
 
-      idUser: {
+      uidUser: {
         type: DataTypes.STRING,
         allowNull: false,
       },
