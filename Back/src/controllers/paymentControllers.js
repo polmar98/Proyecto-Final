@@ -22,14 +22,14 @@ const createPaymentDetails = async (uidUser, idTransaction, status) => {
        status,
        idUser: usuario.id,
     };
-    console.log(newPay);
     const result = await PaymentDetail.create(newPay);
-    const updateCar = await ShoppingCar.update(
-      {status: 1, idTransaction},
+    await ShoppingCar.update(
+      {state: 1, idTransaction},
       {where: {uidUser}}
     );
     return result;
   } catch (error) {
+    console.log(error.message);
     return {message: error.message};
   }
 };
