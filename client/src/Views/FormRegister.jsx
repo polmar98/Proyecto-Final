@@ -46,7 +46,7 @@ const RegisterPage = () => {
       setErrorMsg(error);
     }
     if (currentUser) {
-      // navigate("/home"); // redirige a la ruta /home
+      navigate("/home"); // redirige a la ruta /home
     }
     return () => {
       setErrorMsg("");
@@ -102,6 +102,7 @@ const RegisterPage = () => {
 
         toast.success(`Bienvenido ${name}!`);
         login(email, password);
+        navigate("/home");
       }
     } catch (error) {
       setErrorMsg(error.message);
