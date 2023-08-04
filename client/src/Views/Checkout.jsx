@@ -12,6 +12,7 @@ import { create_order } from "../Redux/Checkout/checkoutActions";
 
 export default function Checkout() {
   const { currentUser } = useContext(authContext);
+  console.log('el user en checkout', currentUser.uid)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function Checkout() {
       user_action: "PAY_NOW",
       return_url: "http://localhost:3002/payment/pay-order",
       cancel_url: "http://localhost:3002/payment/cancel-order",
-      current_user: "422AEFAA45UM182", //ACÁ HAY QUE TRAER EL UUID DEL CURRENT USER.
+      current_user: currentUser.uid, //ACÁ HAY QUE TRAER EL UUID DEL CURRENT USER.
     },
   };
 
