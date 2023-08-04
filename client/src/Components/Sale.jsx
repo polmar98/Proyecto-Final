@@ -66,21 +66,49 @@ import { useState } from "react";
 import { ImLocation } from "react-icons/im";
 import { AiFillCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function Sale({ paquetes }) {
+function Sale({paquetes}) {
+
   // Function to shuffle the array using Fisher-Yates (Knuth) shuffle
+  
   function shuffleArray(array) {
+    const long = array.length;
+    let array2 = [];
+    /*
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
+    */   
+  
+    for(let i=0;i<3;i++) {
+       let guardar=false;
+       do {
+          let j =Math.floor(Math.random()*long);
+          if(array2.length){
+              const hallado = array2.find((ele) =>ele.City.id == array[j].City.id);
+              if(!hallado) {
+                array2.push(array[j]); 
+                guardar=true;
+             }
+          } else{
+            guardar=true;
+            array2.push(array[j]); 
+          } 
+       }
+       while(!guardar);
+    }
+    return array2; 
+    
+  };
 
-  // Shuffle the paquetes array and take the first 3 elements
-  const shuffledPaquetes = shuffleArray(paquetes);
-  const filtrado = shuffledPaquetes.slice(0, 3);
+ 
+   //Shuffle the paquetes array and take the first 3 elements
 
+  const filtrado = shuffleArray(paquetes);
+  
   return (
     <div className="mt-7 w-[1000px]">
       <h1 className="text-2xl text-gray-800 fontPoppinsB">Flash Deals</h1>
