@@ -1,18 +1,15 @@
-import { GET_PAY_INFO } from "./checkoutActions"
+import { POST_BILL } from "./checkoutActions"
 
 const initialState = {
-    orderId: null,
-    status: ""
+    bill: {}
 }
 
 const checkoutReducer = (state = initialState, action) => {
   
     switch (action.type) {
-        case GET_PAY_INFO:
-            // console.log('reducer', action.payoad.status, action.payload.id)
+        case POST_BILL:
             return{
-                orderId: action.payload.id,
-                status: action.payload.status
+                bill: action.payload
             };
 
         default:

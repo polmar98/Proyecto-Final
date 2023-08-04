@@ -37,6 +37,7 @@ function App() {
         <Route path="/userProfile" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/paymentcomplete" element={<PaymentComplete />}/>
       </Routes>
     </div>
   );
