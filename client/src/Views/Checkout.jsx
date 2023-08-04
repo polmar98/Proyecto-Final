@@ -12,6 +12,7 @@ import { create_order } from "../Redux/Checkout/checkoutActions";
 
 export default function Checkout() {
   const { currentUser } = useContext(authContext);
+  console.log('el user en checkout', currentUser.uid)
   const dispatch = useDispatch();
 
   useEffect(() => {
