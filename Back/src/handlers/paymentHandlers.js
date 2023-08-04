@@ -31,8 +31,7 @@ const router = Router();
 router.post("/create-order", async (req, res) => {
   try {
     const order = req.body;
-    //uidUser = order.application_context.current_user;
-    uidUser = "Pe6Oa1AEyYSmOWNdZv7U2HAoz9G2";
+    uidUser = order.application_context.current_user;
     const result = await createOrder(order);
     res.status(200).json(result);
   } catch (error) {
