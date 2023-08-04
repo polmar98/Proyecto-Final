@@ -6,12 +6,13 @@ import { editUser } from "../Redux/Users/usersActions";
 function UserList() {
   const dispatch = useDispatch();
   const usuarios = useSelector((state) => state.users.usersList);
-  const [userBloq, setUserBloq] = useState(false);
-  console.log(usuarios);
-
+  const [usuario, setUsuarios] = useState([]);
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
+
+  console.log("USERSS:", usuarios);
+  console.log("USER 2:", usuario);
 
   function formatDate(date) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -20,64 +21,75 @@ function UserList() {
       .replace(/\//g, "-");
   }
 
-  function bloqueado(boolean) {
-    if (!boolean) {
-      return "Enabled";
-    } else return "Disabled";
-  }
-  function rolUser(num) {
-    if (num === 1) {
-      return "USUARIO";
+  // modifica el bloqueo del usuario
+  function encontrar(user) {
+    const { uid } = user;
+    console.log("el UID CHOTO", uid);
+    console.log("EL USER A CAMBIAR", user);
+
+    if (user.locked) {
+      dispatch(
+        editUser(uid, {
+          id: user.id,
+          uid: user.uid,
+          profile: user.profile,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          dateRecord: user.dateRecord,
+          locked: false,
+        })
+      );
+    } else {
+      dispatch(
+        editUser(uid, {
+          id: user.id,
+          uid: user.uid,
+          profile: user.profile,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          dateRecord: user.dateRecord,
+          locked: true,
+        })
+      );
     }
-    if (num === 2) {
-      return "ADMIN";
+  }
+
+  function rol(user) {
+    const { uid } = user;
+
+    if (user.profile === 1) {
+      dispatch(
+        editUser(uid, {
+          id: user.id,
+          uid: user.uid,
+          profile: 2,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          dateRecord: user.dateRecord,
+          locked: user.locked,
+        })
+      );
+    } else {
+      dispatch(
+        editUser(uid, {
+          id: user.id,
+          uid: user.uid,
+          profile: 1,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          dateRecord: user.dateRecord,
+          locked: user.locked,
+        })
+      );
     }
-  }
-  function bloquear(user) {
-    dispatch(
-      editUser(user.uid, {
-        id: user.id,
-        uid: user.uid,
-        profile: user.profile,
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-        dateRecord: user.dateRecord,
-        locked: true,
-        // avatar: null,
-        // address: null,
-        // addressNumber: null,
-        // postalCode: null,
-        // city: null,
-        // country: null,
-        // phoneNumber: null,
-        // dni: null,
-      })
-    );
-  }
-  function habilitar(user) {
-    dispatch(
-      editUser(user.uid, {
-        id: user.id,
-        uid: user.uid,
-        profile: user.profile,
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        password: user.password,
-        dateRecord: user.dateRecord,
-        locked: false,
-        // avatar: null,
-        // address: null,
-        // addressNumber: null,
-        // postalCode: null,
-        // city: null,
-        // country: null,
-        // phoneNumber: null,
-        // dni: null,
-      })
-    );
   }
   return (
     <div className="m-10">
@@ -100,12 +112,7 @@ function UserList() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Create Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Rol
-              </th>
+
               <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Enabled/Disabled{" "}
               </th>
@@ -124,42 +131,28 @@ function UserList() {
                 <td className="px-3 py-2 whitespace-nowrap">
                   {formatDate(user.dateRecord)}
                 </td>
+
                 <td className="px-3 py-2 whitespace-nowrap">
-                  {bloqueado(user.locked)}
-                </td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  {rolUser(user.profile)}
-                </td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  {!userBloq ? (
-                    <button
-                      onClick={bloquear(user)}
-                      className="rounded bg-red-600 text-white p-2 "
-                    >
-                      Disabled
-                    </button>
-                  ) : (
-                    <button
-                      onClick={habilitar(user)}
-                      className="rounded bg-green-600 text-white p-2 "
-                    >
-                      Enabled
-                    </button>
-                  )}{" "}
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={user.locked}
+                      onChange={() => encontrar(user)}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-red-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-red-400 after:border-red-500 after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-red-600 peer-checked:bg-red-600"></div>
+                  </label>
                 </td>
                 <td className="px-6 py-2 whitespace-nowrap">
-                  <select className="rounded   p-2">
-                    {user.profile === 1 ? (
-                      <>
-                        <option value="1">{rolUser(user.profile)}</option>
-                        <option value="2">Administrador</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="2">{rolUser(user.profile)}</option>
-                        <option value="1">Usuario</option>
-                      </>
-                    )}
+                  <select
+                    className="bg-blue-500 text-gray-100 border-2 border-blue-700 font-bold p-1 rounded-xl"
+                    value={user.profile}
+                    onChange={() => {
+                      rol(user);
+                    }}
+                  >
+                    <option value="1">Usuario</option>
+                    <option value="2">Administrador</option>
                   </select>
                 </td>
               </tr>

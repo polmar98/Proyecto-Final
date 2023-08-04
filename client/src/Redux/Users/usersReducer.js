@@ -49,9 +49,15 @@ const usersReducer = (state = initialState, action) => {
         ...state,
       };
     case EDIT_USER:
+      const updatedUsersList = state.usersList.map((user) =>
+        user.uid === action.payload.user.uid ? action.payload.user : user
+      );
+
       return {
         ...state,
+        usersList: updatedUsersList,
       };
+
     case LOGIN_USER:
       return {
         ...state,
