@@ -32,18 +32,10 @@ export const create_order = (order) => {
         "http://localhost:3002/payment/create-order",
         order
       );
-      const paymentLink = response.data;
+      const paymentLink = response.data;            
+
+      window.location.href = paymentLink;     
       
-      // const link = paymentLink.split('=')
-      // const token = link[1].toString()
-
-      // console.log('el link de paypal', token)
-
-      window.location.href = paymentLink;
-      
-      get_pay_info();
-
-      window.location.href = ("http://localhost:3000/home")
 
       return dispatch({
         type: CREATE_ORDER,
