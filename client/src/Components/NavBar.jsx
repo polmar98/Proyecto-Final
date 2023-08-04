@@ -64,7 +64,7 @@ function NavBar() {
               className="text-m text-white fontPoppins hover:fontPoppinsB font-bold"
               to="/search"
             >
-              Discover
+              Descubre
             </Link>
           </li>
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
@@ -72,7 +72,7 @@ function NavBar() {
               className="text-m text-white fontPoppins hover:fontPoppinsB font-bold"
               to="/about"
             >
-              About
+              Nosotros
             </Link>
           </li>
           <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
@@ -80,7 +80,7 @@ function NavBar() {
               className="text-m text-white fontPoppins hover:fontPoppinsB font-bold "
               to="/contact"
             >
-              Contact
+              Contacto
             </Link>
           </li>
         </ul>
@@ -113,14 +113,14 @@ function NavBar() {
                     //onclick close modal
                     onClick={() => setIsOpen(!isOpen)}
                   >
-                    Profile
+                    Perfil
                   </Link>
                   <Link
                     to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
                     onClick={handleLogoutClick}
                   >
-                    Logout
+                    Salir
                   </Link>
                 </div>
               )}
@@ -132,7 +132,7 @@ function NavBar() {
                   className="text-m text-white fontPoppins hover:fontPoppinsB font-bold"
                   to="/login"
                 >
-                  Log In
+                  Ingresar
                 </Link>
               </li>
               <li className="p-2 mr-5 ml-5 tracking-wider flex-none transition duration-200 hover:scale-110">
@@ -147,7 +147,7 @@ function NavBar() {
                     background: "var(--neutrals, #FFF)",
                   }}
                 >
-                  Sign Up
+                  Regístrate
                 </Link>
               </li>
             </>

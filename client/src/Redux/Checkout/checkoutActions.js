@@ -1,20 +1,19 @@
 import axios from "axios";
-// import { get } from "../../../../Back/src/handlers/paymentHandlers";
 
-export const GET_PAY_INFO = "GET_PAY_INFO"
+export const POST_BILL = "POST_BILL"
 export const CREATE_ORDER = "CREATE_ORDER";
-export const GET_PAYMENT_DETAIL = "GET_PAYMENT_DETAIL";
 
-
-export const get_pay_info = () => {
+//crear la factura
+export const post_bill= (datos) => {
+  // console.log('el idCart en action', datos)
   return async (dispatch) => {
     try {
-      const response = await axios.get("http://localhost:3002/payment/payment-details")
+      const response = await axios.post("http://localhost:3002/bill/", datos)
       const data = response.data
-      console.log('la data', data)
+      console.log('la factura', data)
 
       return dispatch({
-        type: GET_PAY_INFO,
+        type: POST_BILL,
         payload: data
       })
       
@@ -24,25 +23,16 @@ export const get_pay_info = () => {
   }
 }
 
+
+//crea la orden de pago
 export const create_order = (order) => {
-  // console.log('order en action', order)
- 
   return async (dispatch) => {
     try {
       const response = await axios.post(
         "http://localhost:3002/payment/create-order", order );
       const paymentLink = response.data;
-      
-      // const link = paymentLink.split('=')
-      // const token = link[1].toString()
-
-      // console.log('el link de paypal', paymentLink)
 
       window.location.href = paymentLink;
-      
-     
-
-      // window.location.href = ("http://localhost:3000/home")
 
       return dispatch({
         type: CREATE_ORDER,

@@ -43,6 +43,7 @@ function App() {
         <Route path="/admin/formPackages" element={<FormAdmin />} />
         <Route path="/paymentComplete" element={<PaymentComplete />} />
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
+        <Route path="/paymentcomplete" element={<PaymentComplete />}/>
       </Routes>
     </div>
   );

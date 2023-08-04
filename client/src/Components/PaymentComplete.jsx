@@ -1,12 +1,30 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import { authContext } from "../Context/authContext";
 import check from "../assets/Check.mp4";
+import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
+import { post_bill } from "../Redux/Checkout/checkoutActions";
 
 function PaymentComplete() {
+  const { currentUser } = useContext(authContext);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.carrito.status);
+  const idCart = useSelector((state) => state.carrito.idCart);
+  const bill = useSelector((state) => state.checkout.bill);
   const [videoEnded, setVideoEnded] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
+  const [userShoppingCompleted, setUserShoppingCompleted] = useState(false);
   const videoRef = useRef(null);
+
+  console.log("bill en payment complete", bill);
+
+  //objeto con el idCart para grabar la factura
+  const datos = {
+    idCar: idCart,
+  };
 
   useEffect(() => {
     if (videoEnded) {
@@ -16,42 +34,64 @@ function PaymentComplete() {
     }
   }, [videoEnded]);
 
+  useEffect(() => {
+    if (currentUser) {
+      // console.log("current user en use efect", currentUser);
+      dispatch(userShopping(currentUser.uid)).then(() => {
+        setUserShoppingCompleted(true);
+      });
+    }
+  }, [currentUser, dispatch]);
+
+  useEffect(() => {
+    if (userShoppingCompleted && idCart && state === 1) {
+      dispatch(post_bill(datos));
+    }
+  }, [userShoppingCompleted, idCart, state, dispatch]);
+
   return (
     <>
       <div className="bg-verdeFooter">
         <NavBar />
       </div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center w-2/3 mx-auto">
         {videoEnded && animationEnded ? (
           <div className="bg-white p-8 rounded-2xl my-32 first-letter:rounded-xl shadow-lg animate-fade-up animate-once animate-ease-in-out animate-normal">
             <h1 className="text-gray-400 text-2xl mb-6 font-bold text-center">
-              Amazing!
+              Ahora sí...
             </h1>
             <h2 className="text-4xl mb-6 font-bold text-center fontPoppins">
-              Congratulations, pack your bags for your next adventure
+              Prepárate para tu próximo viaje!
             </h2>
+
+            <p className="text-lg text-gray-500 text-center align-middle fontPoppins mb-6">
+              Estamos emocionados por tu próxima aventura y queremos felicitarte
+              por dar este paso hacia una experiencia inolvidable.
+            </p>
+            <p className="text-lg text-gray-500 text-center align-middle fontPoppins mb-6">
+              Dentro de las próximas 24 horas recibirás un e-mail con los datos
+              de tu compra.
+            </p>
+
             <div className="mb-6 text-gray-500 fontPoppins">
-              Reference number:{" "}
+              Número de transacción:
               <span className="text-black font-bold ">
-                #AS97FSFV923HFJ12345
+                {bill ? " " + bill.idTransaction : null}
               </span>
             </div>
-            <p className="text-lg text-gray-500 text-center fontPoppins mb-6">
-              You will receive an email with the details of your purchase
-              shortly.
-            </p>
+
             <div className="flex flex-col items-center space-y-4">
               <a
                 href="/search"
                 className="bg-verdeFooter text-white py-2 px-4 rounded hover:bg-green-700 transition duration-300"
               >
-                Continue Shopping
+                Continúa comprando
               </a>
               <a
                 href="/"
                 className="text-verdeFooter underline hover:text-green-700 transition duration-300"
               >
-                Go to Home
+                Home
               </a>
             </div>
           </div>
