@@ -70,7 +70,11 @@ const ShoppingCart = () => {
   function handlePayment() {
     if (!currentUser && (!items || items === localStorageItems)) {
       navigate("/login");
-    } else if (currentUser && items) {
+    } 
+    if(currentUser && !items){
+      window.alert("Oops! Tu carrito esta vacío.")
+    }
+    if(currentUser && items) {
       navigate("/checkout");
     }
   }
