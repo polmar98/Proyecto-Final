@@ -1,5 +1,5 @@
 const { User } = require("../database.js");
-const transporter = require("../nodemailer.js")
+const transporter = require("../nodemailer.js");
 
 //  Controller Nuevo Usuario google
 
@@ -19,7 +19,6 @@ const createUser = async (datos) => {
     email,
     password: "",
   });
-
 
   // Configuracion de nodemailer para el envio de correo de bienvenida cuando el usuario se loguea
   const htmlContent = `
@@ -45,16 +44,16 @@ const createUser = async (datos) => {
   `;
 
   const mailOptions = {
-    from: 'wanderlusthenry8@gmail.com', 
+    from: "wanderlusthenry8@gmail.com",
     to: datos.email, // Utiliza el correo electrónico del usuario que se acaba de registrar
-    subject: 'Bienvenido/a a Wanderlust',
+    subject: "Bienvenido/a a Wanderlust",
     html: htmlContent,
   };
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    console.log('Error al enviar el correo electrónico:', error);
-    throw new Error('Hubo un problema al enviar el correo de bienvenida');
+    console.log("Error al enviar el correo electrónico:", error);
+    throw new Error("Hubo un problema al enviar el correo de bienvenida");
   }
   return newUser;
 };
@@ -93,7 +92,6 @@ const getUserByUid = async (uid) => {
   return user;
 };
 
-
 // Controller para modificar un usuario existente
 const updateUser = async (uid, newData) => {
   try {
@@ -109,7 +107,7 @@ const updateUser = async (uid, newData) => {
     // Esto actualizará únicamente los atributos proporcionados y dejará los demás sin cambios.
     await user.update(newData);
 
-    return { message: "Usuario modificado exitosamente" };
+    return { user };
   } catch (error) {
     // Si ocurre algún error durante la modificación, puedes manejarlo aquí.
     console.error("Error al modificar el usuario:", error);
@@ -117,11 +115,10 @@ const updateUser = async (uid, newData) => {
   }
 };
 
-
 module.exports = {
   createUser,
   getAllUsers,
   deleteUser,
   getUserByUid,
-  updateUser
+  updateUser,
 };
