@@ -40,7 +40,7 @@ export const userShopping = (uid) => {
         `http://localhost:3002/shoppingCar/user/${uid}`
       );
       const data = response.data;
-      console.log("esto es data de action:", data);
+      // console.log("esto es data de action:", data);
       return dispatch({
         type: CHECKUSER_SHOPPING,
         payload: data,
