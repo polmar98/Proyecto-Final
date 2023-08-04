@@ -33,13 +33,14 @@ export default function Checkout() {
   const finalPrice = totalPrice + vatAmount; // Suma el impuesto al precio total
   const precioFormateado = finalPrice.toFixed(2); // Precio total con impuestos
   const vatFormateado = vatAmount.toFixed(2); // Impuesto formateado
-  const precioJSON = precioFormateado.toString() //precio para colocar en la order
-  console.log('precio final json', precioJSON)
+  const precioJSON = precioFormateado.toString(); //precio para colocar en la order
+  console.log("precio final json", precioJSON);
 
-  const itemTitles = cartItems.map(el => el.title).concat().toString()
-  console.log('items a enviar', itemTitles)
-
-
+  const itemTitles = cartItems
+    .map((el) => el.title)
+    .concat()
+    .toString();
+  console.log("items a enviar", itemTitles);
 
   const order = {
     intent: "CAPTURE",
@@ -58,7 +59,11 @@ export default function Checkout() {
       user_action: "PAY_NOW",
       return_url: "http://localhost:3002/payment/pay-order",
       cancel_url: "http://localhost:3002/payment/cancel-order",
+<<<<<<< HEAD
       current_user: currentUser.uid, //ACÁ HAY QUE TRAER EL UUID DEL CURRENT USER.
+=======
+      current_user: currentUser.uid,
+>>>>>>> lucas
     },
   };
 
@@ -69,7 +74,7 @@ export default function Checkout() {
   return (
     <div>
       <div className="bg-verdeFooter">
-        <NavBar />        
+        <NavBar />
       </div>
       <div class="relative mx-auto w-full bg-white">
         <div class="grid min-h-screen grid-cols-10">
