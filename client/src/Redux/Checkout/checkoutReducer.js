@@ -10,7 +10,9 @@ const checkoutReducer = (state = initialState, action) => {
     switch (action.type) {
         case POST_BILL:
             return{
-                bill: action.payload
+                ...state,
+                bill: action.payload,
+                
             };
 
         case GET_ALL_BILLS:
