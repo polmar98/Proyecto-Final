@@ -1,12 +1,10 @@
-import React, {useState} from "react";
-import {AiOutlineDelete} from 'react-icons/ai'
-import { AiOutlinePlusSquare } from 'react-icons/ai'
+import React, { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlinePlusSquare } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
+import axios from 'axios'
 
-
-export default function FormActivity(){
-
-
-
+export default function FormActivity() {
   const [activities, setActivities] = useState([
     {
       name: "",
@@ -17,39 +15,77 @@ export default function FormActivity(){
     },
   ]);
 
-  const handleActivityChange = (index, event) => {
-    const { name, value, type, checked } = event.target;
+  const handleNameChange = (index, e) => {
     const newActivities = [...activities];
-
-    if (type === "checkbox") {
-      newActivities[index][name] = checked;
-    } else if (type === "file") {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newActivities[index].image = reader.result;
-        setActivities(newActivities);
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    } else if (type === "text" && name === "image") {
-      newActivities[index].image = value;
-      setActivities(newActivities);
-    } else {
-      newActivities[index][name] = value;
-      setActivities(newActivities);
-    }
+    newActivities[index].name = e.target.value;
+    setActivities(newActivities);
   };
 
-  const handleAddActivity = (e) => {
-    e.preventDefault();
+ 
+  const handleImageChange = (index, e) => {
+    const file = e.target.files[0];
+
+    const cloudName = 'dro5aw3iy';
+    const uploadPreset = 'images';
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+  
+    const uploadImage = async () => {
+      try {
+        const response = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+      
+        if (response.status === 200) {
+          const newActivities = [...activities];
+          newActivities[index].image = response.data.secure_url;
+          setActivities(newActivities);
+        } else {
+          console.error('Error al cargar la imagen en Cloudinary');
+        }
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error);
+      }
+    };
+    
+    uploadImage();
+  };
+
+  
+
+  const handlePriceChange = (index, e) => {
+    const newActivities = [...activities];
+    newActivities[index].price = parseFloat(e.target.value);
+    setActivities(newActivities);
+  };
+
+  const handleIncludedChange = (index, e) => {
+    const newActivities = [...activities];
+    newActivities[index].included = e.target.checked;
+    setActivities(newActivities);
+  };
+
+  const handleDurationChange = (index, e) => {
+    const newActivities = [...activities];
+    newActivities[index].duration = e.target.value;
+    setActivities(newActivities);
+  };
+
+  const handleAddActivity = () => {
     setActivities([
       ...activities,
       {
         name: "",
         image: "",
-        price: "",
+        price: 0,
         included: false,
         duration: "",
       },
@@ -62,6 +98,7 @@ export default function FormActivity(){
     setActivities(newActivities);
   };
 
+
       return(
         <div>
         {activities.map((activity, index) => (
@@ -72,7 +109,7 @@ export default function FormActivity(){
               type="text"
               name="name"
               value={activity.name}
-              onChange={(e) => handleActivityChange(index, e)}
+              onChange={(e) => handleNameChange(index, e)}
               className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
   
@@ -81,32 +118,23 @@ export default function FormActivity(){
               type="file" 
               accept="image/*" 
               name= "image"
-              onChange={(e) => handleActivityChange(index, e)}
+              onChange={(e) => handleImageChange(index, e)}
               className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           
-            <label  className="block mb-2 text-sm font-medium text-gray-600" htmlFor={`imageUrl${index}`}>URL de la imagen:</label>
-            <input
-              type="text"
-              name= "imageUrl"
-              value={activity.image}
-              onChange={(e) => handleActivityChange(index, e)}
-              className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
 
-{activity.image ? (
-            <img
-              src={typeof activity.image === "string" ? activity.image : URL.createObjectURL(activity.image)}
-              alt={`Actividad ${index + 1}`}
-              style={{ width: "100px", height: "auto" }}
-            />
-          ) : null}
-            <label className="block mb-2 text-sm font-medium text-gray-600"  htmlFor={`price${index}`}>Precio:</label>
+          {activity.image && (
+  <img src={activity.image} alt="Uploaded" style={{ maxWidth: '100%' }} />
+)}
+
+
+<label className="block mb-2 text-sm font-medium text-gray-600" htmlFor={`name${index}`}>Precio USD:</label>
             <input
               type="number"
               name="price"
+              min = "0"
               value={activity.price}
-              onChange={(e) => handleActivityChange(index, e)}
+              onChange={(e) => handlePriceChange(index, e)}
               className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
   
@@ -115,7 +143,7 @@ export default function FormActivity(){
                 type="checkbox"
                 name="included"
                 checked={activity.included}
-                onChange={(e) => handleActivityChange(index, e)}
+                onChange={(e) => handleIncludedChange(index,e)}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
               Incluida en el paquete
@@ -126,7 +154,7 @@ export default function FormActivity(){
               type="text"
               name="duration"
               value={activity.duration}
-              onChange={(e) => handleActivityChange(index, e)}
+              onChange={(e) => handleDurationChange(index, e)}
               className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
   
@@ -136,7 +164,7 @@ export default function FormActivity(){
             <hr />
           </div>
         ))}
-        <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleAddActivity}>
+        <button type="button" className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleAddActivity}>
           <AiOutlinePlusSquare size={32} color= "white"/>
         </button>
       </div>
