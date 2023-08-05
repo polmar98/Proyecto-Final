@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const POST_BILL = "POST_BILL"
 export const CREATE_ORDER = "CREATE_ORDER";
+export const GET_ALL_BILLS = "GET_ALL_BILLS"
 
 //crear la factura
 export const post_bill= (datos) => {
@@ -45,3 +46,19 @@ export const create_order = (order) => {
 };
 
 
+export const get_all_bills= () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get("http://localhost:3002/bill/");
+      const data = response.data
+      console.log('all bills', data)
+
+      return dispatch({
+        type: GET_ALL_BILLS,
+        payload: data
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+}
