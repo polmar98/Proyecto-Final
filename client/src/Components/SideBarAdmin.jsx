@@ -7,6 +7,7 @@ import {
   BsCardChecklist,
   BsPerson,
   BsBoxArrowInRight,
+  BsGeoAlt,
 } from "react-icons/bs";
 
 function SidebarAdmin() {
@@ -22,12 +23,16 @@ function SidebarAdmin() {
           <Link to="/admin/users">Users</Link>
         </li>
         <li className="mb-6 flex items-center">
-          <BsGraphUp className="mr-4" />
+          <BsGeoAlt className="mr-4" />
           <Link to="/admin/packages">Packages</Link>
         </li>
         <li className="mb-6 flex items-center">
           <BsCardChecklist className="mr-4" />
           <Link to="/formPackages">Create Packages</Link>
+        </li>
+        <li className="mb-6 flex items-center">
+          <BsGraphUp className="mr-4" />
+          <Link to="/admin/statistics">Statistics</Link>
         </li>
       </ul>
       <ul>
