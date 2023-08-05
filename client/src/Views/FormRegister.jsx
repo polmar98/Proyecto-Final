@@ -32,14 +32,14 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = useState({
-    profile: 1,
+    uid: "",
     name: "",
     lastName: "",
     email: "",
     password: "",
-    uid: "",
+    profile: 1,
   });
-  const { name, lastName, email, password } = user;
+  const { name, lastName, email, password, profile } = user;
 
   useEffect(() => {
     if (error) {
@@ -86,10 +86,19 @@ const RegisterPage = () => {
       const res = await register(email, password);
 
       if (res) {
+        const uid = res.user.uid;
+        console.log(uid);
+        const updatedUser = {
+          ...user,
+          uid: uid,
+        };
+        setUser(updatedUser);
+        console.log(updatedUser);
+
         await updateProfile(res.user, {
           displayName: `${name} ${lastName}`,
         });
-        dispatch(addUser(user));
+        dispatch(addUser(updatedUser));
 
         toast.success(`Bienvenido ${name}!`);
         login(email, password);

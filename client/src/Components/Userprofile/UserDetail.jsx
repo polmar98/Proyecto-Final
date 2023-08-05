@@ -46,10 +46,10 @@ const UserDate = () => {
   return (
     <div className="mx-auto max-w-2xl mt-10">
       <h2 className="text-base font-semibold leading-7 text-gray-900">
-        Personal Information
+        Información Personal
       </h2>
       <p className="mt-1 text-sm leading-6 text-gray-600">
-        Use a permanent address where you can receive mail.
+        Usa una dirección permanente donde puedas recibir emails.
       </p>
       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div className="sm:col-span-3">
@@ -57,7 +57,7 @@ const UserDate = () => {
             htmlFor="first-name"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            First name
+            Nombre
           </label>
           <div className="mt-2">
             <input
@@ -75,7 +75,7 @@ const UserDate = () => {
             htmlFor="last-name"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Last name
+            Apellido
           </label>
           <div className="mt-2">
             <input
@@ -94,7 +94,7 @@ const UserDate = () => {
             htmlFor="email"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Email address
+            Dirección de email 
           </label>
           <div className="mt-2">
             <input
@@ -113,7 +113,7 @@ const UserDate = () => {
             htmlFor="country"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Country
+            País
           </label>
           <div className="mt-2">
             <select
@@ -122,9 +122,9 @@ const UserDate = () => {
               autoComplete="country-name"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
             >
-              <option>United States</option>
-              <option>Canada</option>
-              <option>Mexico</option>
+              <option>Argentina</option>
+              <option>Colombia</option>
+              <option>Venezuela</option>
             </select>
           </div>
         </div>
@@ -134,7 +134,7 @@ const UserDate = () => {
             htmlFor="street-address"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Street address
+            Dirección de calle
           </label>
           <div className="mt-2">
             <input
@@ -152,7 +152,7 @@ const UserDate = () => {
             htmlFor="city"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            City
+            Ciudad
           </label>
           <div className="mt-2">
             <input
@@ -170,7 +170,7 @@ const UserDate = () => {
             htmlFor="region"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            State / Province
+            Estado / Provincia
           </label>
           <div className="mt-2">
             <input
@@ -188,7 +188,7 @@ const UserDate = () => {
             htmlFor="postal-code"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            ZIP / Postal code
+            ZIP / Código postal
           </label>
           <div className="mt-2">
             <input
@@ -207,13 +207,13 @@ const UserDate = () => {
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Save
+            Guardar
           </button>
         </div>
       </div>

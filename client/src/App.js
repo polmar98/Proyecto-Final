@@ -4,17 +4,22 @@ import RegisterPage from "./Views/FormRegister.jsx";
 import Home from "./Views/Home";
 import Detail from "./Views/Detail";
 import SearchResult from "./Views/SearchResult";
-import Admin from "./Views/Admin";
+import FormAdmin from "./Views/FormAdmin";
 import About from "./Views/About";
 import LandingPage from "./Views/Landing";
 import ShoppingCart from "./Views/ShoppingCart";
 import UserProfile from "./Views/UserProfile";
 import Contact from "./Views/Contact";
+import PaymentComplete from "./Components/PaymentComplete";
 import Checkout from "./Views/Checkout";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "flowbite";
+import Users from "./Views/Users";
+import PackagesAdmin from "./Views/PackagesAdmin";
+import Admin from "./Views/Admin";
+import PackageEdit from './Views/PackageAdminEdit';
 
 function App() {
   return (
@@ -33,6 +38,12 @@ function App() {
         <Route path="/userProfile" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/packages" element={<PackagesAdmin />} />
+        <Route path="/admin/formPackages" element={<FormAdmin />} />
+        <Route path="/paymentComplete" element={<PaymentComplete />} />
+        <Route path="/admin/packages/:id" element={<PackageEdit />} />
+        <Route path="/paymentcomplete" element={<PaymentComplete />}/>
       </Routes>
     </div>
   );

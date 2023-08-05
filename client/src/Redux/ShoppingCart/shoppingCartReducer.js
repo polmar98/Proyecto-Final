@@ -11,6 +11,7 @@ import {
 const initialState = {
   cart: [],
   idCart: 0,
+  status: 0,
 };
 
 const shoppingCartReducer = (state = initialState, action) => {
@@ -68,6 +69,7 @@ const shoppingCartReducer = (state = initialState, action) => {
         ...state,
         idCart: action.payload.id,
         cart: action.payload.ItemsShoppingCars,
+        status: action.payload.state
       };
 
     default:

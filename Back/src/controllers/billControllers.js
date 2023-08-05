@@ -3,12 +3,15 @@ const { Association } = require("sequelize");
 
 //esta funcion agrega una nueva factura
 const addBill = async(datos) => {
-    const {idCar, idPaypal, account_id} = datos;
-    if(!idCar || !idPaypal || !account_id) return {message: "Datos Incompletos"};
+    const {idCar} = datos;
+    if(!idCar) return {message: "Datos Incompletos"};
     //traemos la info del carrito a grabar en la nueva factura
     const car = await ShoppingCar.findByPk(idCar);
     //validamos si el valor total de la factura es mayor que cero
     if(car.fullValue === 0) return {message: "Valor a facturar no puede ser cero"};
+    //validamos si la transaccion fue completada
+    if(car.state === 0) return {message: "No se ha completado el pago"};
+
     //traemos el ultimo consecutivo numeracion factura 
     let numero = "000000";
     const facturas = await Bill.findAll();
@@ -29,8 +32,7 @@ const addBill = async(datos) => {
         fullValue: vtotal,
         uidUser: car.uidUser,
         idUser: car.idUser,
-        idPaypal,
-        account_id,
+        idTransaction: car.idTransaction,
     };
     //grabamos nuevo registro en tabla Bill
     const nBill = await Bill.create(newBill);
@@ -79,8 +81,8 @@ const emptyShoppingCar = async (id) => {
     const registros = await ItemsShoppingCar.destroy({
       where: { idShoppingCar: idCar },
     });
-    const actualizado = await ShoppingCar.update(
-        { fullValue: 0 }, { where: { id: idCar } });
+    await ShoppingCar.update({state: 0, idTransaction: null, fullValue: 0}, {where: {id: idCar}});
+    
     const car = await ShoppingCar.findByPk(idCar, {
       include: { model: ItemsShoppingCar },
     });

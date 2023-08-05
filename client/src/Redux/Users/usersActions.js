@@ -53,7 +53,7 @@ export const addUser = (newUser) => {
         newUser
       );
       const user = userResponse.data;
-      
+
       dispatch({
         type: ADD_USER,
         payload: user,
@@ -130,14 +130,15 @@ export const deleteUser = (id) => {
   };
 };
 
-export const editUser = (id, user) => {
+export const editUser = (uid, user) => {
   return async (dispatch) => {
     try {
       const response = await axios.put(
-        `http://localhost:3002/users/${id}`,
+        `http://localhost:3002/users/${uid}`,
         user
       );
       const data = response.data;
+      console.log("LO QUE SE GUARDA EN EL ESTADO", data.user);
       return dispatch({
         type: EDIT_USER,
         payload: data,

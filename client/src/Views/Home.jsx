@@ -20,9 +20,9 @@ function Home() {
   const { currentUser } = useContext(authContext);
   console.log(currentUser);
   if (currentUser) {
-    console.log(currentUser.displayName);
-    console.log(currentUser.uid);
-    console.log("hay usuario");
+    //console.log(currentUser.displayName);
+    //console.log(currentUser.uid);
+    //console.log("hay usuario");
   } else {
     console.log("no hay usuario");
   }

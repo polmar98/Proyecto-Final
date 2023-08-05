@@ -15,7 +15,7 @@ function ContFilter({ paquetes }) {
     <>
       <div className="grid grid-cols-1 ">
         <h1 className="text-2xl text-gray-800 fontPoppinsB">
-          Discover your Love
+          Descubre tu próximo destino
         </h1>
         <div className="flex justify-around mt-10">
           <button

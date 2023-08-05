@@ -44,7 +44,7 @@ router.get("/pay-order", async (req, res) => {
     const { token } = req.query;
     await captureOrder(token, uidUser);
     //cambiar la ruta a la vista "gracias por tu compra"
-    res.status(200).redirect("http://localhost:3000/home");
+    res.status(200).redirect("http://localhost:3000/paymentcomplete");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

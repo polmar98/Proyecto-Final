@@ -4,7 +4,7 @@ const {
   deleteUser,
   getUserByUid,
   createUser,
-  updateUser
+  updateUser,
 } = require("../controllers/usersControllers");
 
 const router = Router();
@@ -54,7 +54,8 @@ router.get("/:uid", async (req, res) => {
 
 // Ruta para modificar un usuario por su id
 router.put("/:uid", async (req, res) => {
-  const {uid} = req.params;
+  console.log("ESTO LELGA", req.params);
+  const { uid } = req.params;
   const newData = req.body; // Los datos que se desean modificar se enviarán en el cuerpo de la solicitud.
 
   try {

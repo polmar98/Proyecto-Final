@@ -66,21 +66,28 @@ import { useState } from "react";
 import { ImLocation } from "react-icons/im";
 import { AiFillCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function Sale({ paquetes }) {
+function Sale({paquetes}) {
+
   // Function to shuffle the array using Fisher-Yates (Knuth) shuffle
+  
   function shuffleArray(array) {
+     
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
+  };     
+  
+  
+ 
+   //Shuffle the paquetes array and take the first 3 elements
 
-  // Shuffle the paquetes array and take the first 3 elements
-  const shuffledPaquetes = shuffleArray(paquetes);
-  const filtrado = shuffledPaquetes.slice(0, 3);
-
+  const filtrado1 = shuffleArray(paquetes);
+  const filtrado = filtrado1.slice(0,3);
+  
   return (
     <div className="mt-7 w-[1000px]">
       <h1 className="text-2xl text-gray-800 fontPoppinsB">Flash Deals</h1>
