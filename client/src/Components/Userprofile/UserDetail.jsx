@@ -4,6 +4,7 @@ import { getUserById } from "../../Redux/Users/usersActions";
 import { authContext } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Packages from "./Packages"
 
 const UserDate = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,10 @@ const UserDate = () => {
 
   return (
     <div className="mx-auto max-w-2xl mt-10">
+
+      <Packages />
+
+      <hr className="my-10"></hr>
       <h2 className="text-base font-semibold leading-7 text-gray-900">
         Información Personal
       </h2>

@@ -81,10 +81,22 @@ function Sale({paquetes}) {
     return array;
   };     
   
+  const devuelveArray = (array)=> {
+     let i = 0;
+     let arrayOfertas = [];
+     const long = array.length;
+     do  {
+        const j = Math.floor(Math.random() * (long));
+        arrayOfertas.push(array[j]);
+        i++;
+     }
+     while(i<3);
+  };
   
  
    //Shuffle the paquetes array and take the first 3 elements
 
+ // const filtrado1 = devuelveArray(paquetes);
   const filtrado1 = shuffleArray(paquetes);
   const filtrado = filtrado1.slice(0,3);
   

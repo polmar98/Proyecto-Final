@@ -104,6 +104,25 @@ const viewPackages = async () => {
   return paquetes;
 };
 
+
+//Esta funcion devuelve todos los paquetes disponibles y no disponibles en la BD
+const viewPackagesAll = async () => {
+  const paquetes = await Package.findAll({
+    include: [
+      { association: "TypePackage", attributes: ["id", "name"] },
+      { association: "Airline", attributes: ["id", "name"] },
+      { association: "City", attributes: ["id", "name", "idCountry"] },
+      { association: "Hotel", attributes: ["id", "name", "stars", "image", "calification", "details"]},
+      { association: "Continent", attributes: ["id", "name"] },
+      { association: "Country", attributes: ["id", "name"] },
+      { association: "CityOrigin", attributes: ["id", "name"] },
+      { model: Activity },
+      { model: Comment },
+    ],
+  });
+  return paquetes;
+};
+
 //Esta funcion devuelve un solo paquete mediante el ID
 const getPackageById = async (idp) => {
   const paquete = await Package.findByPk(idp, {
@@ -187,4 +206,5 @@ module.exports = {
   searchPackages,
   addMassivePackages,
   updatePackages,
+  viewPackagesAll,
 };

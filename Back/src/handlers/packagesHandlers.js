@@ -4,8 +4,10 @@ const {addPackages,
       getPackageById,
       searchPackages,
       addMassivePackages,
-      updatePackages} = require('../controllers/packagesControllers');
+      updatePackages,
+      viewPackagesAll} = require('../controllers/packagesControllers');
 const router = Router();
+
 
 //handler para busqueda de paquetes. si se agrega un query de busqueda ejecuta searchPackages
 router.get('/', async(req, res) => {
@@ -23,6 +25,17 @@ router.get('/', async(req, res) => {
        res.status(500).json({message: error.message});
    } 
 });
+
+//handler para devolver todos los paquetes activos e inactivos
+router.get('/all', async(req, res) => {
+    try {
+         const result = await viewPackagesAll();
+         res.status(200).json(result);
+     } catch (error) {
+        res.status(500).json({message: error.message});
+    } 
+ });
+
 
 //handler para busqueda de paquetes mediante el id
 router.get('/:id', async(req, res) => {
@@ -71,7 +84,6 @@ router.put('/:id', async(req, res) => {
        res.status(500).json({message: error.message});      
    }
 });
-
 
 
 module.exports = router;

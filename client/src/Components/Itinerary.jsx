@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPackageById } from "../Redux/Packages/packagesActions";
-import NavBar from "../Components/NavBar";
+import NavBar from "./NavBar";
 
 function MyItinerary() {
   const dispatch = useDispatch();
