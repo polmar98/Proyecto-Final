@@ -20,6 +20,7 @@ import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
 import PackageEdit from './Views/PackageAdminEdit';
+import Statistics from "./Views/Statistics"
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/paymentComplete" element={<PaymentComplete />} />
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
         <Route path="/paymentcomplete" element={<PaymentComplete />}/>
+        <Route path="/admin/statistics" element={<Statistics />} />
       </Routes>
     </div>
   );
