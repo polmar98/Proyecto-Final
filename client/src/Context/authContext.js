@@ -9,6 +9,9 @@ import {
   onAuthStateChanged,
   GithubAuthProvider,
   sendPasswordResetEmail,
+  EmailAuthProvider,
+  deleteUser as firebaseDeleteUser,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import getFriendlyErrorMessage from "./errorMessages";
@@ -47,6 +50,25 @@ export const AuthProvider = ({ children }) => {
         const errorCode = getFriendlyErrorMessage(error.code);
         setError(errorCode);
       });
+  };
+
+  const deleteUser = async (email, password) => {
+    try {
+      // Reautenticar al usuario antes de borrarlo
+      const credential = EmailAuthProvider.credential(email, password);
+      await reauthenticateWithCredential(currentUser, credential);
+
+      // Borra al usuario
+      await firebaseDeleteUser(currentUser);
+
+      // Actualizar el estado de la aplicación
+      setCurrentUser(null);
+      toast.success("Usuario eliminado con éxito");
+    } catch (error) {
+      console.error(error);
+      const friendlyError = getFriendlyErrorMessage(error.code);
+      setError(friendlyError);
+    }
   };
 
   const logout = () => {
@@ -139,6 +161,7 @@ export const AuthProvider = ({ children }) => {
     error,
     resetError,
     resetPassword,
+    deleteUser,
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;
