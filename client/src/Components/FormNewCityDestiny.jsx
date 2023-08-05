@@ -7,7 +7,7 @@ import { AiOutlinePlusSquare,AiOutlineMinusSquare} from 'react-icons/ai'
 import FormNewCountry from "./FormNewCountry";
 
 
-export default function FormNewCityDestiny({onHideForm}){
+export default function FormNewCityDestiny({onHideForm,selectedCountryId}){
     
     const dispatch = useDispatch();
     const countries = useSelector((state) => state.countries.countriesList);
@@ -78,7 +78,7 @@ return(
 
             <select name="idCountry" 
             id="countryOrigin"
-            value={newCityDestinyName.idCountry}
+            value={newCityDestinyName.idCountry || selectedCountryId}
             onChange={handleNewCityInputChange}
             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">Seleccione un País </option>

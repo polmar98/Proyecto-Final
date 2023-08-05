@@ -5,10 +5,11 @@ import { useDispatch,useSelector} from "react-redux";
 import {AiOutlineCheckSquare} from 'react-icons/ai'
 import { addHotels } from "../Redux/Hotels/hotelsActions";
 import { AiOutlineMinusSquare} from 'react-icons/ai'
+import axios from "axios";
 
 
 
-export default function FormNewHoltel({onHideForm}){
+export default function FormNewHoltel({onHideForm,selectedCityId}){
     const dispatch = useDispatch();
     const cities = useSelector((state) => state.cities.citiesList)
 
@@ -28,26 +29,76 @@ export default function FormNewHoltel({onHideForm}){
       }); 
 
 
-       
-      function handleImageChangeFromComputer(event) {
+
+      async function uploadImageToCloudinary(imageFile) {
+        const cloudName = "dro5aw3iy";
+        const uploadPreset = "images";
+    
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", uploadPreset);
+    
+        try {
+          const response = await axios.post(
+            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+            formData,
+            {
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }
+          );
+    
+          return response.data.secure_url;
+        } catch (error) {
+          console.error("Error al subir imagen a Cloudinary:", error);
+          return null;
+        }
+      }
+    
+      async function handleSubmit(e) {
+        e.preventDefault();
+    
+        const imageUrls = await Promise.all(
+          newHotel.image.map(async (image) => {
+            if (typeof image === "string") {
+              return image;
+            } else {
+              const imageUrl = await uploadImageToCloudinary(image);
+              return imageUrl;
+            }
+          })
+        );
+    
+        const newHotelWithUrls = {
+          ...newHotel,
+          image: imageUrls,
+        };
+    
+        dispatch(addHotels(newHotelWithUrls));
+    
+        setNewHotel({
+          name: "",
+          image: [],
+          calification: 0,
+          stars: 0,
+          details: "",
+          idCity: 0,
+        });
+    
+        alert("Hotel creado correctamente");
+        dispatch(fetchHotels());
+        onHideForm();
+      }
+    
+      function handleImageChange(event) {
         const { files } = event.target;
         const imageFiles = Array.from(files);
         setNewHotel({
           ...newHotel,
           image: [...newHotel.image, ...imageFiles],
         });
-      }
-    
-      function handleImageUrlChange(event) {
-        const { value } = event.target;
-        // Filtrar las URLs ingresadas por el usuario para evitar cadenas vacías
-        const imageUrls = value.split(",").map((url) => url.trim()).filter(Boolean);
-        setNewHotel({
-          ...newHotel,
-          image: newHotel.image.concat(imageUrls),
-        });
-      }
-    
+      } 
    
   
     function handleHotelChange(e) {
@@ -58,37 +109,7 @@ export default function FormNewHoltel({onHideForm}){
       });
     }
 
-    function handleSubmit(e) {
-      e.preventDefault();
     
-      // Comprobamos si hay imágenes cargadas desde el computador y las convertimos a URLs
-      const imageUrls = newHotel.image.map((image) =>
-        typeof image === "string" ? image : URL.createObjectURL(image)
-      );
-    
-      // Creamos un nuevo objeto newHotel con las URLs de las imágenes
-      const newHotelWithUrls = {
-        ...newHotel,
-        image: imageUrls,
-      };
-    
-      // Enviamos el nuevo objeto con las URLs de las imágenes al servidor
-      dispatch(addHotels(newHotelWithUrls));
-    
-      // Reseteamos el estado del formulario
-      setNewHotel({
-        name: "",
-        image: [],
-        calification: 0,
-        stars: 0,
-        details: "",
-        idCity: 0,
-      });
-    
-      alert("Hotel creado correctamente");
-      dispatch(fetchHotels());
-      onHideForm();
-    }
 
 function handleCancel() {
     onHideForm(); // Llama a la función para ocultar el formulario sin enviar datos.
@@ -156,7 +177,7 @@ className="block mb-2 text-sm font-medium text-gray-600"
         <select
                 name="idCity"
                 id="idCity"
-                value={newHotel.idCity}
+                value={newHotel.idCity || selectedCityId}
                 onChange={handleHotelChange}
                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
@@ -169,27 +190,22 @@ className="block mb-2 text-sm font-medium text-gray-600"
               </select>
       </div>
 
+<div>
+      <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor={`image`}>Imagen:</label>
+            <input
+              type="file" 
+              accept="image/*" 
+              name= "image"
+              multiple
+              onChange={handleImageChange}
+              className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          
 
-<label htmlFor="images"
-className="block mb-2 text-sm font-medium text-gray-600">Imágenes:</label>
-        <div>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            multiple
-            onChange={handleImageChangeFromComputer}
-            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
-          <p>o</p>
-          <input
-            type="text"
-            name="imageUrls"
-            value={newHotel.image}
-            onChange={handleImageUrlChange}
-            placeholder="Ingrese la URL de la imagen"
-            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          {newHotel.image && (
+  <img src={newHotel.image} alt="Uploaded" style={{ maxWidth: '100%' }} />
+)}
+          
         </div>
 
         <div>
