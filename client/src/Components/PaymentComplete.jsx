@@ -6,25 +6,94 @@ import Footer from "./Footer";
 import { authContext } from "../Context/authContext";
 import check from "../assets/Check.mp4";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
-import { post_bill } from "../Redux/Checkout/checkoutActions";
+import { create_itinerary, post_bill } from "../Redux/Checkout/checkoutActions";
+import { fetchPackages } from "../Redux/Packages/packagesActions";
+import { fetchCities } from "../Redux/Cities/citiesActions";
+import { fetchCountries } from "../Redux/Country/countriesActions";
+import { fetchContinents } from "../Redux/Continent/continentActions";
 
 function PaymentComplete() {
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const state = useSelector((state) => state.carrito.status);
   const idCart = useSelector((state) => state.carrito.idCart);
+  // console.log("idcart", idCart);
+  const cart = useSelector((state) => state.carrito.cart);
+  // console.log("el cart", cart);
   const bill = useSelector((state) => state.checkout.bill);
+  const tours = useSelector((state) => state.packages.packagesList);
+  // console.log("tours", tours);
+
   const [videoEnded, setVideoEnded] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [userShoppingCompleted, setUserShoppingCompleted] = useState(false);
   const videoRef = useRef(null);
 
-  console.log("bill en payment complete", bill);
+  //estados para el itinerario
+  const cities = useSelector((state) => state.cities.citiesList);
+  const countries = useSelector((state) => state.countries.countriesList);
+  const continents = useSelector((state) => state.continents.continentsList);
+  
+
+  // console.log("bill en payment complete", bill);
+  // console.log("el carrito en payment:", cart);
+  // console.log("paquete info", paqueteInfo);
 
   //objeto con el idCart para grabar la factura
   const datos = {
     idCar: idCart,
   };
+
+  //filtrar solo los paquetes del carrito
+  const packageOnly = cart && cart.filter((el) => el.typeProduct === 1);
+  //sacar el id del paquete
+  const idPackage = packageOnly && packageOnly.map((el) => el.idProduct);
+  console.log("id pack", idPackage);
+
+  //filtrar aquellos paquetes que tengan el id igual a los idPackage, por si compra paquetes distintos
+  const filteredTours = tours.filter((el) => idPackage.includes(el.id));
+  console.log("los tours que matchean", filteredTours);
+
+
+  //generar los itinerarios para cada paquete comprado
+  const dispatchItinerarios = () => {
+    filteredTours.forEach((tour) => {
+      const continent =
+        continents && continents.find((el) => el.id === tour.idContinent);
+      const continentName = continent.name;
+
+      const country =
+        countries && countries.find((el) => el.id === tour.idCountry);
+      const countryName = country.name;
+
+      const city = cities && cities.find((el) => el.id === tour.idCity);
+      const cityName = city.name;
+
+      const itineraryData = {
+        continent: continentName,
+        country: countryName,
+        city: cityName,
+        duration: tour.duration,
+      };
+
+      console.log("itinerario", itineraryData);
+
+      //despachar cada uno
+      dispatch(create_itinerary(itineraryData));
+    });
+  };
+
+
+
+  //obj para crear el itinerario
+  // const infoItinerary = {
+  //   continent: continentName,
+  //   country: countryName,
+  //   city: cityName,
+  //   duration: paqueteInfo.duration,
+  // };
+
+  // console.log("obj", infoItinerary);
 
   useEffect(() => {
     if (videoEnded) {
@@ -32,11 +101,14 @@ function PaymentComplete() {
         setAnimationEnded(true);
       }, 700);
     }
-  }, [videoEnded]);
+    dispatch(fetchCities());
+    dispatch(fetchContinents());
+    dispatch(fetchCountries());
+    dispatch(fetchPackages());
+  }, [videoEnded, dispatch]);
 
   useEffect(() => {
     if (currentUser) {
-      // console.log("current user en use efect", currentUser);
       dispatch(userShopping(currentUser.uid)).then(() => {
         setUserShoppingCompleted(true);
       });
@@ -46,6 +118,9 @@ function PaymentComplete() {
   useEffect(() => {
     if (userShoppingCompleted && idCart && state === 1) {
       dispatch(post_bill(datos));
+      if (packageOnly.length > 0) {
+        dispatchItinerarios();
+      }
     }
   }, [userShoppingCompleted, idCart, state, dispatch]);
 

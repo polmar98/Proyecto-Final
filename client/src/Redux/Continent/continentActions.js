@@ -7,14 +7,15 @@ export const SEARCH_CONTINENTS = "SEARCH_CONTINENTS";
 export const fetchContinents = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get("http://localhost:3002/continents");
+      const response = await axios.get("http://localhost:3002/continents/");
       const data = response.data;
+      console.log('continents en action', data)
       return dispatch({
         type: FETCH_CONTINENTS,
         payload: data,
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 };

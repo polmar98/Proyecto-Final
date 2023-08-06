@@ -38,21 +38,21 @@ const ShoppingCart = () => {
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
 
   function clearCart() {
-    const userConfirm = window.confirm(
-      "Se eliminará todo el contenido del carrito. Quieres continuar?"
-    );
-    if (userConfirm && !currentUser) {
-      localStorage.clear("carrito");
-      toast.success("El carrito fue vaciado con éxito.");
-      navigate("/shoppingCart");
-    }
-    if (userConfirm && currentUser) {
-      dispatch(clean_cart(idCart)).catch((error) => {
-        toast.error("Oops! Algo salió mal. Intentalo nuevamente.");
+    if(items.length > 0) {
+      const userConfirm = window.confirm(
+        "Se eliminará todo el contenido del carrito. Quieres continuar?"
+      );
+      if (userConfirm && !currentUser) {
+        localStorage.clear("carrito");
         toast.success("El carrito fue vaciado con éxito.");
         navigate("/shoppingCart");
-      });
-    } else return;
+      }
+      if (userConfirm && currentUser) {
+        dispatch(clean_cart(idCart))
+          toast.success("El carrito fue vaciado con éxito.");
+          navigate("/shoppingCart");
+      } else return;
+    }
   }
 
   function calculateTotal(items) {
