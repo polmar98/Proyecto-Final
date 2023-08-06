@@ -16,9 +16,9 @@ function Admin() {
         </div>
       </div>
       <div>
-        <Sidebar />
+        <SideBarAdmin />
       </div>
     </>
   );
 }
-export default admin;
+export default Admin;

@@ -48,6 +48,7 @@ function App() {
         <Route path="/paymentcomplete" element={<PaymentComplete />} />
         <Route path="/admin/statistics" element={<Statistics />} />
         <Route path="/agenda" element={<Agenda />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </div>
   );

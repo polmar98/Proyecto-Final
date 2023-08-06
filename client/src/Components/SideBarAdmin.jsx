@@ -4,6 +4,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { LuPackageSearch } from "react-icons/lu";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { BsHouseDoor, BsBoxArrowInRight } from "react-icons/bs";
+import { BsGraphUp } from "react-icons/bs";
 
 function SidebarAdmin() {
   return (
