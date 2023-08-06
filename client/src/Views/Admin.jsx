@@ -14,8 +14,8 @@ function Admin() {
           </span>
         </div>
       </div>
-      <div>
-        <SideBarAdmin />
+      <div className="flex max-h-screen overflow-auto">
+        <SideBarAdmin Admin />
 
       </div>
     </>
