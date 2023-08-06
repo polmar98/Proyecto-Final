@@ -34,6 +34,13 @@ const createActivity = async (name, image, price, included, duration, idPackage)
    
 };
 
+//funcion para guardar varias actividades en un paquete
+const createMassiveActivitys = async(array) => {
+   if(array.length === 0) throw Error("Array enviado se enuentra vacio") ;
+   const result = await Activity.bulkCreate(array);
+   return result;
+};
+
 //funcion para desactivar actividades
 const desactivActivity = async (id, available) => {
   await Activity.update({ available: available }, { where: { id: id } });
@@ -65,6 +72,7 @@ module.exports = {
     getActivityById,
     desactivActivity,
     updateActivity,
+    createMassiveActivitys,
 }
 
 

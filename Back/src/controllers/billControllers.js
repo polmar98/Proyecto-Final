@@ -1,4 +1,4 @@
-const {Bill, ItemsBill, ShoppingCar, ItemsShoppingCar} = require("../database");
+const {Bill, ItemsBill, ShoppingCar, ItemsShoppingCar, Package, Activity, User} = require("../database");
 const { Association } = require("sequelize");
 
 //esta funcion agrega una nueva factura
@@ -99,6 +99,34 @@ const emptyShoppingCar = async (id) => {
 
       ]});
      return facturas;
+  };
+
+  //esta ruta agrega compras masivas para cargar a la BD
+  const addMassiveBill = async(nventas) => {
+       //traemos el ultimo consecutivo numeracion factura 
+       let numero = "000000";
+       const facturas = await Bill.findAll();
+       facturas.forEach(ele => {
+          if(ele.number > numero) numero = ele.number;
+       });
+       let arryay = []
+       //cargamos todos los paquetes 
+       const paquetes = await Package.findAll({
+         include: [
+           { model: Activity },
+           { model: Comment },
+         ],
+       });
+       //cargamos el numero total de paquetes encontrados
+       const npaq = await Package.count()
+       //cargamos los usuarios existentes
+       const users = User.findAll();
+       //se grabaran N facturas
+       for(let i=0;i<nventas;i++){
+          let usu = Math.floor(Math.random() * (npaq));
+          
+       };
+
   };
 
 module.exports = { addBill, getBillById, getAllBill };
