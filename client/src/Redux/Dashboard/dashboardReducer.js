@@ -1,21 +1,27 @@
+import {
+  FETCH_BILLS_REQUEST,
+} from './dashboardAction';
+
 const initialState = {
-    packagesList: [], // Otros estados existentes en tu reducer...
-    bills: [], // Nuevo estado para almacenar las facturas
-    // ...otros estados...
-  };
-  
-  const packagesReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case "FETCH_ALL_BILLS_SUCCESS":
-        return {
-          ...state,
-          bills: action.payload,
-        };
-      // ...otros casos existentes en tu reducer...
-      default:
-        return state;
-    }
-  };
-  
-  export default packagesReducer;
-  
+  bills: [],
+  loading: false,
+  error: null,
+};
+
+const billReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_BILLS_REQUEST:
+      return {
+        ...state,
+        bills:action.payload,
+        loading: true,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export default billReducer;
+
+
