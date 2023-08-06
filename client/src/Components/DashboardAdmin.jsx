@@ -7,7 +7,8 @@ import {
   TabList,
   Tab,
   BarChart,
-  DateRangePicker
+  DateRangePicker,
+  DonutChart
 } from "@tremor/react";
 import NavBar from "./NavBar";
 import SideBarAdmin from "./SideBarAdmin";
@@ -16,41 +17,75 @@ import { es } from "date-fns/locale";
 
 const salesPerMonth = [
   {
-    month: "Enero",
+    month: "Ene",
     "Amount of sales": 25000,
   },
   {
-    month: "Febrero",
+    month: "Feb",
     "Amount of sales": 12000,
   },
   {
-    month: "Marzo",
+    month: "Mar",
     "Amount of sales": 30200,
   },
   {
-    month: "Abril",
+    month: "Abr",
 
     "Amount of sales": 55000,
   },
   {
-    month: "Mayo",
+    month: "May",
     "Amount of sales": 36950,
   },
   {
-    month: "Junio",
+    month: "Jun",
     "Amount of sales": 93750,
   },
   {
-    month: "Julio",
+    month: "Jul",
     "Amount of sales": 45278,
   },
 ];
 
+const paquetes = [
+
+  {
+    name: "Capadocia",
+    date: "2023-08-06",
+   "Amount of sales": 6500
+    
+  },
+
+  {
+    name: "Paseo por cancún",
+    date: "2023-04-01",
+   "Amount of sales": 3600
+    
+  },
+
+  {
+    name: "Iguazu",
+    date: "2023-02-22",
+   "Amount of sales": 1600
+    
+  },
+
+  {
+    name: "Canaima",
+    date: "2023-02-22",
+    "Amount of sales": 2300
+    
+  }
+];
+
+const valueFormatter = (number) => `$ ${Intl.NumberFormat("us").format(number).toString()}`;
+
 function DashboardAdmin() {
 
-  const [selectedView, setSelectedView] = useState(1);
+  const [selectedView, setSelectedView] = useState("1");
 
-  const [totalSalesValue, setTotalSalesValue] = useState(0); // Agrega estado para almacenar el total de ventas
+  const [totalSalesValue, setTotalSalesValue] = useState(0);
+  const [totalPakagesValue, setTotalPackagesValue] = useState(0); // Agrega estado para almacenar el total de ventas
 
   const [value, setValue] = useState([
     new Date(2023, 1, 1),
@@ -60,7 +95,9 @@ function DashboardAdmin() {
 
   useEffect(() => {
     const sales = totalSales(salesPerMonth); // Calcula el total de ventas
-    setTotalSalesValue(sales); // Actualiza el estado con el total de ventas calculado
+    setTotalSalesValue(sales);
+    const packagesSales = totalPackages(paquetes);
+    setTotalPackagesValue(packagesSales); // Actualiza el estado con el total de ventas calculado
   }, []);
 
   const totalSales = (salesPerMonth) => {
@@ -71,16 +108,24 @@ function DashboardAdmin() {
     return sales;
   };
 
+
+  const totalPackages = (paquetes) => {
+    let sales = 0;
+    paquetes.forEach((element) => {
+      sales += element["Amount of sales"];
+    });
+    return sales;
+  };
   const handleDateRange = (newValue) => {
     setValue(newValue);
   };
 
-  const monthlyPackageSales = salesPerMonth.reduce((sum, pkg) => sum + pkg.sales, 0);
+  // const monthlyPackageSales = salesPerMonth.reduce((sum, pkg) => sum + pkg.sales, 0);
 
-  const donutChartData = salesPerMonth.map((pkg) => ({
-    label: pkg.name,
-    value: pkg.sales,
-  }));
+  // const donutChartData = salesPerMonth.map((pkg) => ({
+  //   label: pkg.name,
+  //   value: pkg.sales,
+  // }));
 
   return (
     <main>
@@ -111,8 +156,7 @@ function DashboardAdmin() {
       
 
       {selectedView === "2" && (
-        <Card>
-          
+        <Card>          
           <Text>Ventas por Paquete</Text>
           <DateRangePicker
       className="max-w-md mx-auto"
@@ -121,14 +165,22 @@ function DashboardAdmin() {
       locale={es}
       dropdownPlaceholder="Seleccionar"
     />
-          <Metric>${45725}</Metric>
+          <Metric>${totalPakagesValue.toLocaleString()}</Metric>
+          <DonutChart
+          className="mt-6 w-[200px] h-[200px]"
+          data={paquetes}
+          category= "Amount of sales"
+          index="name"
+          valueFormatter={valueFormatter}
+          colors={["slate", "violet", "indigo", "rose"]}
+          />          
         </Card>
       )}
       
 
       {selectedView === "3" && (
         <Card>
-          <Text>Ventas por Ciudad</Text>
+          <Text>Ventas por Actividad</Text>
           <DateRangePicker
       className="max-w-md mx-auto"
       value={value}
