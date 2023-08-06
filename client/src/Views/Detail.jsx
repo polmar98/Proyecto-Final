@@ -139,7 +139,7 @@ function Detail() {
 
   return (
     <>
-      <div className="bg-verdeFooter border-b border-white">
+      <div className="bg-verdeFooter">
         <NavBar />
       </div>
 
