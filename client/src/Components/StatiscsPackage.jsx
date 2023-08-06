@@ -7,6 +7,8 @@ export default function StatisticsPackage() {
 
   const packages = useSelector((state) => state.packages.packagesList);
 
+  
+
   // Función para calcular las estadísticas requeridas según el botón seleccionado
   const calculateStatistics = () => {
     if (selectedOption === "total") {

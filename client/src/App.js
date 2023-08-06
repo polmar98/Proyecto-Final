@@ -20,8 +20,8 @@ import "flowbite";
 import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
-import PackageEdit from './Views/PackageAdminEdit';
-import Statistics from "./Views/Statistics"
+import PackageEdit from "./Views/PackageAdminEdit";
+import DashboardAdmin from "./Views/DasboardAdmin";
 
 function App() {
   return (
@@ -45,9 +45,9 @@ function App() {
         <Route path="/admin/formPackages" element={<FormAdmin />} />
         <Route path="/paymentComplete" element={<PaymentComplete />} />
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
-        <Route path="/paymentcomplete" element={<PaymentComplete />}/>
-        <Route path="/admin/statistics" element={<Statistics />} />
-        <Route path="/agenda" element={<Agenda />}/>
+        <Route path="/paymentcomplete" element={<PaymentComplete />} />
+        <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+        <Route path="/agenda" element={<Agenda />} />
       </Routes>
     </div>
   );
