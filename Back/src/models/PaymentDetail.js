@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
       uidUser: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
+      },  
 
       idTransaction: {
         type: DataTypes.STRING,
