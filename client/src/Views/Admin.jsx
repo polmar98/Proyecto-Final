@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../Components/NavBar";
-import SideBarAdmin from "../Components/SideBarAdminAdmin";
+import SideBarAdmin from "../Components/SideBarAdmin";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 function Admin() {
   return (
