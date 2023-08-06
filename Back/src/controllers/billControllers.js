@@ -199,6 +199,7 @@ const emptyShoppingCar = async (id) => {
      const i= Math.floor(Math.random()*4);
      const año = años[i];
      const dia= Math.floor(Math.random()*28);
+     if(año==='2023' && mes>7) mes = 7;
      let nmes = mes;
      let ndia = dia;
      if(mes<10) nmes = "0"+mes;
