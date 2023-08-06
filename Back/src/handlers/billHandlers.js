@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const {addBill, getBillById, getAllBill} = require("../controllers/billControllers");
+const {addBill, getBillById, 
+    getAllBill, addMassiveBill} = require("../controllers/billControllers");
 
 const router = Router();
 
@@ -35,6 +36,16 @@ router.get('/:id', async(req, res) => {
    }
 });
 
+//ruta para agregar masivamente Facturas aleatorias 
+router.post('/massive', async(req, res) => {
+   const {nventas} = req.body; 
+   try {
+     const result = await addMassiveBill(nventas);
+     res.status(200).send("Facturas Masivas generadas exitosamente");
+   } catch (error) {
+     res.status(500).json({message: error.message});
+   }
+});
 
 
 module.exports = router;

@@ -109,24 +109,102 @@ const emptyShoppingCar = async (id) => {
        facturas.forEach(ele => {
           if(ele.number > numero) numero = ele.number;
        });
-       let arryay = []
        //cargamos todos los paquetes 
        const paquetes = await Package.findAll({
          include: [
            { model: Activity },
-           { model: Comment },
          ],
        });
-       //cargamos el numero total de paquetes encontrados
-       const npaq = await Package.count()
+       const npaq = paquetes.length;
        //cargamos los usuarios existentes
-       const users = User.findAll();
+       const users = await User.findAll();
+       const nusers = users.length;
+
        //se grabaran N facturas
        for(let i=0;i<nventas;i++){
-          let usu = Math.floor(Math.random() * (npaq));
-          
+          let paq = Math.floor(Math.random()*npaq);
+          let usu = Math.floor(Math.random()*nusers);
+          let selPaq = paquetes[paq];
+          let n = Number(numero) + 1;
+          let num = "000000"+n.toString();
+          let lo = num.length;
+          let consecu = num.substring(lo-6);
+          numero = consecu;
+          //seleccionamos aleatoriamente una actividad del paquete
+          let acti = selPaq.Activities.filter(ele => !ele.included);
+          let nacti = acti.length;
+          let act = Math.floor(Math.random()*nacti);
+          let selActi = acti[act];
+          let stotal = selPaq.promotionPrice * 2 + selActi.price * 2;
+          let impuesto = stotal * 0.1;
+          //generamos el objeto para insertar el nuevo registro
+          let newBill = {
+             number: consecu,
+             subtotal: stotal,
+             taxes: impuesto,
+             fullValue: stotal + impuesto,
+             uidUser: users[usu].uid,
+             idUser: users[usu].id,
+             idTransaction: await devuelveIdTransaction(),
+             date: await devuelveFecha(),
+          };   
+    
+         
+          //grabamos la nueva factura
+          const nBill = await Bill.create(newBill);
+          const idFactura = nBill.id;
+          //grabamos el item del paquete
+          let obj = {
+            amount: 2,
+            unitPrice: selPaq.promotionPrice,
+            totalPrice: selPaq.promotionPrice * 2,
+            typeProduct: 1,
+            idProduct: selPaq.id,
+            title: selPaq.title ,
+            idBill: idFactura,
+          }
+          let itemgrabado = await ItemsBill.create(obj);
+          //grabamos el items de actividades
+          obj = {
+            amount: 2,
+            unitPrice: selActi.price,
+            totalPrice: selActi.price * 2,
+            typeProduct: 2,
+            idProduct: selActi.id,
+            title: selActi.name ,
+            idBill: idFactura,
+          }
+          itemgrabado = await ItemsBill.create(obj);
+    
        };
 
   };
 
-module.exports = { addBill, getBillById, getAllBill };
+  //esta funcion devuelve una cadena de 15 caracteres como Id de transaccion
+  const devuelveIdTransaction = () => {
+     const cadena = "ABCDEFGHIJKLMNOPQRESTUVWXYZ01234567899";
+     let result = "";
+     for(let i=0;i<15;i++){
+        const n = Math.floor(Math.random()*cadena.length);
+        const car = cadena[n];
+        result+=car;
+     };
+     return result;
+  };
+
+  const devuelveFecha = () => {
+     const mes= Math.floor(Math.random()*12);
+     if(mes === 0) mes = 1;
+     const años = ['2020','2021','2022','2023'];
+     const i= Math.floor(Math.random()*4);
+     const año = años[i];
+     const dia= Math.floor(Math.random()*28);
+     let nmes = mes;
+     let ndia = dia;
+     if(mes<10) nmes = "0"+mes;
+     if(dia<10) ndia = "0"+dia;
+     const fecha = año+"-"+nmes+"-"+ndia+' 10:14:51';
+     return fecha;
+  };
+
+module.exports = { addBill, getBillById, getAllBill, addMassiveBill };
