@@ -9,9 +9,8 @@ import {
   BarChart,
   DateRangePicker
 } from "@tremor/react";
-import NavBar from "../Components/NavBar";
-import SideBarAdmin from "../Components/SideBarAdmin";
-import StatisticsPackage from "../Components/StatiscsPackage";
+import NavBar from "./NavBar";
+import SideBarAdmin from "./SideBarAdmin";
 import { useEffect, useState } from "react";
 import { es } from "date-fns/locale";
 
@@ -30,6 +29,7 @@ const salesPerMonth = [
   },
   {
     month: "Abril",
+
     "Amount of sales": 55000,
   },
   {

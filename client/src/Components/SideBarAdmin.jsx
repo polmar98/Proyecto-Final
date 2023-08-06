@@ -36,9 +36,9 @@ function SidebarAdmin() {
           <Link to="/formPackages">Create Packages</Link>
 
         </li>
-        <li className={`mb-6 flex items-center ${isActiveLink("/admin/statistics") ? "bg-gray-200 text-black" : ""}`}>
+        <li className={`mb-6 flex items-center ${isActiveLink("/admin/dashboard") ? "bg-gray-200 text-black" : ""}`}>
           <BsGraphUp className="mr-4" />
-          <Link to="/admin/statistics">Statistics</Link>
+          <Link to="/admin/dashboard">Dashboard</Link>
         </li>
       </ul>
       <ul>

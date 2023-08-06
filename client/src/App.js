@@ -22,7 +22,7 @@ import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
 import PackageEdit from "./Views/PackageAdminEdit";
-import DashboardAdmin from "./Views/DasboardAdmin";
+import Dashboard from "./Views/Dashboard";
 
 function App() {
   return (
@@ -47,7 +47,7 @@ function App() {
         <Route path="/paymentComplete" element={<PaymentComplete />} />
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
         <Route path="/paymentcomplete" element={<PaymentComplete />} />
-        <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/agenda" element={<Agenda />} />
       </Routes>
     </div>
