@@ -26,6 +26,7 @@ export const set_item = (idCart, item) => {
         payload: item,
       });
     } catch (error) {
+      window.alert(error.message)
       console.log(error.message);
     }
   };
@@ -40,7 +41,7 @@ export const userShopping = (uid) => {
         `http://localhost:3002/shoppingCar/user/${uid}`
       );
       const data = response.data;
-      // console.log("esto es data de action:", data);
+      console.log("esto es data de usershopping:", data);
       return dispatch({
         type: CHECKUSER_SHOPPING,
         payload: data,
@@ -68,7 +69,8 @@ export const remove_one_from_cart = (item) => {
         payload: response.data.ItemsShoppingCars,
       });
     } catch (error) {
-      console.log(error);
+      window.alert(error.message)
+      // console.log(error);
     }
   };
 };
@@ -83,6 +85,7 @@ export const clean_cart = (idCart) => {
         type: CLEAN_CART,
       });
     } catch (error) {
+      window.alert(error.message)
       console.log(error);
     }
   };
