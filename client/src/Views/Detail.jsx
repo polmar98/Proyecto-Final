@@ -17,31 +17,29 @@ import Activities from "../Components/Activities";
 import Review from "../Components/Review";
 import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
-
+import { AiFillCloseCircle } from "react-icons/ai";
 
 function Detail() {
   const { currentUser } = useContext(authContext);
   const { id } = useParams();
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
   const car = useSelector((state) => state.carrito.cart);
-  
+
   // console.log("EL ID", idCart);
   // console.log("EL CART DE MIERDA ", car);
   // console.log('comments', comments)
- 
-// console.log('eltour', tour)
-// const coment = comments ? comments: "desconocido";
 
-// console.log('el coment', coment)
+  // console.log('eltour', tour)
+  // const coment = comments ? comments: "desconocido";
+
+  // console.log('el coment', coment)
 
   //reviews
   // const reviewData = comments ? comments : "Desconocido";
-
 
   //hotelInfo
   const hotels = useSelector((state) => state.hotels.hotelsList);
@@ -51,8 +49,6 @@ function Detail() {
 
   const tipoPaquete = tour.TypePackage ? tour.TypePackage.name : "Desconocido";
   // console.log(tipoPaquete)
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +64,6 @@ function Detail() {
     // dispatch(fetchComments())
     return () => {
       dispatch(clearPackageDetails());
-      
     };
   }, [id, dispatch, currentUser]);
 
@@ -82,7 +77,6 @@ function Detail() {
     title: tour.title,
     image: tour.image,
   };
-
 
   //agregar items al localStorage
   function addNewItem(item) {
@@ -119,18 +113,16 @@ function Detail() {
     }
   }
 
-
   function changeNavigate(parametro) {
     if (currentUser) {
       // console.log("EsTO ES CURRENTUSER:", currentUser);
-      if(!car.some(el => el.idProduct === item.idProduct)){
+      if (!car.some((el) => el.idProduct === item.idProduct)) {
         guardarEnBDD(parametro);
         dispatch(userShopping(currentUser.uid));
       } else {
-        guardarEnBDD({...parametro, amount: parametro.amount + 1})
-        dispatch(userShopping(currentUser.uid))
+        guardarEnBDD({ ...parametro, amount: parametro.amount + 1 });
+        dispatch(userShopping(currentUser.uid));
       }
-
     } else {
       addNewItem(parametro);
       // console.log('detail', localStorage)
@@ -145,53 +137,45 @@ function Detail() {
     );
   }
 
-
   return (
     <>
-      <div className="bg-verdeFooter border-b border-white">
+      <div className="bg-verdeFooter">
         <NavBar />
       </div>
-      <div className="container mx-auto p-4 m-2 w-2/3">
-        <button
-          onClick={() => {
-            navigate(-1);
-            dispatch(clearPackageDetails());
-          }}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold py-2 px-4 rounded-full inline-flex mb-4"
-        >
-          X
-        </button>
 
-        <div className="flex items-center justify-center">
-          <div className="relative">
-            <img
-              src={tour.image}
-              alt="Img not found"
-              className="w-3/4 h-auto rounded-full m-auto shadow-lg"
-            />
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-              <h2 className="text-2xl text-white fontPoppins font-extrabold text-center bg-stone-400 rounded-full bg-stone-600/75 p-2">
-                {tour.title}
-              </h2>
-            </div>
-          </div>
+      <div className="w-full h-80 relative">
+        <img
+          src={tour.image}
+          className="w-full h-full object-cover"
+          alt="tour"
+        />
+
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <h1 className="text-4xl text-white font-bold">{tour.title}</h1>
+        </div>
+      </div>
+
+      <div className="container mx-auto p-4 m-2 lg:w-2/3 sm:w-full">
+        <div className="fontPoppins mt-6">
+          <p className="text-lg text-left">{tour.description}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 fontPoppins mt-6">
+        <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 fontPoppins mt-6">
           <Flights tour={tour} />
 
-          <div className="text-right w-full flex flex-col justify-between bg-white mt-4 ">
-            <h2 className="text-s font-medium">{tour.description}</h2>
-            <h2 className="text-s font-base mt-2">{tour.duration} días</h2>
-            <h2 className="text-s font-base">Salida en {tour.initialDate}</h2>
-            {tour.originCity ? <h2 className="text-s font-base">desde {tour.originCity} </h2> : null }
-            <h2 className="text-s font-base">
+          <div className="text-right w-full flex flex-col justify-between bg-white mt-4 p-4 rounded-lg shadow-xl">
+            <h2 className="text-base">{tour.duration} días</h2>
+            <h2 className="text-base">Salida en {tour.initialDate}</h2>
+            {tour.originCity ? (
+              <h2 className="text-base">desde {tour.originCity} </h2>
+            ) : null}
+            <h2 className="text-base">
               Calificación que le dieron otros viajeros: {tour.qualification}
             </h2>
-            <h2 className="text-s font-semibold mt-6">
+            <h2 className="text-lg font-semibold mt-6">
               USD {tour.standarPrice} -{tipoPaquete}-
             </h2>
-            <h2 className="text-xs font-medium mb-8">
+            <h2 className="text-base mb-8">
               Cupos disponibles: {tour.totalLimit}
             </h2>
 
@@ -201,7 +185,7 @@ function Detail() {
                   changeNavigate(item);
                   toast.success("Has agregado un paquete al carrito.");
                 }}
-                className="bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded w-3/4"
+                className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded w-full font-semibold"
               >
                 AGREGAR AL CARRITO
               </button>
@@ -209,17 +193,17 @@ function Detail() {
           </div>
         </div>
 
-        <Hotels hotel={hotelData} />
-        
+        <div className="mt-8">
+          <Hotels hotel={hotelData} />
+        </div>
+
         <hr className="mt-8"></hr>
 
         <Activities activity={tour} />
 
         <hr className="mt-8"></hr>
-    
-     <Review tour={tour}/> 
-    
-    
+
+        <Review tour={tour} />
       </div>
 
       <Footer />

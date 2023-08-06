@@ -12,14 +12,17 @@ import UserProfile from "./Views/UserProfile";
 import Contact from "./Views/Contact";
 import PaymentComplete from "./Components/PaymentComplete";
 import Checkout from "./Views/Checkout";
+import Agenda from "./Views/Agenda";
 import { Routes, Route, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "flowbite";
+import "@smastrom/react-rating/style.css";
 import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
-import PackageEdit from './Views/PackageAdminEdit';
+import PackageEdit from "./Views/PackageAdminEdit";
+import Dashboard from "./Views/Dashboard";
 
 function App() {
   return (
@@ -35,7 +38,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/about" element={<About />} />
         <Route path="/shoppingCart" element={<ShoppingCart />} />
-        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/userProfile/*" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin/users" element={<Users />} />
@@ -43,7 +46,9 @@ function App() {
         <Route path="/admin/formPackages" element={<FormAdmin />} />
         <Route path="/paymentComplete" element={<PaymentComplete />} />
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
-        <Route path="/paymentcomplete" element={<PaymentComplete />}/>
+        <Route path="/paymentcomplete" element={<PaymentComplete />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/agenda" element={<Agenda />} />
       </Routes>
     </div>
   );

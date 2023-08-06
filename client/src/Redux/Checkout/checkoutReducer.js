@@ -1,7 +1,8 @@
-import { POST_BILL } from "./checkoutActions"
+import { POST_BILL, GET_ALL_BILLS } from "./checkoutActions"
 
 const initialState = {
-    bill: {}
+    bill: {},
+    allBills: []
 }
 
 const checkoutReducer = (state = initialState, action) => {
@@ -9,8 +10,16 @@ const checkoutReducer = (state = initialState, action) => {
     switch (action.type) {
         case POST_BILL:
             return{
-                bill: action.payload
+                ...state,
+                bill: action.payload,
+                
             };
+
+        case GET_ALL_BILLS:
+            return {
+                ...state,
+                allBills: action.payload
+            }
 
         default:
             return {...state}

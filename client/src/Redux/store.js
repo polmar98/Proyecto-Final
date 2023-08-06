@@ -11,7 +11,8 @@ import hotelsReducer from "./Hotels/hotelsReducer";
 import packagesReducer from "./Packages/packagesReducer";
 import usersReducer from "./Users/usersReducer";
 import shoppingCartReducer from "./ShoppingCart/shoppingCartReducer";
-import checkoutReducer from "./Checkout/checkoutReducer"
+import checkoutReducer from "./Checkout/checkoutReducer";
+import compReducer from "./Comprado/compReducer";
 
 const rootReducer = combineReducers({
   packages: packagesReducer,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   activitys: activitysReducer,
   users: usersReducer,
   carrito: shoppingCartReducer,
-  checkout: checkoutReducer
+  checkout: checkoutReducer,
+  comprado: compReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
