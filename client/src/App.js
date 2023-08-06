@@ -17,6 +17,7 @@ import { Routes, Route, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "flowbite";
+import "@smastrom/react-rating/style.css";
 import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
