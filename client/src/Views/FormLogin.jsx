@@ -56,9 +56,24 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //login email and password in firebase
+    // Regex for email validation
+    const emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+    //validation email and password in firebase
     if (!email || !password) {
-      setErrorMsg("Ingrese email y contraseña");
+      setErrorMsg("Por favor, ingrese email y contraseña.");
+      return;
+    }
+
+    // Validating the email
+    if (!emailValidation.test(email)) {
+      setErrorMsg("Por favor, ingrese un email válido.");
+      return;
+    }
+
+    // Validating the password
+    if (password.length < 6) {
+      setErrorMsg("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
     try {
@@ -232,6 +247,7 @@ const LoginPage = () => {
 
               <div className="flex flex-col space-y-5">
                 <button
+                  type="button"
                   className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
                   onClick={handleGoogle}
                 >
@@ -242,6 +258,7 @@ const LoginPage = () => {
                 </button>
 
                 <button
+                  type="button"
                   className="flex items-center justify-center px-4 py-2 rounded-md border border-gray-300 w-full h-12"
                   onClick={handleGithub}
                 >
