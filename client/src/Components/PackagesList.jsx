@@ -114,7 +114,7 @@ export default function PackagesList() {
                     </span>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    {tour.CityOrigin.name}
+                    {tour.CityOrigin && tour.CityOrigin.name}
                   </td>
                   <td>
                     <Link to={`/admin/packages/${tour.id}`} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"

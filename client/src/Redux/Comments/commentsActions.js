@@ -62,10 +62,10 @@ export const getComentByPackage = (id) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/comments/${id}`
+        `http://localhost:3002/comments/package/${id}`
       );
       const data = response.data;
-      console.log('coment en action', data)
+      console.log("coment en action", data);
 
       return dispatch({
         type: GET_COMENT_BY_PACKAGE,

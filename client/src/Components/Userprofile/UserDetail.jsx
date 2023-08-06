@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserById } from "../../Redux/Users/usersActions";
 import { authContext } from "../../Context/authContext";
 import { useNavigate } from "react-router-dom";
+
 import { toast } from "react-toastify";
-import Packages from "./Packages"
+import Packages from "./Packages";
 
 const UserDate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser } = useContext(authContext);
+  const { currentUser, deleteUser } = useContext(authContext);
 
   const [editMode, setEditMode] = useState(false);
   const [updatedUser, setUpdatedUser] = useState(null);
@@ -46,9 +47,6 @@ const UserDate = () => {
 
   return (
     <div className="mx-auto max-w-2xl mt-10">
-
-      <Packages />
-
       <hr className="my-10"></hr>
       <h2 className="text-base font-semibold leading-7 text-gray-900">
         Información Personal
@@ -99,7 +97,7 @@ const UserDate = () => {
             htmlFor="email"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Dirección de email 
+            Dirección de email
           </label>
           <div className="mt-2">
             <input
@@ -219,6 +217,41 @@ const UserDate = () => {
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Guardar
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-center">
+          <p class="py-2 text-xl font-semibold">Borrar cuenta</p>
+        </div>
+        <div class="mb-10 ">
+          <p class="inline-flex items-center rounded-full bg-rose-100 px-4 py-1 text-rose-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mr-2 h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Proceda con precaución
+          </p>
+          <p class="mt-2">
+            Asegúrese de haber realizado una copia de seguridad de su cuenta en
+            caso de que alguna vez necesite acceder a sus datos. Borraremos
+            completamente sus datos. No hay forma de acceder a su cuenta después
+            de esta acción.
+          </p>
+          <button
+            class="ml-auto text-sm font-semibold text-rose-600 underline decoration-2"
+            onClick={deleteUser}
+          >
+            Continuar con la eliminación
           </button>
         </div>
       </div>

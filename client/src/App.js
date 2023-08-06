@@ -17,6 +17,7 @@ import { Routes, Route, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "flowbite";
+import "@smastrom/react-rating/style.css";
 import Users from "./Views/Users";
 import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
@@ -37,7 +38,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/about" element={<About />} />
         <Route path="/shoppingCart" element={<ShoppingCart />} />
-        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/userProfile/*" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin/users" element={<Users />} />

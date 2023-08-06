@@ -34,5 +34,6 @@ module.exports = {
   content: [
     // ...
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
 };

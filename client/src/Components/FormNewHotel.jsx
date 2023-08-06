@@ -2,13 +2,14 @@ import { fetchHotels} from "../Redux/Hotels/hotelsActions";
 import { fetchCities } from "../Redux/Cities/citiesActions";
 import React, { useEffect, useState} from "react";
 import { useDispatch,useSelector} from "react-redux";
-import {AiOutlineCheckSquare} from 'react-icons/ai'
 import { addHotels } from "../Redux/Hotels/hotelsActions";
-import { AiOutlineMinusSquare} from 'react-icons/ai'
+import { AiOutlineCloseSquare} from 'react-icons/ai'
+import { AiOutlineDelete } from "react-icons/ai";
+import axios from "axios";
 
 
 
-export default function FormNewHoltel({onHideForm}){
+export default function FormNewHoltel({onHideForm,selectedCityId}){
     const dispatch = useDispatch();
     const cities = useSelector((state) => state.cities.citiesList)
 
@@ -28,26 +29,76 @@ export default function FormNewHoltel({onHideForm}){
       }); 
 
 
-       
-      function handleImageChangeFromComputer(event) {
+
+      async function uploadImageToCloudinary(imageFile) {
+        const cloudName = "dro5aw3iy";
+        const uploadPreset = "images";
+    
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", uploadPreset);
+    
+        try {
+          const response = await axios.post(
+            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+            formData,
+            {
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }
+          );
+    
+          return response.data.secure_url;
+        } catch (error) {
+          console.error("Error al subir imagen a Cloudinary:", error);
+          return null;
+        }
+      }
+    
+      async function handleSubmit(e) {
+        e.preventDefault();
+    
+        const imageUrls = await Promise.all(
+          newHotel.image.map(async (image) => {
+            if (typeof image === "string") {
+              return image;
+            } else {
+              const imageUrl = await uploadImageToCloudinary(image);
+              return imageUrl;
+            }
+          })
+        );
+    
+        const newHotelWithUrls = {
+          ...newHotel,
+          image: imageUrls,
+        };
+    
+        dispatch(addHotels(newHotelWithUrls));
+    
+        setNewHotel({
+          name: "",
+          image: [],
+          calification: 0,
+          stars: 0,
+          details: "",
+          idCity: 0,
+        });
+    
+        alert("Hotel creado correctamente");
+        dispatch(fetchHotels());
+        onHideForm();
+      }
+    
+      function handleImageChange(event) {
         const { files } = event.target;
         const imageFiles = Array.from(files);
         setNewHotel({
           ...newHotel,
           image: [...newHotel.image, ...imageFiles],
         });
-      }
-    
-      function handleImageUrlChange(event) {
-        const { value } = event.target;
-        // Filtrar las URLs ingresadas por el usuario para evitar cadenas vacías
-        const imageUrls = value.split(",").map((url) => url.trim()).filter(Boolean);
-        setNewHotel({
-          ...newHotel,
-          image: newHotel.image.concat(imageUrls),
-        });
-      }
-    
+      } 
    
   
     function handleHotelChange(e) {
@@ -57,38 +108,16 @@ export default function FormNewHoltel({onHideForm}){
         [name]: value,
       });
     }
-
-    function handleSubmit(e) {
-      e.preventDefault();
     
-      // Comprobamos si hay imágenes cargadas desde el computador y las convertimos a URLs
-      const imageUrls = newHotel.image.map((image) =>
-        typeof image === "string" ? image : URL.createObjectURL(image)
-      );
-    
-      // Creamos un nuevo objeto newHotel con las URLs de las imágenes
-      const newHotelWithUrls = {
-        ...newHotel,
-        image: imageUrls,
-      };
-    
-      // Enviamos el nuevo objeto con las URLs de las imágenes al servidor
-      dispatch(addHotels(newHotelWithUrls));
-    
-      // Reseteamos el estado del formulario
+    function handleRemoveImage(index) {
+      const updatedImages = newHotel.image.filter((_, i) => i !== index);
       setNewHotel({
-        name: "",
-        image: [],
-        calification: 0,
-        stars: 0,
-        details: "",
-        idCity: 0,
+        ...newHotel,
+        image: updatedImages,
       });
-    
-      alert("Hotel creado correctamente");
-      dispatch(fetchHotels());
-      onHideForm();
+      document.getElementById('imageInput').value = '';
     }
+    
 
 function handleCancel() {
     onHideForm(); // Llama a la función para ocultar el formulario sin enviar datos.
@@ -96,23 +125,27 @@ function handleCancel() {
 
   return(
     <div>
-        <form action="NewHotel">
-        <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none" onClick={handleCancel}>
-                    <AiOutlineMinusSquare size={32} color= "white"/>
+      <div className="flex  flex-col justify-end items-center rounded-xl m-2 shadow-xl">
+        <div className="mt-5 h-1/5 mr-56 flex ">
+        <button className="bg-green-400 w-12 hover:bg-gray-500 rounded item-center p-2 m-2 mt-2 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins " onClick={handleCancel}>
+                    <AiOutlineCloseSquare size={22} color= "white"/>
                 </button>
-                <label htmlFor="name" 
-                className="block mb-2 text-sm font-medium text-gray-600">Nombre del hotel:</label>
+        </div>
+        <form action="NewHotel">
+       
+                <label className="block mb-2 text-sm font-bold text-gray-600" htmlFor="name" 
+               >Nombre del hotel:</label>
                 <input
           type="text"
           name="name"
           placeholder="Nombre ..."
           value={newHotel.name}
           onChange={handleHotelChange}
-          className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
         />
 
 <label htmlFor="calification"
-className="block mb-2 text-sm font-medium text-gray-600"
+className="block mb-2 text-sm font-bold text-gray-600"
 >Calificación:</label>
         <input
           type="number"
@@ -122,10 +155,10 @@ className="block mb-2 text-sm font-medium text-gray-600"
           name="calification"
           value={newHotel.calification}
           onChange={handleHotelChange}
-          className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
           />
         <label htmlFor="stars"
-        className="block mb-2 text-sm font-medium text-gray-600">Estrellas:</label>
+        className="block mb-2 text-sm font-bold text-gray-600">Estrellas:</label>
         <input
           type="number"
           name="stars"
@@ -133,7 +166,7 @@ className="block mb-2 text-sm font-medium text-gray-600"
           max="5"
           value={newHotel.stars}
           onChange={handleHotelChange}
-          className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
         />
         <label htmlFor="details"
         className="block mb-2 text-sm font-medium text-gray-600">Detalles:</label>
@@ -142,13 +175,13 @@ className="block mb-2 text-sm font-medium text-gray-600"
           placeholder="Indique los detalles sobre el hotel aqui...."
           value={newHotel.details}
           onChange={handleHotelChange}
-          className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-3/4  px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
         />
 
 <div className="mb-5">
         <label
           htmlFor="idCity"
-          className="block mb-2 text-sm font-medium text-gray-600"
+          className="block mb-2 text-sm font-bold text-gray-600"
         >
           Ciudad del hotel:
 
@@ -156,9 +189,9 @@ className="block mb-2 text-sm font-medium text-gray-600"
         <select
                 name="idCity"
                 id="idCity"
-                value={newHotel.idCity}
+                value={newHotel.idCity || selectedCityId}
                 onChange={handleHotelChange}
-                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
               >
                 <option value="">Seleccione una ciudad</option>
                 {cities.map((city) => (
@@ -169,45 +202,48 @@ className="block mb-2 text-sm font-medium text-gray-600"
               </select>
       </div>
 
+<div>
+      <label className="block mb-2 text-sm font-bold text-gray-600" htmlFor={`image`}>Imagen:</label>
+            <input
+            id="imageInput"
+              type="file" 
+              accept="image/*" 
+              name= "image"
+              multiple
+              onChange={handleImageChange}
+              className="w-3/4 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
+            />
+          
 
-<label htmlFor="images"
-className="block mb-2 text-sm font-medium text-gray-600">Imágenes:</label>
-        <div>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            multiple
-            onChange={handleImageChangeFromComputer}
-            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
-          <p>o</p>
-          <input
-            type="text"
-            name="imageUrls"
-            value={newHotel.image}
-            onChange={handleImageUrlChange}
-            placeholder="Ingrese la URL de la imagen"
-            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          {newHotel.image.map((image, index) => (
+            <div key={index} className="flex items-center mb-2">
+    <img
+      key={index}
+      src={typeof image === 'string' ? image : URL.createObjectURL(image)}
+      style={{ maxWidth: '300px', marginRight: '10px' }}
+      alt={`Imagen ${index}`}
+    />
+    <div className="item-center">
+     <button type="button"
+        className="bg-green-400  text-white px-2 py-1 rounded  hover:bg-gray-500 mr-5 "
+        onClick={() => handleRemoveImage(index)}
+      >
+        <AiOutlineDelete size={22} color="white"/>
+      </button>
+      </div>
+    </div>
+  ))}
+          
         </div>
 
-        <div>
-        <h3 className="block mb-2 text-sm font-medium text-gray-600">Imágenes cargadas:</h3>
-        {newHotel.image && newHotel.image.length > 0 ? (
-    newHotel.image.map((image, index) => (
-      <img key={index} src={typeof image === "string" ? image : URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
-    ))
-  ) : (
-    <p>No se han cargado imágenes</p>
-  )}
-      </div>
-
-      <button className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"onClick={handleSubmit}>
-                <AiOutlineCheckSquare size={32} color= "white"/>
+<div className="aling-center justify-center mb-5">
+      <button className="bg-green-400 rounded  hover:bg-gray-500 flex flex-row justify-between item-center p-2 mt-3 px-3 py-2 text-white focus:outline-none  ml-56 fontPoppins "onClick={handleSubmit}>
+               Crear
             </button>
+            </div>
 
         </form>
+        </div>
     </div>
   )
 
