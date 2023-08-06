@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPackages } from "../Redux/Packages/packagesActions";
@@ -13,14 +14,15 @@ import FormNewCityDestiny from "../Components/FormNewCityDestiny";
 import FormNewAirline from "../Components/FormNewAirline";
 import FormNewHoltel from "../Components/FormNewHotel";
 import FormActivity from "../Components/FormActivitys";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import NavBar from "../Components/NavBar";
+import SidebarAdmin from "../Components/SideBarAdmin";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import axios from "axios";
 
 const Form = () => {
 
-  const packages = useSelector((state) => state.packages.packagesList);
+  // const packages = useSelector((state) => state.packages.packagesList);
   const continents = useSelector((state) => state.continents.continentsList);
   // console.log("Continents:", continents)
   const countries = useSelector((state) => state.countries.countriesList);
@@ -28,7 +30,7 @@ const Form = () => {
   // console.log("cities:", cities)
   const hotels = useSelector((state) => state.hotels.hotelsList);
   const airlines = useSelector((state) => state.airlines.airlinesList);
-  const activitys = useSelector((state) => state.activitys.activitysList);
+  // const activitys = useSelector((state) => state.activitys.activitysList);
   const cityOrigin = useSelector((state) => state.cities.citiesOrigin);
   // console.log("cityorigin:", cityOrigin)
 
@@ -68,6 +70,13 @@ const Form = () => {
     idHotel: "",
     activitys: [],
   });
+
+  const handleAddActivity = (newActivity) => {
+    setInput((prevInput) => ({
+      ...prevInput,
+      activitys: [...prevInput.activitys, newActivity],
+    }));
+  };
 
   const [filteredCountries, setFilteredCountries] = useState([]);
 
@@ -188,15 +197,15 @@ const Form = () => {
         image: "",
         qualification: "9.4",
         idContinent: 0,
-        idCountry: 3,
+        idCountry: "",
         idCity: "",
-        idHotel: 0,
+        idHotel: "",
         activitys: [],
       });
-      alert("Package created successfully");
+      alert("Paquete creado exitosamente");
     } catch (error) {
       console.error(error);
-      alert("Error occurred while creating the package");
+      alert("Ocurrio un error en la creación");
     }
   };
 
@@ -270,6 +279,11 @@ const Form = () => {
     setShowActivityForm(true);
   };
 
+  const handleHiActivityForm = () => {
+    setShowActivityForm(false);
+  };
+
+ 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -300,29 +314,38 @@ const Form = () => {
     }
   };
 
+ 
+
   return (
-    <div className="flex h-screen">
-   
-        <Tabs>
-        <TabList>
+    <div>
+      <div className=" bg-verdeFooter">
+        <NavBar />
+      </div>
+      <div className="grid grid-cols-4  max-h-screen overflow-auto justify-center mb-10  ">
+        <SidebarAdmin className="col-span-1"/>
+        <div className="flex justify-center col-span-3 mb-5 mt-5 w-full rounded-xl shadow-xl mr-10">
+        <Tabs className="fontPoppins">
+        
+        <TabList className="font-bold text-lg justify-center rounded-xl bg-verdeFooter  text-white">
               <Tab>Datos Generales</Tab>
               <Tab>Ubicación</Tab>
               <Tab>Datos de Vuelo</Tab>
               <Tab>Alojamiento y Servicios</Tab>
+              
             </TabList>
+   
      
-            <TabPanel>
-              <div>
+            <TabPanel className="fontPoppins">
+              <div className="mt-10 ml-5 w-full">
                 <h2 className="text-gray-700 text-lg font-bold">
                   ¡Creador de viajes!
                 </h2>
-                <h2>Datos generales</h2>
-
-                <div>
+              
+                <div className="mt-10 grid grid-cols-2 gap-4 mr-5">
                   <div className="mb-5">
                     <label
                       htmlFor="title"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Nombre del viaje:
                     </label>
@@ -333,16 +356,31 @@ const Form = () => {
                       placeholder="Nombre..."
                       value={input.title}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
 
                   <div className="mb-5">
+                    <label  className="block mb-2 text-sm font-bold text-gray-600" htmlFor="image">
+                      Subir imagen:
+                      </label>
+                    <input
+                      type="file"
+                      name="image"
+                      id="image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
+                    />
+                  </div>
+
+                 
+<div className="mb-5">
                     <label
                       htmlFor="description"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
-                      Description:
+                      Descripción:
                     </label>
                     <textarea
                       type="text"
@@ -352,18 +390,7 @@ const Form = () => {
                       maxLength="250"
                       value={input.description}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                  </div>
-
-                  <div className="mb-5">
-                    <label htmlFor="image">Subir imagen:</label>
-                    <input
-                      type="file"
-                      name="image"
-                      id="image"
-                      accept="image/*"
-                      onChange={handleImageChange}
+                      className="w-3/4 h-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
 
@@ -374,10 +401,11 @@ const Form = () => {
                       style={{ maxWidth: "100%" }}
                     />
                   )}
+
                   <div className="mb-5">
                     <label
                       htmlFor="initialDate"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Fecha de ida:
                     </label>
@@ -388,32 +416,16 @@ const Form = () => {
                       placeholder="Fecha de inicio ..."
                       value={input.initialDate}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4  px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
 
-                  <div className="mb-5">
-                    <label
-                      htmlFor="finalDate"
-                      className="block mb-2 text-sm font-medium text-gray-600"
-                    >
-                      Fecha de regreso:
-                    </label>
-                    <input
-                      type="date"
-                      name="finalDate"
-                      id="finalDate"
-                      placeholder="Fecha final..."
-                      value={input.finalDate}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                  </div>
+                  
 
                   <div className="mb-5">
                     <label
                       htmlFor="totalLimit"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Cupos disponibles:
                     </label>
@@ -425,51 +437,30 @@ const Form = () => {
                       min="0"
                       value={input.totalLimit}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
-
                   <div className="mb-5">
                     <label
-                      htmlFor="standarPrice"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      htmlFor="finalDate"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
-                      Precio:
+                      Fecha de regreso:
                     </label>
                     <input
-                      type="number"
-                      name="standarPrice"
-                      min="0"
-                      id="standarPrice"
-                      placeholder="Standar Price"
-                      value={input.standarPrice}
+                      type="date"
+                      name="finalDate"
+                      id="finalDate"
+                      placeholder="Fecha final..."
+                      value={input.finalDate}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                  </div>
-
-                  <div className="mb-5">
-                    <label
-                      htmlFor="promotionPrice"
-                      className="block mb-2 text-sm font-medium text-gray-600"
-                    >
-                      precio de promoción:
-                    </label>
-                    <input
-                      type="number"
-                      name="promotionPrice"
-                      id="promotionPrice"
-                      placeholder="Promotion Price"
-                      value={calculatePromotionPrice()}
-                      readOnly
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
                   <div className="mb-5">
                     <label
                       htmlFor="duration"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Duración:
                     </label>
@@ -481,13 +472,35 @@ const Form = () => {
                       placeholder="Cuantos dias..."
                       value={input.duration}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
+
+                  <div className="mb-5">
+                    <label
+                      htmlFor="standarPrice"
+                      className="block mb-2 text-sm font-bold text-gray-600"
+                    >
+                      Precio:
+                    </label>
+                    <input
+                      type="number"
+                      name="standarPrice"
+                      min="0"
+                      id="standarPrice"
+                      placeholder="Standar Price"
+                      value={input.standarPrice}
+                      onChange={handleInputChange}
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
+                    />
+                  </div>
+
+                  
+                  
                   <div>
                     <label
                       htmlFor="qualification"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Calificacion del paquete
                     </label>
@@ -501,21 +514,38 @@ const Form = () => {
                       placeholder="Vuelo de regreso..."
                       value={input.qualification}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
+                    />
+                  </div>
+                  <div className="mb-5">
+                    <label
+                      htmlFor="promotionPrice"
+                      className="block mb-2 text-sm font-bold text-gray-600"
+                    >
+                      precio de promoción:
+                    </label>
+                    <input
+                      type="number"
+                      name="promotionPrice"
+                      id="promotionPrice"
+                      placeholder="Promotion Price"
+                      value={calculatePromotionPrice()}
+                      readOnly
+                      onChange={handleInputChange}
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
                     />
                   </div>
                 </div>
               </div>
               </TabPanel>
 
-              <TabPanel>
-              <div>
-                <h2>Ubicación</h2>
-                <div>
+              <TabPanel className="fontPoppins">
+              <div className="mt-10 ml-5 w-full">
+                <div className="mt-10 grid grid-cols-2 gap-4 mr-5 justify-start">
                   <div className="mb-5">
                     <label
                       htmlFor="originCity"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Ciudad de partida:
                     </label>
@@ -524,7 +554,7 @@ const Form = () => {
                       id="originCity"
                       value={input.originCity}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Seleccione una ciudad </option>
                       {cityOrigin.map((city) => (
@@ -533,12 +563,12 @@ const Form = () => {
                         </option>
                       ))}
                     </select>
-                    <div>
+                    <div >
                       <button
-                        className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
+                        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
                         onClick={handleShowNewCityOriginForm}
                       >
-                        <AiOutlinePlusSquare size={32} color="white" /> Nueva
+                        <AiOutlinePlusSquare size={22} color="white" /> Nueva
                         ciudad
                       </button>
 
@@ -549,35 +579,11 @@ const Form = () => {
                       )}
                     </div>
                   </div>
-                  <div className="mb-5">
-                    <label
-                      htmlFor="idContinent"
-                      className="block mb-2 text-sm font-medium text-gray-600"
-                    >
-                      Continente:
-                    </label>
-                    <select
-                      name="idContinent"
-                      id="idContinent"
-                      value={input.idContinent}
-                      onChange={(event) => {
-                        handleInputChange(event);
-                        handleContinentChange(event);
-                      }}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    >
-                      <option value="">Seleccione un Continente </option>
-                      {continents.map((continent) => (
-                        <option key={continent.id} value={continent.id}>
-                          {continent.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  
                   <div>
                     <label
                       htmlFor="idCountry"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       País de destino:
                     </label>
@@ -590,7 +596,7 @@ const Form = () => {
                         handleInputChange(event);
                         handleCountryChange(event);
                       }}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Seleccione un País</option>
                       {filteredCountries.map((country) => (
@@ -603,8 +609,34 @@ const Form = () => {
 
                   <div className="mb-5">
                     <label
+                      htmlFor="idContinent"
+                      className="block mb-2 text-sm font-bold text-gray-600"
+                    >
+                      Continente:
+                    </label>
+                    <select
+                      name="idContinent"
+                      id="idContinent"
+                      value={input.idContinent}
+                      onChange={(event) => {
+                        handleInputChange(event);
+                        handleContinentChange(event);
+                      }}
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
+                    >
+                      <option value="">Seleccione un Continente </option>
+                      {continents.map((continent) => (
+                        <option key={continent.id} value={continent.id}>
+                          {continent.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-5">
+                    <label
                       htmlFor="idCity"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Ciudad de destino:
                     </label>
@@ -616,7 +648,7 @@ const Form = () => {
                         handleInputChange(event);
                         handleCityChange(event);
                       }}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Seleccione una ciudad</option>
                       {filteredCities.map((city) => (
@@ -626,10 +658,10 @@ const Form = () => {
                       ))}
                     </select>
                     <button
-                      className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
+                      className="bg-green-400 hover:bg-gray-500  rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
                       onClick={handleShowNewCityDestinyOriginForm}
                     >
-                      <AiOutlinePlusSquare size={32} color="white" /> Nueva
+                      <AiOutlinePlusSquare size={22} color="white" /> Nueva
                       ciudad
                     </button>
 
@@ -637,6 +669,7 @@ const Form = () => {
                       <FormNewCityDestiny
                         onHideForm={handleHideNewCityDestinyForm}
                         selectedCountryId={input.idCountry}
+                     
                       />
                     )}
                   </div>
@@ -646,14 +679,13 @@ const Form = () => {
               </div>
               </TabPanel>
 
-              <TabPanel>
-              <div>
-                <h2>Datos de vuelo</h2>
-                <div>
+              <TabPanel className="fontPoppins">
+              <div className="mt-10 ml-5 w-full">
+                <div className="mt-10 flex flex-col mr-5 justify-start">
                   <div className="mb-5">
                     <label
                       htmlFor="idAirline"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Aerolinea:
                     </label>
@@ -662,7 +694,7 @@ const Form = () => {
                       id="idAirline"
                       value={input.idAirline}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Selecione una aerolinea </option>
                       {airlines.map((airline) => (
@@ -673,10 +705,10 @@ const Form = () => {
                     </select>
                     <div>
                       <button
-                        className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
+                        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-20 fontPoppins"
                         onClick={handleShowNewAirlineForm}
                       >
-                        <AiOutlinePlusSquare size={32} color="white" /> Nueva
+                        <AiOutlinePlusSquare size={22} color="white" /> Nueva
                         aerolinea
                       </button>
 
@@ -686,7 +718,7 @@ const Form = () => {
 
                       <label
                         htmlFor="outboundFlight"
-                        className="block mb-2 text-sm font-medium text-gray-600"
+                        className="block mb-2 text-sm font-bold text-gray-600"
                       >
                         Detalles del vuelo de ida:
                       </label>
@@ -697,12 +729,12 @@ const Form = () => {
                         placeholder="Vuelo de ida..."
                         value={input.outboundFlight}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                       />
 
                       <label
                         htmlFor="returnFlight"
-                        className="block mb-2 text-sm font-medium text-gray-600"
+                        className="block mb-2 text-sm font-bold text-gray-600"
                       >
                         Detalles del vuelo de regreso:
                       </label>
@@ -713,25 +745,21 @@ const Form = () => {
                         placeholder="Vuelo de regreso..."
                         value={input.returnFlight}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                       />
                     </div>
                   </div>
-
-                  
-                 
                 </div>
               </div>
               </TabPanel>
 
-              <TabPanel>
-              <div>
-                <h2>Alojamiento, servicios y actividades</h2>
-                <div>
+              <TabPanel className="fontPoppins">
+              <div className="mt-10 ml-5 w-full">
+                <div className="mt-10 grid grid-cols-2 gap-4 mr-5 justify-start">
                   <div className="mb-5">
                     <label
                       htmlFor="idHotel"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Hotel:
                     </label>
@@ -740,7 +768,7 @@ const Form = () => {
                       id="idHotel"
                       value={input.idHotel}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Seleccione un Hotel</option>
                       {filteredHotels.map((hotel) => (
@@ -751,10 +779,10 @@ const Form = () => {
                     </select>
                     <div>
                       <button
-                        className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
+                         className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
                         onClick={handleShowNewHotelForm}
                       >
-                        <AiOutlinePlusSquare size={32} color="white" /> Nuevo
+                        <AiOutlinePlusSquare size={22} color="white" /> Nuevo
                         Hotel
                       </button>
 
@@ -766,11 +794,21 @@ const Form = () => {
                       )}
                     </div>
                   </div>
-
+                  <div>
+                    <label  className="block mb-2 text-sm font-bold text-gray-600" htmlFor="activity">Actividades:</label>
+                    <button
+                      className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
+                      onClick={handleShowactivityForm}
+                    >
+                      <AiOutlinePlusSquare size={22} color="white" /> Agregar
+                    </button>
+                    <div>{showActivityForm && <FormActivity activitys={input.activitys}
+              onHideForm={handleHiActivityForm}/>}</div>
+                  </div>
                   <div className="mb-5">
                     <label
                       htmlFor="service"
-                      className="block mb-2 text-sm font-medium text-gray-600"
+                      className="block mb-2 text-sm font-bold text-gray-600"
                     >
                       Incluye:
                     </label>
@@ -782,25 +820,15 @@ const Form = () => {
                       placeholder="Servicios..."
                       value={input.service}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="activity">Actividades</label>
-                    <button
-                      className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
-                      onClick={handleShowactivityForm}
-                    >
-                      <AiOutlinePlusSquare size={32} color="white" />
-                    </button>
-                    <div>{showActivityForm && <FormActivity />}</div>
                   </div>
                  
                   <div className="mb-5">
                     <button
                       onClick={handleSubmit}
                       type="submit"
-                      className="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
+                      className="w-3/4 px-3 py-4 hover:bg-gray-500 bg-green-400 text-white rounded-md focus:bg-green-600 focus:outline-none fontPoppins text-xl mt-70 "
                     >
                       Crear
                     </button>
@@ -809,6 +837,8 @@ const Form = () => {
               </div>
               </TabPanel>
          </Tabs>
+         </div>
+         </div>  
         </div>
 
   );

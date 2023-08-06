@@ -1,16 +1,15 @@
 import React from "react";
-
 import NavBar from "../Components/NavBar";
-import Sidebar from "../Components/SideBar";
+import SidebarAdmin from "../Components/SideBarAdmin";
 
 function admin(){
   return(
     <div>
-      <div>
+      <div className="bg-verdeFooter">
         <NavBar/>
       </div>
-      <div>
-        <Sidebar/>
+      <div className="mt-50">
+        <SidebarAdmin className="mt-50"/>
 
       </div>
     </div>
