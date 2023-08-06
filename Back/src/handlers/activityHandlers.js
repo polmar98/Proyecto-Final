@@ -5,6 +5,7 @@ const {getActivity,
     getActivityById,
     desactivActivity,
     updateActivity,
+    createMassiveActivitys,
 } = require('../controllers/activitiesControllers');
 
 const router = Router();
@@ -70,6 +71,16 @@ router.put('/update/:id', async (req, res) => {
       console.log('error', error);
       res.status(400).send({ error: 'Update Fail' });
     }
+  });
+
+  router.post('/massive', async(req, res) => {
+     const array = req.body;
+     try {
+        const result = await createMassiveActivitys(array);
+        res.status(200).json({message: "Actividades Almacenadas exitosamente"});
+     } catch (error) {
+        res.status(500).json({message: error.message});
+     }
   });
 
 
