@@ -16,6 +16,7 @@ const handlersActivityComment = require('../handlers/activityCommentHandlers');
 const handlersPayment = require("../handlers/paymentHandlers");
 const handlersBill = require('../handlers/billHandlers');
 const handlersItinerary = require('../handlers/itineraryHandler');
+const handlersItemsBill = require('../handlers/itemsBillHandlers');
 
 const router = Router();
 
@@ -35,7 +36,7 @@ router.use('/shoppingCar', handlersShoppingCar);
 router.use('/activityComments', handlersActivityComment);
 router.use("/payment", handlersPayment);
 router.use('/bill', handlersBill);
-
+router.use("/itemsbill", handlersItemsBill);
 router.use('/itinerary', handlersItinerary);
 
 
