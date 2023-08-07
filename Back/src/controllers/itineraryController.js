@@ -1,10 +1,12 @@
 const axios = require('axios');
 const { Itinerary } = require('../database');
 
-const apiKey = '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';
+const apiKey = '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';
+// const apiKey = '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'; anterior
 
 const generateItinerary = async (req, res) => {
   const { continent, country, city, duration } = req.body;
+  console.log('el body', req.body)
 
   try {
     // Construye la pregunta o solicitud al modelo de GPT-3.5 con los datos recibidos.

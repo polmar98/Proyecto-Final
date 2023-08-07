@@ -16,7 +16,7 @@ function SidebarAdmin() {
   };
   return (
 
-    <div className="flex flex-col justify-between w-64 min-h-screen  bg-gray-100 text-black px-6 py-4 rounded-lg shadow-xl overflow-auto fontPoppins text-sm mt-10 ">
+    <div className="flex flex-col justify-between w-64 min-h-screen  bg-white text-black px-6 py-4 rounded-lg shadow-xl overflow-auto fontPoppins text-sm mt-10 ">
       <ul>
         <li className={`mb-6 flex items-center ${isActiveLink("/home") ? "bg-gray-200 text-black" : ""}`}>
           <BsHouseDoor className="mr-4" />
@@ -31,9 +31,9 @@ function SidebarAdmin() {
           <LuPackageSearch className="mr-4" />
           <Link to="/admin/packages">Packages</Link>
         </li>
-        <li className={`mb-6 flex items-center ${isActiveLink("/formPackages") ? "bg-gray-200 text-black" : ""}`}>
+        <li className={`mb-6 flex items-center ${isActiveLink("/admin/formPackages") ? "bg-gray-200 text-black" : ""}`}>
           <MdOutlineCreateNewFolder className="mr-4" />
-          <Link to="/formPackages">Create Packages</Link>
+          <Link to="/admin/formPackages">Create Packages</Link>
 
         </li>
         <li className={`mb-6 flex items-center ${isActiveLink("/admin/dashboard") ? "bg-gray-200 text-black" : ""}`}>

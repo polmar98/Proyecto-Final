@@ -2,6 +2,7 @@ import React from "react";
 import { fetchComents } from "../Redux/Comments/commentsActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import StarRating from "./ReviewRating";
 
 
 function Review({tour}) {
@@ -18,10 +19,21 @@ console.log('coment review', comments)
 const reviews = comments.filter(el => el.idPackage === id)
 
 
+
 useEffect(() => {
   dispatch(fetchComents())
 },[id])
 
+// const yellowstars = [];
+
+// for (let i = 0; i < reviews.calification; i++) {
+//   yellowstars.push(
+//     <RiStarSFill
+//       key={i}
+//       className="text-yellow-500 text-xl mr-1 inline-flex"
+//     />
+//   );
+// }
 
 // const arr = []
 // if(typeof comments === 'object'){
@@ -74,9 +86,16 @@ useEffect(() => {
                  alt=""
                  className="w-16 h-16 mb-2 -mt-16 bg-center bg-cover rounded-full bg-gray-500 "
                /> : null}
+
                <p className="text-xl font-semibold leadi">{el.User.name ? el.User.name + ' '+ el.User.lastName : "Juan Perez"}</p>
-               <p className="text-sm uppercase">{el.createdAt.split('T')[0].toString()}</p>
                
+               
+               <p className="text-xs mt-2">Calificación que le da este viajero:</p>
+              <span className="inline-flex">
+               <StarRating rating={el.calification}/>
+              </span>
+
+               <p className="text-sm uppercase mt-2">{el.createdAt.split('T')[0].toString()}</p>
              </div>
            </div>
              </div>
