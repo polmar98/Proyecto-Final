@@ -7,6 +7,7 @@ import { fetchCities } from "../Redux/Cities/citiesActions";
 import { fetchContinents } from "../Redux/Continent/continentActions";
 import { fetchCountries } from "../Redux/Country/countriesActions";
 import { fetchHotels } from "../Redux/Hotels/hotelsActions";
+import { fetchPackages } from "../Redux/Packages/packagesActions";
 import { getCityOrigin } from "../Redux/Cities/citiesActions";
 import { AiOutlinePlusSquare } from "react-icons/ai";
 import FormNewCityOrigin from "../Components/FormNewCityOrigin";
@@ -22,7 +23,7 @@ import axios from "axios";
 
 const Form = () => {
 
-  // const packages = useSelector((state) => state.packages.packagesList);
+
   const continents = useSelector((state) => state.continents.continentsList);
   // console.log("Continents:", continents)
   const countries = useSelector((state) => state.countries.countriesList);
@@ -33,6 +34,7 @@ const Form = () => {
   // const activitys = useSelector((state) => state.activitys.activitysList);
   const cityOrigin = useSelector((state) => state.cities.citiesOrigin);
   // console.log("cityorigin:", cityOrigin)
+ 
 
   const dispatch = useDispatch();
 
@@ -57,26 +59,21 @@ const Form = () => {
     standarPrice: 0,
     promotionPrice: 0,
     service: "",
-    duration: "",
-    originCity: "", //salida
-    idAirline: "",
+    duration: 0,
+    originCity: 0, //salida
+    idAirline: 0,
     outboundFlight: "",
     returnFlight: "",
     image: "",
-    qualification: "",
+    qualification: 0,
     idContinent: 0,
-    idCountry: "",
-    idCity: "", // destino
-    idHotel: "",
+    idCountry: 0,
+    idCity: 0, // destino
+    idHotel: 0,
     activitys: [],
   });
 
-  const handleAddActivity = (newActivity) => {
-    setInput((prevInput) => ({
-      ...prevInput,
-      activitys: [...prevInput.activitys, newActivity],
-    }));
-  };
+
 
   const [filteredCountries, setFilteredCountries] = useState([]);
 
@@ -126,18 +123,18 @@ const Form = () => {
 
   const handleInputChange = (event) => {
     const { name, value, options } = event.target;
-
+  
     if (name === "idCity") {
       const selectedCityId = parseInt(value);
       const selectedCity = cities.find((city) => city.id === selectedCityId);
-
+  
       if (selectedCity) {
         setDestinationCity(selectedCity.name);
-
+  
         const associatedCountry = countries.find(
           (country) => country.id === selectedCity.idCountry
         );
-
+  
         if (associatedCountry) {
           setDestinationCountry(associatedCountry.name);
           setInput({
@@ -147,25 +144,30 @@ const Form = () => {
           });
         }
       }
-    }
-
-    if (options && options.multiple) {
+    } else if (name === "standarPrice") {
+      const parsedValue = !isNaN(value) ? parseFloat(value) : value;
+      setInput({
+        ...input,
+        [name]: parsedValue,
+        promotionPrice: calculatePromotionPrice(),
+      });
+    } else if (options && options.multiple) {
       const selectedValues = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
-
+  
       setInput({
         ...input,
         [name]: selectedValues,
       });
     } else {
-      //Lucas agregue esto para que convierta los valores que se espera sean numericos y llegaban como string
       const parsedValue = !isNaN(value) ? parseFloat(value) : value;
       setInput({
         ...input,
         [name]: parsedValue,
       });
     }
+  
     if (name === "service") {
       setInput({
         ...input,
@@ -173,6 +175,7 @@ const Form = () => {
       });
     }
   };
+  const [lastCreatedPackage, setLastCreatedPackage] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -189,20 +192,22 @@ const Form = () => {
         standarPrice: 0,
         promotionPrice: 0,
         service: "",
-        duration: "",
-        originCity: "",
+        duration: 0,
+        originCity: 0, //salida
         idAirline: 0,
         outboundFlight: "",
         returnFlight: "",
         image: "",
-        qualification: "9.4",
+        qualification: 0,
         idContinent: 0,
-        idCountry: "",
-        idCity: "",
-        idHotel: "",
+        idCountry: 0,
+        idCity: 0, // destino
+        idHotel: 0,
         activitys: [],
       });
       alert("Paquete creado exitosamente");
+      dispatch(fetchPackages())
+      setFormSubmitted(true)
     } catch (error) {
       console.error(error);
       alert("Ocurrio un error en la creación");
@@ -215,6 +220,7 @@ const Form = () => {
     const promotionPrice = standatPrice * (1 - discountpercentage / 100);
     return promotionPrice.toFixed(2);
   };
+  
   // Estado para controlar la visibilidad del formulario de nueva ciudad de origen
   const [showNewCityForm, setShowNewCityForm] = useState(false);
 
@@ -273,11 +279,14 @@ const Form = () => {
   // Estado para controlar la visibilidad del formulario de nueva actividad
   const [showActivityForm, setShowActivityForm] = useState(false);
 
-  // Función para mostrar el formulario de nuevo Actividades
-  const handleShowactivityForm = (e) => {
-    e.preventDefault();
-    setShowActivityForm(true);
-  };
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // // Función para mostrar el formulario de nuevo Actividades
+  // const handleShowactivityForm = (e) => {
+  //   e.preventDefault();
+  //   setFormSubmitted(true);
+  //   setShowActivityForm(true);
+  // };
 
   const handleHiActivityForm = () => {
     setShowActivityForm(false);
@@ -494,9 +503,7 @@ const Form = () => {
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
-
-                  
-                  
+                 
                   <div>
                     <label
                       htmlFor="qualification"
@@ -794,17 +801,7 @@ const Form = () => {
                       )}
                     </div>
                   </div>
-                  <div>
-                    <label  className="block mb-2 text-sm font-bold text-gray-600" htmlFor="activity">Actividades:</label>
-                    <button
-                      className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
-                      onClick={handleShowactivityForm}
-                    >
-                      <AiOutlinePlusSquare size={22} color="white" /> Agregar
-                    </button>
-                    <div>{showActivityForm && <FormActivity activitys={input.activitys}
-              onHideForm={handleHiActivityForm}/>}</div>
-                  </div>
+                  
                   <div className="mb-5">
                     <label
                       htmlFor="service"
@@ -830,11 +827,15 @@ const Form = () => {
                       type="submit"
                       className="w-3/4 px-3 py-4 hover:bg-gray-500 bg-green-400 text-white rounded-md focus:bg-green-600 focus:outline-none fontPoppins text-xl mt-70 "
                     >
-                      Crear
+                      Crear paquete
                     </button>
                   </div>
+                 
                 </div>
               </div>
+              {formSubmitted && (
+            <FormActivity activitys={input.activitys} onHideForm={handleHiActivityForm} />
+          )}
               </TabPanel>
          </Tabs>
          </div>
