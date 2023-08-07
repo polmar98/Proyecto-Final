@@ -4,6 +4,7 @@ export const FETCH_ACTIVITYS = "FETCH_ACTIVITYS";
 export const ADD_ACTIVITY = "ADD_ACTIVITY";
 export const GET_ACTIVITY_BY_ID = "GET_ACTIVITY_BY_ID";
 export const SEARCH_ACTIVITYS = "SEARCH_ACTIVITYS";
+export const ADD_ACTIVITYS = "ADD_ACTIVITYS"
 
 export const fetchActivitys = () => {
   return async (dispatch) => {
@@ -37,6 +38,25 @@ export const addActivity = (newActivity) => {
     }
   };
 };
+
+export const addActivities = (newActivities) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3002/activity/massive",
+        newActivities
+      );
+      const data = response.data;
+      return dispatch({
+        type: ADD_ACTIVITYS,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 
 export const getActivityById = (id) => {
   return async (dispatch) => {
