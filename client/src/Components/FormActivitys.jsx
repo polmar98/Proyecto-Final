@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlinePlusSquare } from "react-icons/ai";
-import { AiOutlineCloseSquare } from "react-icons/ai";
+import { AiOutlineCloseSquare, AiOutlineSave } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPackages } from "../Redux/Packages/packagesActions";
+import { addActivities } from "../Redux/Activity/activityActions";
 
 import axios from "axios";
 
-export default function FormActivity({onHideForm}) {
+export default function FormActivity({onHideForm,lastCreatedPackage}) {
+
+  const dispatch =useDispatch()
+
+  const packages = useSelector((state) => state.packages.packagesList)
+
+  console.log(packages)
+
+  useEffect(()=>{
+    dispatch(fetchPackages())
+  },[dispatch])
+
+
   const [activities, setActivities] = useState([
     {
       name: "",
@@ -13,8 +28,37 @@ export default function FormActivity({onHideForm}) {
       price: 0,
       included: false,
       duration: "",
+      activate:true,
+      idPackage:lastCreatedPackage
     },
   ]);
+
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSaveActivities = () => {
+    try {
+      // Aquí creas la estructura de las actividades que deseas enviar al servidor
+      const newActivities = activities.map((activity) => ({
+        name: activity.name,
+        image: activity.image,
+        price: activity.price,
+        included: activity.included,
+        duration: activity.duration,
+        activate: activity.activate,
+        idPackage: activity.idPackage,
+      }));
+  
+      // Despachar la acción para guardar las actividades
+       dispatch(addActivities(newActivities));
+      
+      // Marcar como guardado
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Error al guardar las actividades:", error);
+    }
+  };
+  
 
   const handleNameChange = (index, e) => {
     const newActivities = [...activities];
@@ -78,21 +122,30 @@ export default function FormActivity({onHideForm}) {
   };
 
   const handleAddActivity = () => {
-    setActivities([
-      ...activities,
-      {
-        name: "",
-        image: "",
-        price: 0,
-        included: false,
-        duration: "",
-      },
-    ]);
+    const newActivity = {
+      name: "",
+      image: "",
+      price: 0,
+      included: false,
+      duration: "",
+      activate:true,
+      idPackage:0
+    };
+    setActivities([...activities, newActivity]);
   };
+
 
   const handleRemoveActivity = (index) => {
     const newActivities = [...activities];
     newActivities.splice(index, 1);
+    setActivities(newActivities);
+  };
+
+  const handlePackageChange = (e) => {
+    const newActivities = activities.map((activity) => ({
+      ...activity,
+      idPackage: e.target.value,
+    }));
     setActivities(newActivities);
   };
   
@@ -102,14 +155,38 @@ export default function FormActivity({onHideForm}) {
 
   return (
     <div>
-      
       <div className="mt-5 h-1/5 mr-56 flex ">
-      <button
-            className="bg-green-400 w-12 hover:bg-gray-500 rounded item-center p-2 m-2 mt-2 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
-            onClick={handleCancel}
+        <button
+          className="bg-green-400 w-12 hover:bg-gray-500 rounded item-center p-2 m-2 mt-2 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
+          onClick={handleCancel}
+        >
+          <AiOutlineCloseSquare size={22} color="white" />
+        </button>
+        <div className="w-full">
+          <label
+            htmlFor="packages"
+            className="block mb-2 text-sm font-bold text-gray-600"
           >
-            <AiOutlineCloseSquare size={22} color="white" />
-          </button>
+            Paquete:
+          </label>
+          <select
+            name="idPackage"
+            id="idPackage"
+            value={activities[0].idPackage}
+            onChange={handlePackageChange}
+            className="w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
+          >
+            {packages &&
+    packages
+      .slice() // Crea una copia del array para no modificar el original
+      .sort((a, b) => b.id - a.id) // Ordena de mayor a menor por ID
+      .map((pkg) => (
+        <option key={pkg.id} value={pkg.id}>
+          {pkg.title}
+        </option>
+      ))}
+          </select>
+          </div>
       </div>
       {activities.map((activity, index) => (
         <div key={index} className="mb-5">
@@ -143,7 +220,7 @@ export default function FormActivity({onHideForm}) {
             onChange={(e) => handleImageChange(index, e)}
             className="w-3/4 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
           />
-          <div className="ml-32 justify-center">
+          <div className="ml-32 justify-center mr-56">
             {activity.image && (
               <img
                 src={activity.image}
@@ -203,6 +280,8 @@ export default function FormActivity({onHideForm}) {
           <hr />
         </div>
       ))}
+
+      <div className="flex flex-row">
       <button
         type="button"
         className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
@@ -210,6 +289,16 @@ export default function FormActivity({onHideForm}) {
       >
         <AiOutlinePlusSquare size={22} color="white" /> Agregar
       </button>
+      
+      <button
+        type="button"
+        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
+        onClick={handleSaveActivities}
+        disabled={isSaved}
+      >
+        <AiOutlineSave size={22} color="white" /> {isSaved ? "Guardado" : "Guardar"}
+      </button>
+      </div>
     </div>
   );
 }
