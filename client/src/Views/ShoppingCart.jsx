@@ -25,6 +25,7 @@ const ShoppingCart = () => {
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
   // const items = currentUser ? cartItems : localStorageItems;
   const items = currentUser ? cartItems : localStorageItems || [];
+  
 
   useEffect(() => {
     if (currentUser) {
@@ -67,14 +68,20 @@ const ShoppingCart = () => {
     }
   }
 
+  console.log('current user' , currentUser)
+
   function handlePayment() {
-    if (!currentUser && (!items || items === localStorageItems)) {
+    if(items.length === 0){
+      return
+    }
+    if (currentUser === null && items.length > 0) {
       navigate("/login");
     } 
-    if(currentUser && !items){
-      window.alert("Oops! Tu carrito esta vacío.")
-    }
-    if(currentUser && items) {
+   
+    // if(currentUser && !items){
+    //   window.alert("Oops! Tu carrito esta vacío.")
+    // }
+    if(currentUser.uid && items) {
       navigate("/checkout");
     }
   }
@@ -135,9 +142,7 @@ const ShoppingCart = () => {
               </div>
               <Link to="/checkout">
                 <button
-                  onClick={() => {
-                    handlePayment();
-                  }}
+                  onClick={handlePayment}
                   className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300"
                 >
                   <AiOutlineCheckCircle className="mr-2" />
