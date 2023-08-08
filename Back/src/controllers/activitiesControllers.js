@@ -1,4 +1,4 @@
-const {Activity} = require('../database');
+const {Activity, Package} = require('../database');
 
 //esta funcion trae todas las actividades
 const getActivity = async () => {
@@ -37,8 +37,12 @@ const createActivity = async (name, image, price, included, duration, idPackage,
 //funcion para guardar varias actividades en un paquete
 const createMassiveActivitys = async(array) => {
    if(array.length === 0) throw Error("Array enviado se enuentra vacio") ;
-   const result = await Activity.bulkCreate(array);
-   return result;
+   const idP = array[0].idPackage;
+   await Activity.bulkCreate(array);
+   //actualizamos el campo totalLimit
+   const paq = Package.findByPk(idP);
+   await Activity.update({totalLimit: paq.totalLimit}, {where: {idPackage: idP}});
+   return {message: "Actividades cargadas"};
 };
 
 //funcion para desactivar actividades
