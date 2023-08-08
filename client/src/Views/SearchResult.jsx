@@ -166,7 +166,7 @@ export default function SearchResult() {
   }
 
   return (
-    <div className="pt-4">
+    <div>
       <div className="bg-verdeFooter">
         <NavBar />
       </div>
