@@ -26,7 +26,6 @@ import { fetchCountries } from "../Redux/Country/countriesActions";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-
 const RESULTS_PER_PAGE = 3;
 
 function normalizeString(str) {
@@ -52,6 +51,7 @@ export default function SearchResult() {
   );
 
   const originCities = useSelector((state) => state.packages.originCitiesList);
+  console.log("searchResults", searchResults);
 
   useEffect(() => {
     setSearchedCountry(searchQuery ? normalizeString(searchQuery) : "");
@@ -171,12 +171,11 @@ export default function SearchResult() {
         <NavBar />
       </div>
       <div className="items-center flex justify-center mt-16 mb-8 ">
-          <SearchBar />
-        </div>
+        <SearchBar />
+      </div>
       <div className="justify-center flex-col grid grid-cols-4 gap-4 p-2 items-start ml-3 mr-20 ">
-       
         <div className=" flex justify-evenly p-4 w-48 col-span-1 mr-4 flex-col border border-gray-200 rounded-lg bg-verdeFooter">
-        <div>
+          <div>
             <button className="bg-green-400 rounded p-2 m-2 fontPoppins text-sm ">
               <FaSync
                 style={{ fontSize: "20px", color: "white" }}
@@ -267,19 +266,13 @@ export default function SearchResult() {
               <option value="MayorPrecio">Menor</option>
             </select>
           </div>
-
-          
-          
-      </div>
-      <div className="flex flex-col col-span-3">
+        </div>
+        <div className="flex flex-col col-span-3 space-y-12">
           {currentResults.map((tour) => (
-            <Card key={tour.id} {...tour}/>
+            <Card key={tour.id} {...tour} />
           ))}
         </div>
-
-        </div>
-
-        
+      </div>
 
       {/* Número de la página actual */}
       <div className="flex justify-center  items-center font-bold mt-4">
