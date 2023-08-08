@@ -2,7 +2,7 @@ import { POST_BILL, GET_ALL_BILLS } from "./checkoutActions"
 
 const initialState = {
     bill: {},
-    allBills: []
+    allBills: [],
 }
 
 const checkoutReducer = (state = initialState, action) => {

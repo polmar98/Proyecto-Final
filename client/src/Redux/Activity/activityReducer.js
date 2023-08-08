@@ -3,6 +3,7 @@ import {
   FETCH_ACTIVITYS,
   GET_ACTIVITY_BY_ID,
   SEARCH_ACTIVITYS,
+  ADD_ACTIVITYS
 } from "./activityActions";
 
 const initialState = {
@@ -24,6 +25,10 @@ const activitysReducer = (state = initialState, action) => {
       return {
         ...state,
       };
+      case ADD_ACTIVITYS:
+        return{
+          ...state,
+        }
     case GET_ACTIVITY_BY_ID:
       return {
         ...state,

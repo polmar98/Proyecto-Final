@@ -15,6 +15,7 @@ export const SET_PRICE_RANGE_FILTER ="SET_PRICE_RANGE_FILTER"
 export const SET_CLEAR_PRICE_RANGE_FILTER = "SET_CLEAR_PRICE_RANGE_FILTER"
 export const SET_ORIGIN_CITY_FILTER = "SET_ORIGIN_CITY_FILTER"
 export const FETCH_ORIGIN_CITIES ="FETCH_ORIGIN_CITIES"
+export const PUT_PACKAGE = "PUT_PACKAGE"
 
 
 
@@ -57,6 +58,7 @@ export const getPackageById = (id) => {
     try {
       const response = await axios.get(`http://localhost:3002/packages/${id}`);
       const data = response.data;
+      
       return dispatch({
         type: GET_PACKAGE_BY_ID,
         payload: data,
@@ -170,6 +172,23 @@ export const setClearPriceRangeFilter =(payload)=>({
 export function reset (){
   return{type:RESET}
 
+}
+
+
+export const put_package = (idProduct, item) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(`http://localhost:3002/packages/${idProduct}`, item)
+      const data = response.data
+      console.log(data)
+      return dispatch({
+        type: PUT_PACKAGE,
+        payload: data
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 }
 
 

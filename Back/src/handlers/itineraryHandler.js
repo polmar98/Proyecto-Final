@@ -7,7 +7,16 @@ const {
 
 const router = Router();
 
-router.post('/',generateItinerary)
+router.post('/', async(req, res) => {
+   datos = req.body;
+   try {
+      const result = await generateItinerary(datos);
+      res.status(200).json(result);
+   } catch (error) {
+      res.status(500).json({message: error.message});
+   };
+
+});
 
 // Obtener un usuario por su uid
 router.get("/:id", async (req, res) => {

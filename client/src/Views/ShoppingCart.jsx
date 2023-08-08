@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect} from "react";
+
 import { authContext } from "../Context/authContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import NavBar from "../Components/NavBar";
 import { toast } from "react-toastify";
@@ -9,12 +10,12 @@ import {
   clean_cart,
   userShopping,
 } from "../Redux/ShoppingCart/shoppingCartActions";
-import { Link } from "react-router-dom";
 import {
   AiOutlineCheckCircle,
   AiOutlineShopping,
   AiOutlineDelete,
 } from "react-icons/ai";
+// import { selectCartTotal } from "../Redux/ShoppingCart/shoppingCartActions";
 
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
@@ -23,8 +24,11 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
-  // const items = currentUser ? cartItems : localStorageItems;
+
   const items = currentUser ? cartItems : localStorageItems || [];
+  console.log('los items', items)
+
+  
 
   useEffect(() => {
     if (currentUser) {
@@ -34,29 +38,29 @@ const ShoppingCart = () => {
 
   const idCart = useSelector((state) => state.carrito.idCart);
 
+
   //
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
 
   function clearCart() {
-    const userConfirm = window.confirm(
-      "Se eliminará todo el contenido del carrito. Quieres continuar?"
-    );
-    if (userConfirm && !currentUser) {
-      localStorage.clear("carrito");
-      toast.success("El carrito fue vaciado con éxito.");
-      navigate("/shoppingCart");
-    }
-    if (userConfirm && currentUser) {
-      dispatch(clean_cart(idCart)).catch((error) => {
-        toast.error("Oops! Algo salió mal. Intentalo nuevamente.");
+    if(items.length > 0) {
+      const userConfirm = window.confirm(
+        "Se eliminará todo el contenido del carrito. Quieres continuar?"
+      );
+      if (userConfirm && !currentUser) {
+        localStorage.clear("carrito");
         toast.success("El carrito fue vaciado con éxito.");
         navigate("/shoppingCart");
-      });
-    } else return;
+      }
+      if (userConfirm && currentUser) {
+        dispatch(clean_cart(idCart))
+          toast.success("El carrito fue vaciado con éxito.");
+          navigate("/shoppingCart");
+      } else return;
+    }
   }
 
   function calculateTotal(items) {
-    // console.log("ITEMS EN SHOPING CART", items);
     if (!items) {
       return 0;
     } else {
@@ -67,17 +71,23 @@ const ShoppingCart = () => {
     }
   }
 
+  // console.log('current user' , currentUser)
+
   function handlePayment() {
-    if (!currentUser && (!items || items === localStorageItems)) {
-      navigate("/login");
-    } 
-    if(currentUser && !items){
-      window.alert("Oops! Tu carrito esta vacío.")
+    if (items.length === 0) {
+      window.alert("Oops! Tu carrito está vacío.");
+      return;
     }
-    if(currentUser && items) {
+  
+    if (currentUser === null) {
+      navigate("/login")
+    }
+    else {
       navigate("/checkout");
     }
   }
+  
+
 
   return (
     <div>
@@ -93,6 +103,7 @@ const ShoppingCart = () => {
                 item={el}
                 cart={idCart}
                 amount={el.amount}
+               
               />
             ))}
             <div className="flex justify-between items-center mt-5">
@@ -133,17 +144,15 @@ const ShoppingCart = () => {
                   $ {(calculateTotal(items) * 1.1).toFixed(2)}
                 </span>
               </div>
-              <Link to="/checkout">
+              
                 <button
-                  onClick={() => {
-                    handlePayment();
-                  }}
+                  onClick={()=>{handlePayment()}}
                   className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 mt-5 w-full rounded flex items-center justify-center transition-colors duration-300"
                 >
                   <AiOutlineCheckCircle className="mr-2" />
                   Completar el pago
                 </button>
-              </Link>
+              
             </div>
           </div>
         </div>

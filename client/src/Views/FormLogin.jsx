@@ -147,7 +147,7 @@ const LoginPage = () => {
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Número de móvil o correo electrónico"
+              placeholder="Correo electrónico"
               className="px-4 py-3 border rounded border-gray-300  text-gray-500 text-sm font-normal h-12"
             />
 
