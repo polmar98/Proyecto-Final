@@ -9,10 +9,12 @@ import {
   remove_one_from_cart,
   set_item,
 } from "../Redux/ShoppingCart/shoppingCartActions";
+import { fetchPackages } from "../Redux/Packages/packagesActions";
+
 
 
 const CartItem = (props) => {
-  const { item, amount } = props;
+  const { item, amount} = props;
   const { currentUser } = useContext(authContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,6 +22,12 @@ const CartItem = (props) => {
   const [currentAmount, setCurrentAmount] = useState(amount);
   const [totalPriceState, setTotalPrice] = useState(1);
   const idCart = useSelector((state) => state.carrito.idCart);
+  const allpackages = useSelector((state) => state.packages.packagesList)
+
+  const tour = allpackages && allpackages.find(el => el.id === item.idProduct)
+  const totallimit = tour ? tour.totalLimit.toString() : "20"
+  console.log('tour', tour)
+
 
 
   useEffect(() => {
@@ -30,6 +38,12 @@ const CartItem = (props) => {
       setTotalPrice(parseInt(item.unitPrice) * parseInt(storedAmount));
     }
   }, [item.idProduct, item.amount, item.unitPrice]);
+
+
+  useEffect(() => {
+      dispatch(fetchPackages())
+  },[dispatch])
+
 
   //chequea que haya props, sino rompe.
   if (!item) {
@@ -80,6 +94,7 @@ const CartItem = (props) => {
     setCurrentAmount(newAmount);
     setTotalPrice(total);
     handleAmountChange(idCart, item);
+    
   };
 
   const handleBlur = () => {
@@ -138,11 +153,12 @@ const CartItem = (props) => {
             <input
               type="number"
               min="1"
-              max="100"
+              max={totallimit}
               name="amount"
               value={currentAmount}
               onChange={(event) => handleChange(event)}
               onBlur={handleBlur}
+              
               className="w-16 mt-1 border rounded-md p-1"
             />
           </div>

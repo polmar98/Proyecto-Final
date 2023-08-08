@@ -20,6 +20,8 @@ const Packages = () => {
     (bill) => bill.uidUser === currentUser.uid
   );
   console.log("userBills", userBills);
+    
+
 
   useEffect(() => {
     if (currentUser) {
@@ -37,7 +39,7 @@ const Packages = () => {
           userBills.map((order, index) => (
             <div
               key={index}
-              className="bg-verdeFooter block bg-opacity-80 rounded-xl shadow-xl p-4"
+              className="bg-verdeFooter block bg-opacity-80 rounded-xl shadow-xl p-4 w-full"
             >
               {order.ItemsBills.map((item, itemIndex) => (
                 <li key={itemIndex} className="text-gray-200">

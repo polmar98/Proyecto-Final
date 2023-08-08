@@ -6,11 +6,12 @@ import Footer from "./Footer";
 import { authContext } from "../Context/authContext";
 import check from "../assets/Check.mp4";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
-import { create_itinerary, post_bill } from "../Redux/Checkout/checkoutActions";
+import { post_bill } from "../Redux/Checkout/checkoutActions";
 import { fetchPackages } from "../Redux/Packages/packagesActions";
-import { fetchCities } from "../Redux/Cities/citiesActions";
-import { fetchCountries } from "../Redux/Country/countriesActions";
-import { fetchContinents } from "../Redux/Continent/continentActions";
+// import { put_package } from "../Redux/Packages/packagesActions";
+// import { fetchCities } from "../Redux/Cities/citiesActions";
+// import { fetchCountries } from "../Redux/Country/countriesActions";
+// import { fetchContinents } from "../Redux/Continent/continentActions";
 
 function PaymentComplete() {
   const { currentUser } = useContext(authContext);
@@ -18,24 +19,20 @@ function PaymentComplete() {
   const state = useSelector((state) => state.carrito.status);
   const idCart = useSelector((state) => state.carrito.idCart);
   // console.log("idcart", idCart);
-  const cart = useSelector((state) => state.carrito.cart);
+  // const cart = useSelector((state) => state.carrito.cart);
   // console.log("el cart", cart);
   const bill = useSelector((state) => state.checkout.bill);
-  const tours = useSelector((state) => state.packages.packagesList);
+  // const tours = useSelector((state) => state.packages.packagesList);
   // console.log("tours", tours);
 
   const [videoEnded, setVideoEnded] = useState(false);
   const [animationEnded, setAnimationEnded] = useState(false);
   const [userShoppingCompleted, setUserShoppingCompleted] = useState(false);
+  // const [billCreated, setBillCreated] = useState(false);
   const videoRef = useRef(null);
-
-  //estados para el itinerario
-  const cities = useSelector((state) => state.cities.citiesList);
-  const countries = useSelector((state) => state.countries.countriesList);
-  const continents = useSelector((state) => state.continents.continentsList);
   
 
-  // console.log("bill en payment complete", bill);
+  console.log("bill en payment complete", bill);
   // console.log("el carrito en payment:", cart);
   // console.log("paquete info", paqueteInfo);
 
@@ -45,55 +42,64 @@ function PaymentComplete() {
   };
 
   //filtrar solo los paquetes del carrito
-  const packageOnly = cart && cart.filter((el) => el.typeProduct === 1);
+  // const packageOnly = cart && cart.filter((el) => el.typeProduct === 1);
   //sacar el id del paquete
-  const idPackage = packageOnly && packageOnly.map((el) => el.idProduct);
-  console.log("id pack", idPackage);
+  // const idPackage = packageOnly && packageOnly.map((el) => el.idProduct);
+  // console.log("id pack", idPackage);
 
   //filtrar aquellos paquetes que tengan el id igual a los idPackage, por si compra paquetes distintos
-  const filteredTours = tours.filter((el) => idPackage.includes(el.id));
-  console.log("los tours que matchean", filteredTours);
+  // const filteredTours = tours.filter((el) => idPackage.includes(el.id));
+  // console.log("los tours que matchean", filteredTours);
+  
 
+  //generar los newtotallimit para cada paquete comprado
+  // const dispatchNewTotalLimitPackage = async (cart) => {
+  //   console.log('cart en dispatch', cart)
+  //   const updatePromises = filteredTours.forEach(async (tour) => {
+  //     const itemCart = cart && cart.find(el => el.idProduct === tour.idProduct);
+  //     console.log('itemcart', itemCart)
+  //     if (itemCart) {
+  //       const amountBought = itemCart.amount;
+  //       const limitNumber = Number(tour.totalLimit);
+  //       const newTotalLimit = (limitNumber - amountBought).toString();
+  
+  //       const updatedItem = {
+  //         ...tour,
+  //         totalLimit: newTotalLimit
+  //       };
+  
+  //       await dispatch(put_package(tour.idProduct, updatedItem));
+  //     }
+  //   });
+  
+  //   await Promise.all(updatePromises);
+  // };
+  
+ 
+  
+  // const dispatchNewTotalLimitPackage = (packageOnly) => {
+  //   filteredTours.forEach((tour) => {
+  //     const itemCart= packageOnly.find(el => el.idProduct === tour.idProduct)
 
-  //generar los itinerarios para cada paquete comprado
-  const dispatchItinerarios = () => {
-    filteredTours.forEach((tour) => {
-      const continent =
-        continents && continents.find((el) => el.id === tour.idContinent);
-      const continentName = continent.name;
+  //       console.log('items del newtotallimitpackage', itemCart)
+  //     const amountBought= itemCart.amount
+  //     const limitNumber = Number(tour.totalLimit)
+  //     const newtotalLimit = (limitNumber - amountBought).toString()
+  //     console.log('newtotallimit', newtotalLimit)
 
-      const country =
-        countries && countries.find((el) => el.id === tour.idCountry);
-      const countryName = country.name;
+  //     const item = {
+  //       ...tour,
+  //       totalLimit: newtotalLimit
+  //     }
 
-      const city = cities && cities.find((el) => el.id === tour.idCity);
-      const cityName = city.name;
+  //     console.log("newObj", item, "idProduct", tour.idProduct);
 
-      const itineraryData = {
-        continent: continentName,
-        country: countryName,
-        city: cityName,
-        duration: tour.duration,
-      };
-
-      console.log("itinerario", itineraryData);
-
-      //despachar cada uno
-      dispatch(create_itinerary(itineraryData));
-    });
-  };
-
-
-
-  //obj para crear el itinerario
-  // const infoItinerary = {
-  //   continent: continentName,
-  //   country: countryName,
-  //   city: cityName,
-  //   duration: paqueteInfo.duration,
+  //     //despachar cada uno
+  //     dispatch(put_package(tour.idProduct, item));
+  //   });
   // };
 
-  // console.log("obj", infoItinerary);
+
 
   useEffect(() => {
     if (videoEnded) {
@@ -101,9 +107,9 @@ function PaymentComplete() {
         setAnimationEnded(true);
       }, 700);
     }
-    dispatch(fetchCities());
-    dispatch(fetchContinents());
-    dispatch(fetchCountries());
+    // dispatch(fetchCities());
+    // dispatch(fetchContinents());
+    // dispatch(fetchCountries());
     dispatch(fetchPackages());
   }, [videoEnded, dispatch]);
 
@@ -117,12 +123,15 @@ function PaymentComplete() {
 
   useEffect(() => {
     if (userShoppingCompleted && idCart && state === 1) {
-      dispatch(post_bill(datos));
-      if (packageOnly.length > 0) {
-        dispatchItinerarios();
-      }
-    }
+      dispatch(post_bill(datos))
+    }    
   }, [userShoppingCompleted, idCart, state, dispatch]);
+  
+  // useEffect(() => {
+  //   if (billCreated && packageOnly.length > 0){
+  //     dispatchNewTotalLimitPackage(packageOnly)
+  //   }
+  // }, [billCreated])
 
   return (
     <>

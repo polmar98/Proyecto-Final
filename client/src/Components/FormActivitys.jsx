@@ -8,7 +8,7 @@ import { addActivities } from "../Redux/Activity/activityActions";
 
 import axios from "axios";
 
-export default function FormActivity({onHideForm,lastCreatedPackage}) {
+export default function FormActivity({onHideForm}) {
 
   const dispatch =useDispatch()
 
@@ -25,40 +25,19 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
     {
       name: "",
       image: "",
-      price: 0,
-      included: false,
+      price: "",
+      included:false,
       duration: "",
-      activate:true,
-      idPackage:lastCreatedPackage
+      available:true,
+      calification:1,
+      idPackage:0
     },
   ]);
 
 
-  const [isSaved, setIsSaved] = useState(false);
+  const latestPackage = packages.length > 0 ? packages[packages.length - 1] : null;
 
-  const handleSaveActivities = () => {
-    try {
-      // Aquí creas la estructura de las actividades que deseas enviar al servidor
-      const newActivities = activities.map((activity) => ({
-        name: activity.name,
-        image: activity.image,
-        price: activity.price,
-        included: activity.included,
-        duration: activity.duration,
-        activate: activity.activate,
-        idPackage: activity.idPackage,
-      }));
-  
-      // Despachar la acción para guardar las actividades
-       dispatch(addActivities(newActivities));
-      
-      // Marcar como guardado
-      setIsSaved(true);
-    } catch (error) {
-      console.error("Error al guardar las actividades:", error);
-    }
-  };
-  
+
 
   const handleNameChange = (index, e) => {
     const newActivities = [...activities];
@@ -125,10 +104,11 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
     const newActivity = {
       name: "",
       image: "",
-      price: 0,
+      price: "",
       included: false,
       duration: "",
-      activate:true,
+      available:true,
+      calification:1,
       idPackage:0
     };
     setActivities([...activities, newActivity]);
@@ -141,58 +121,120 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
     setActivities(newActivities);
   };
 
-  const handlePackageChange = (e) => {
-    const newActivities = activities.map((activity) => ({
-      ...activity,
-      idPackage: e.target.value,
-    }));
-    setActivities(newActivities);
-  };
-  
+
   function handleCancel() {
     onHideForm(); // Llama a la función para ocultar el formulario sin enviar datos.
   }
 
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSaveActivities = () => {
+    try {
+      // Aquí creas la estructura de las actividades que deseas enviar al servidor
+      const newActivities = activities.map((activity) => ({
+        name: activity.name,
+        image: activity.image,
+        price: activity.price,
+        calification:1,
+        included: activity.included,
+        duration: activity.duration,
+        available: true,
+        idPackage: latestPackage ? latestPackage.id : 0
+      }));
+
+      console.log(newActivities)
+  
+      //Despachar la acción para guardar las actividades
+       dispatch(addActivities(newActivities));
+      
+      // Marcar como guardado
+      setIsSaved(true);
+
+      setActivities([
+        {
+          name: "",
+          image: "",
+          price: "",
+          included: false,
+          duration: "",
+          available: true,
+          calification: 1,
+          idPackage: 0,
+        },
+      ]);
+
+       // Cerrar el formulario después de un tiempo (por ejemplo, 2 segundos)
+       setTimeout(() => {
+        onHideForm(); // Llama a la función para ocultar el formulario en el componente padre.
+      }, 2000); // 2000 milisegundos (2 segundos)
+    } catch (error) {
+      console.error("Error al guardar las actividades:", error);
+    }
+  };
+
   return (
-    <div>
+    <div className="rounded-xl shadow-xl mb-10">
       <div className="mt-5 h-1/5 mr-56 flex ">
+        
+        <div className="flex flex-row">
+        <div className=" flex flex-row mb-10">
         <button
           className="bg-green-400 w-12 hover:bg-gray-500 rounded item-center p-2 m-2 mt-2 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
           onClick={handleCancel}
         >
           <AiOutlineCloseSquare size={22} color="white" />
         </button>
-        <div className="w-full">
+      <button
+        type="button"
+        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
+        onClick={handleAddActivity}
+      >
+        <AiOutlinePlusSquare size={22} color="white" /> Agregar
+      </button>
+      
+      <button
+        type="button"
+        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
+        onClick={handleSaveActivities}
+        disabled={isSaved}
+      >
+        <AiOutlineSave size={22} color="white" /> {isSaved ? "Guardado" : "Guardar"}
+      </button>
+      </div>
+      </div>
+        
+      </div>
+      <div className="grid grid-cols-3 h-200 mb-5 ml-5 mr-5">
+      {activities.map((activity, index) => (
+        <div key={index} className=" rounded-xl shadow-xl mb-5">
+          <div className="w-full">
+          <button
+            className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
+            onClick={() => handleRemoveActivity(index)}
+          >
+            <AiOutlineDelete size={22} color="white" />
+          </button>
+
+          <h3 className="text-gray-700 text-lg font-bold">
+            Actividad {index + 1}
+          </h3>
+
           <label
-            htmlFor="packages"
+             htmlFor={`idPackage${index}`}
             className="block mb-2 text-sm font-bold text-gray-600"
           >
             Paquete:
           </label>
-          <select
-            name="idPackage"
-            id="idPackage"
-            value={activities[0].idPackage}
-            onChange={handlePackageChange}
-            className="w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
-          >
-            {packages &&
-    packages
-      .slice() // Crea una copia del array para no modificar el original
-      .sort((a, b) => b.id - a.id) // Ordena de mayor a menor por ID
-      .map((pkg) => (
-        <option key={pkg.id} value={pkg.id}>
-          {pkg.title}
-        </option>
-      ))}
-          </select>
+
+          <input type="text"
+          id={`idPackage${index}`}
+          name={`idPackage${index}`}
+          value={latestPackage ? latestPackage.title : ""}
+          readOnly
+          className="w-3/4 h-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"/>
+                 
           </div>
-      </div>
-      {activities.map((activity, index) => (
-        <div key={index} className="mb-5">
-          <h3 className="text-gray-700 text-lg font-bold">
-            Actividad {index + 1}
-          </h3>
+          
           <label
             className="block mb-2 text-sm font-bold text-gray-600"
             htmlFor={`name${index}`}
@@ -204,15 +246,18 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
             name="name"
             value={activity.name}
             onChange={(e) => handleNameChange(index, e)}
-            className="w-3/4 h-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
+            className="w-3/4  px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
           />
 
+<div className="grid grid-col-2 justify-center">
           <label
             className="block mb-2 text-sm font-bold text-gray-600"
             htmlFor={`image${index}`}
           >
             Imagen:
           </label>
+          <div className=" flex items-center justify-center ml-2">
+          <div>
           <input
             type="file"
             accept="image/*"
@@ -220,14 +265,19 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
             onChange={(e) => handleImageChange(index, e)}
             className="w-3/4 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
           />
-          <div className="ml-32 justify-center mr-56">
+          </div>
+          </div>
+          </div>
+          <div className=" flex items-center justify-center">
+            <div>
             {activity.image && (
               <img
                 src={activity.image}
                 alt="Uploaded"
-                style={{ maxWidth: "200px" }}
+                style={{ maxWidth: "200px",height:"200px"}}
               />
             )}
+            </div>
           </div>
 
           <label
@@ -271,34 +321,13 @@ export default function FormActivity({onHideForm,lastCreatedPackage}) {
             </label>
           </div>
 
-          <button
-            className="bg-green-400 rounded p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none"
-            onClick={() => handleRemoveActivity(index)}
-          >
-            <AiOutlineDelete size={22} color="white" />
-          </button>
-          <hr />
+         
         </div>
       ))}
 
-      <div className="flex flex-row">
-      <button
-        type="button"
-        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
-        onClick={handleAddActivity}
-      >
-        <AiOutlinePlusSquare size={22} color="white" /> Agregar
-      </button>
-      
-      <button
-        type="button"
-        className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
-        onClick={handleSaveActivities}
-        disabled={isSaved}
-      >
-        <AiOutlineSave size={22} color="white" /> {isSaved ? "Guardado" : "Guardar"}
-      </button>
+    
       </div>
+     
     </div>
   );
 }

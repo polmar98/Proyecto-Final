@@ -40,6 +40,10 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      totalLimit: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     { timestamps: false }
   );
