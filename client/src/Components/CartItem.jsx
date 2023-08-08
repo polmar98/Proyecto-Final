@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { authContext } from "../Context/authContext";
 import { useDispatch } from "react-redux";
-import { Link, UNSAFE_useScrollRestoration, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiTrash2 } from "react-icons/fi";
 import {
@@ -24,7 +24,10 @@ const CartItem = (props) => {
   const idCart = useSelector((state) => state.carrito.idCart);
   const allpackages = useSelector((state) => state.packages.packagesList)
 
-  const tour = allpackages.find(el => el.id === item.idProduct)
+  const tour = allpackages && allpackages.find(el => el.id === item.idProduct)
+  const totallimit = tour ? tour.totalLimit.toString() : "20"
+  console.log('tour', tour)
+
 
 
   useEffect(() => {
@@ -38,10 +41,8 @@ const CartItem = (props) => {
 
 
   useEffect(() => {
-    if(currentUser){
       dispatch(fetchPackages())
-    }
-  },[currentUser, dispatch])
+  },[dispatch])
 
 
   //chequea que haya props, sino rompe.
@@ -93,8 +94,6 @@ const CartItem = (props) => {
     setCurrentAmount(newAmount);
     setTotalPrice(total);
     handleAmountChange(idCart, item);
-   
-    
     
   };
 
@@ -154,7 +153,7 @@ const CartItem = (props) => {
             <input
               type="number"
               min="1"
-              max="40"
+              max={totallimit}
               name="amount"
               value={currentAmount}
               onChange={(event) => handleChange(event)}

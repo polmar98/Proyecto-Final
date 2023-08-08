@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { authContext } from "../Context/authContext";
 import { toast } from "react-toastify";
 import Footer from "../Components/Footer";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getPackageById,
@@ -17,13 +17,13 @@ import Activities from "../Components/Activities";
 import Review from "../Components/Review";
 import NavBar from "../Components/NavBar";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
-import { AiFillCloseCircle } from "react-icons/ai";
+// import { AiFillCloseCircle } from "react-icons/ai";
 
 function Detail() {
   const { currentUser } = useContext(authContext);
   const { id } = useParams();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.packages.packageDetails);
   const idCart = useSelector((state) => state.carrito.idCart);
@@ -99,7 +99,7 @@ function Detail() {
   async function guardarEnBDD(parametro) {
     // console.log("item desde actvity", parametro);
     if (idCart) {
-      const response1 = await fetch(
+      await fetch(
         `http://localhost:3002/shoppingCar/${idCart}`,
         {
           method: "PUT",
@@ -144,11 +144,15 @@ function Detail() {
       </div>
 
       <div className="w-full h-80 relative">
+        {!tour.image ? <h2 className="text-2xl fontPoppin font-bold text-verdeFooter inline-flex mt-20">Cargando...</h2>
+        :
         <img
           src={tour.image}
           className="w-full h-full object-cover"
           alt="tour"
         />
+        
+      }
 
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <h1 className="text-4xl text-white font-bold">{tour.title}</h1>
@@ -169,12 +173,19 @@ function Detail() {
             {tour.originCity ? (
               <h2 className="text-base">desde {tour.originCity} </h2>
             ) : null}
+           
+            {Number(tour.qualification) !== 0 ?
             <h2 className="text-base">
-              Calificación que le dieron otros viajeros: {tour.qualification}
+              Calificación de otros viajeros: {tour.qualification}
             </h2>
-            <h2 className="text-lg font-semibold mt-6">
+            :  <h2 className="text-base">
+            Aún no tiene calificación.
+          </h2>
+          }
+            <h2 className="text-lg font-semibold mt-6 ">
               USD {tour.standarPrice} -{tipoPaquete}-
-            </h2>
+              </h2>
+              <h2 className="text-xs">Incluye {tour.service}</h2>
             <h2 className="text-base mb-8">
               Cupos disponibles: {tour.totalLimit}
             </h2>
