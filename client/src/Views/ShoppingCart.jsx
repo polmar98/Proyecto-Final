@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect} from "react";
+
 import { authContext } from "../Context/authContext";
 import { useNavigate, Link} from "react-router-dom";
 import CartItem from "../Components/CartItem";
@@ -14,6 +15,7 @@ import {
   AiOutlineShopping,
   AiOutlineDelete,
 } from "react-icons/ai";
+// import { selectCartTotal } from "../Redux/ShoppingCart/shoppingCartActions";
 
 const ShoppingCart = () => {
   const { currentUser } = useContext(authContext);
@@ -22,8 +24,10 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let localStorageItems = JSON.parse(localStorage.getItem("carrito"));
-  // const items = currentUser ? cartItems : localStorageItems;
+
   const items = currentUser ? cartItems : localStorageItems || [];
+  console.log('los items', items)
+
   
 
   useEffect(() => {
@@ -33,6 +37,7 @@ const ShoppingCart = () => {
   }, [dispatch, currentUser]);
 
   const idCart = useSelector((state) => state.carrito.idCart);
+
 
   //
   // console.log("STO ES cartItems DESDE SHOPING CART ", cartItems);
@@ -56,7 +61,6 @@ const ShoppingCart = () => {
   }
 
   function calculateTotal(items) {
-    // console.log("ITEMS EN SHOPING CART", items);
     if (!items) {
       return 0;
     } else {
@@ -67,7 +71,7 @@ const ShoppingCart = () => {
     }
   }
 
-  console.log('current user' , currentUser)
+  // console.log('current user' , currentUser)
 
   function handlePayment() {
     if (items.length === 0) {
@@ -82,6 +86,7 @@ const ShoppingCart = () => {
       navigate("/checkout");
     }
   }
+  
 
 
   return (
@@ -98,6 +103,7 @@ const ShoppingCart = () => {
                 item={el}
                 cart={idCart}
                 amount={el.amount}
+               
               />
             ))}
             <div className="flex justify-between items-center mt-5">
