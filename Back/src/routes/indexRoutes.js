@@ -18,6 +18,7 @@ const handlersBill = require('../handlers/billHandlers');
 const handlersItinerary = require('../handlers/itineraryHandler');
 const handlersItemsBill = require('../handlers/itemsBillHandlers');
 const handlersContacto = require("../handlers/contactoHandlers");
+const handlersNewslatter = require("../handlers/newslatterHandlers");
 
 const router = Router();
 
@@ -40,7 +41,7 @@ router.use('/bill', handlersBill);
 router.use("/itemsbill", handlersItemsBill);
 router.use('/itinerary', handlersItinerary);
 router.use('/contact', handlersContacto);
-
+router.use('/newslatter', handlersNewslatter);
 
 
 module.exports = router;
