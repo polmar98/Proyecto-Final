@@ -27,7 +27,7 @@ const activitysReducer = (state = initialState, action) => {
       };
       case ADD_ACTIVITYS:
         return{
-          ...state
+          ...state,
         }
     case GET_ACTIVITY_BY_ID:
       return {

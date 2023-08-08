@@ -175,9 +175,8 @@ const Form = () => {
       });
     }
   };
-  const [lastCreatedPackage, setLastCreatedPackage] = useState(null);
-
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async(event) => {
     event.preventDefault();
     console.log("Submitting package:", input);
     try {
@@ -208,6 +207,7 @@ const Form = () => {
       alert("Paquete creado exitosamente");
       dispatch(fetchPackages())
       setFormSubmitted(true)
+      setShowActivityForm(true)
     } catch (error) {
       console.error(error);
       alert("Ocurrio un error en la creación");
@@ -281,14 +281,9 @@ const Form = () => {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // // Función para mostrar el formulario de nuevo Actividades
-  // const handleShowactivityForm = (e) => {
-  //   e.preventDefault();
-  //   setFormSubmitted(true);
-  //   setShowActivityForm(true);
-  // };
+  
 
-  const handleHiActivityForm = () => {
+  const handleHideActivityForm  = () => {
     setShowActivityForm(false);
   };
 
@@ -833,8 +828,8 @@ const Form = () => {
                  
                 </div>
               </div>
-              {formSubmitted && (
-            <FormActivity activitys={input.activitys} onHideForm={handleHiActivityForm} />
+              {formSubmitted && showActivityForm && (
+            <FormActivity activitys={input.activitys} onHideForm={handleHideActivityForm } />
           )}
               </TabPanel>
          </Tabs>
