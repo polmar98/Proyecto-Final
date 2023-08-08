@@ -57,6 +57,7 @@ export const getPackageById = (id) => {
     try {
       const response = await axios.get(`http://localhost:3002/packages/${id}`);
       const data = response.data;
+      
       return dispatch({
         type: GET_PACKAGE_BY_ID,
         payload: data,
