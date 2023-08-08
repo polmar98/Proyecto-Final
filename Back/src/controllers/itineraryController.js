@@ -1,11 +1,11 @@
 const axios = require('axios');
 const { Itinerary } = require('../database');
 
-const apiKey = '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';
+const apiKey = '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';
 // const apiKey = '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'; anterior
 
 const generateItinerary = async (req, res) => {
-  const { continent, country, city, duration } = req.body;
+  const { idPackage, continent, country, city, duration } = req.body;
   console.log('el body', req.body)
 
   try {
@@ -61,7 +61,7 @@ const generateItinerary = async (req, res) => {
     }
 
     // Guarda el itinerario en la base de datos.
-    await Itinerary.create({ itinerary: JSON.stringify(itineraryArray) });
+    await Itinerary.create({ itinerary: JSON.stringify(itineraryArray),idPackage: idPackage });
 
     // Responde con el itinerario al frontend.
     res.json({ itinerary: itineraryArray.map(({ day, itinerary }) => ({ day, itinerary: itinerary.trim() })) });
