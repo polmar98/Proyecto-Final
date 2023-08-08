@@ -75,11 +75,13 @@ router.put('/update/:id', async (req, res) => {
 
   router.post('/massive', async(req, res) => {
      const array = req.body;
+     console.log(array)
      try {
         const result = await createMassiveActivitys(array);
         res.status(200).json({message: "Actividades Almacenadas exitosamente"});
      } catch (error) {
         res.status(500).json({message: error.message});
+        console.log(message)
      }
   });
 
