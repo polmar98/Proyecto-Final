@@ -2,7 +2,7 @@ const { Association } = require("sequelize");
 const { TypePackage, Package,
         City, Airline,
         Activity, Country,
-        CityOrigin, Comment} = require("../database");
+        CityOrigin, Comment, Itinerary} = require("../database");
         
 const { Op } = require("sequelize");
 
@@ -29,6 +29,7 @@ const addPackages = async (objeto) => {
     idCity,
     idHotel,
     activitys,
+    itinerary
   } = objeto;
 
   //validamos la informacion recibida
@@ -82,6 +83,14 @@ const addPackages = async (objeto) => {
     };
     await Activity.create(newActivity);
   });
+
+  // Agregar el itinerario al paquete recién creado
+  const newItinerary = {
+    itinerary: JSON.stringify(itinerary),
+    idPackage: id, // Asocia el itinerario con el paquete
+  };
+  await Itinerary.create(newItinerary);
+  
   return packageCreated;
 };
 
@@ -99,6 +108,7 @@ const viewPackages = async () => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
+      { model: Itinerary }
     ],
   });
   return paquetes;
@@ -118,6 +128,7 @@ const viewPackagesAll = async () => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
+      { model: Itinerary }
     ],
   });
   return paquetes;
@@ -136,6 +147,7 @@ const getPackageById = async (idp) => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
+      { model: Itinerary }
     ],
   });
   return paquete;
@@ -160,6 +172,7 @@ const searchPackages = async (search) => {
       { association: "CityOrigin", attributes: ["id", "name"] },
       { model: Activity },
       { model: Comment },
+      { model: Itinerary }
     ],
   });
   return paquetes;

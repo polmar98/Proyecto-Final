@@ -27,6 +27,8 @@ function Home() {
     console.log("no hay usuario");
   }
 
+ 
+
   useEffect(() => {
     dispatch(fetchPackages());
     if (currentUser) {

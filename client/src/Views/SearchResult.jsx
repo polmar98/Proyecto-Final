@@ -26,7 +26,6 @@ import { fetchCountries } from "../Redux/Country/countriesActions";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-
 const RESULTS_PER_PAGE = 3;
 
 function normalizeString(str) {
@@ -52,6 +51,7 @@ export default function SearchResult() {
   );
 
   const originCities = useSelector((state) => state.packages.originCitiesList);
+  console.log("searchResults", searchResults);
 
   useEffect(() => {
     setSearchedCountry(searchQuery ? normalizeString(searchQuery) : "");
@@ -166,87 +166,75 @@ export default function SearchResult() {
   }
 
   return (
-    <div className="pt-0">
+    <div>
       <div className="bg-verdeFooter">
         <NavBar />
       </div>
-      <div className="items-center flex justify-center mt-16 mb-8 ">
-          <SearchBar />
-        </div>
-      <div className="justify-center flex-col grid grid-cols-4 gap-4 p-2 items-start ml-3 mr-20 ">
-       
-        <div className=" flex justify-evenly p-4 w-48 col-span-1 mr-4 flex-col border border-gray-200 rounded-lg bg-verdeFooter">
-        <div>
-            <button className="bg-green-400 rounded p-2 m-2 fontPoppins text-sm ">
-              <FaSync
-                style={{ fontSize: "20px", color: "white" }}
-                onClick={handleReset}
-              />
-            </button>
-          </div>
+      <div className="my-10 flex justify-center">
+        <SearchBar />
+      </div>
+      <div className="grid grid-cols-4 gap-6 px-10">
+        <div className="col-span-1 bg-verdeFooter p-4 rounded-lg shadow-lg space-y-4">
+          <button
+            onClick={handleReset}
+            className="bg-green-400 hover:bg-green-500 rounded w-full p-2 flex items-center justify-center text-white font-bold transition duration-200"
+          >
+            <FaSync className="mr-2" />
+            Reiniciar Filtros
+          </button>
 
-          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 bg-white mb-2">
-            <h2 className="font-semibold mb-2 fontPoppins text-sm">
-              Ciudad de destino:
-            </h2>
+          {/* Ciudad de destino */}
+          <div className="bg-white p-4 rounded-lg shadow-sm space-y-2">
+            <h2 className="font-semibold mb-2 text-sm">Ciudad de destino:</h2>
             <select
-              className="rounded p-1 fontPoppins text-sm"
+              className="w-full rounded p-2 border border-gray-200 appearance-none"
               onChange={handleFilterByCity}
             >
               <option value="">Todos</option>
-              {filteredCities.map((city) => {
-                return (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                );
-              })}
+              {filteredCities.map((city) => (
+                <option key={city.id} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2  bg-white mb-2">
-            <h2 className="font-semibold  mb-2 fontPoppins text-sm">
-              Ciudad de salida:
-            </h2>
+          {/* Ciudad de salida */}
+          <div className="bg-white p-4 rounded-lg shadow-sm space-y-2">
+            <h2 className="font-semibold mb-2 text-sm">Ciudad de salida:</h2>
             <select
-              className="rounded p-1 fontPoppins text-sm"
+              className="w-full rounded p-2 border border-gray-200 appearance-none"
               onChange={handleFilterByOriginCity}
             >
               <option value="">Todos</option>
-              {originCities.map((city) => {
-                return (
-                  <option key={city.id} value={city.name}>
-                    {city.name}
-                  </option>
-                );
-              })}
+              {originCities.map((city) => (
+                <option key={city.id} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="flex flex-col border border-gray-200 rounded-lg shadow-sm p-2  bg-white mb-2">
-            <h2 className="fontPoppins text-sm font-semibold">Presupuesto:</h2>
+          {/* Presupuesto */}
+          <div className="bg-white p-4 rounded-lg shadow-sm space-y-2">
+            <h2 className="font-semibold text-sm">Presupuesto:</h2>
             <Slider
               range
               min={minPrice}
               max={maxPrice}
               value={priceRange}
               onChange={handlePriceRangeFilter}
-              className="fontPoppins text-sm"
+              className="w-full"
             />
-            <div className="fontPoppins text-sm font-semibold">
-              Precio mínimo USD: ${priceRange[0]}
-            </div>
-            <div className="fontPoppins text-sm font-semibold">
-              Precio máximo USD: ${priceRange[1]}
-            </div>
+            <div className="text-sm">Precio mínimo USD: ${priceRange[0]}</div>
+            <div className="text-sm">Precio máximo USD: ${priceRange[1]}</div>
           </div>
 
-          <div className=" mb-2 flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 fontPoppins  bg-white">
-            <h2 className="font-semibold text-sm mb-2 fontPoppins">
-              Duración:
-            </h2>
+          {/* Duración */}
+          <div className="bg-white p-4 rounded-lg shadow-sm space-y-2">
+            <h2 className="font-semibold text-sm">Duración:</h2>
             <select
-              className="rounded p-1 fontPoppins text-sm"
+              className="w-full rounded p-2 border border-gray-200 appearance-none"
               onChange={handleDurationFilterChange}
             >
               <option value="Todos">---</option>
@@ -255,11 +243,11 @@ export default function SearchResult() {
             </select>
           </div>
 
-          <div className=" mb-2 flex flex-col border border-gray-200 rounded-lg shadow-sm p-2 fontPoppins  bg-white">
-            <h2 className="font-semibold text-sm mb-2 fontPoppins">Precio:</h2>
-
+          {/* Precio */}
+          <div className="bg-white p-4 rounded-lg shadow-sm space-y-2">
+            <h2 className="font-semibold text-sm">Precio:</h2>
             <select
-              className="rounded p-1 fontPoppins text-sm"
+              className="w-full rounded p-2 border border-gray-200 appearance-none"
               onChange={handlePriceFilterChange}
             >
               <option value="precios">---</option>
@@ -267,41 +255,34 @@ export default function SearchResult() {
               <option value="MayorPrecio">Menor</option>
             </select>
           </div>
+        </div>
 
-          
-          
-      </div>
-      <div className="flex flex-col col-span-3">
+        <div className="flex flex-col col-span-3 space-y-12">
           {currentResults.map((tour) => (
-            <Card key={tour.id} {...tour}/>
+            <Card key={tour.id} {...tour} />
           ))}
         </div>
+      </div>
 
-        </div>
-
-        
-
-      {/* Número de la página actual */}
-      <div className="flex justify-center  items-center font-bold mt-4">
-        {/* Botones de paginación */}
+      <div className="flex justify-center items-center mt-16 space-x-4 mb-10">
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className=" bg-green-400 rounded p-2 m-2"
+          className="bg-green-400 hover:bg-green-500 rounded p-2 transition duration-200"
         >
-          <FiChevronLeft style={{ fontSize: "20px", color: "white" }} />
+          <FiChevronLeft className="text-white" />
         </button>
 
-        <p className="mr-4 fontPoppins text-sm">
-          Pagina {currentPage} de {totalPages}
+        <p className="font-semibold text-sm">
+          Página {currentPage} de {totalPages}
         </p>
 
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className=" bg-green-400 rounded p-2 m-2 fontPoppins"
+          className="bg-green-400 hover:bg-green-500 rounded p-2 transition duration-200"
         >
-          <FiChevronRight style={{ fontSize: "20px", color: "white" }} />
+          <FiChevronRight className="text-white" />
         </button>
       </div>
       <Footer />
