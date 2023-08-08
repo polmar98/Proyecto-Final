@@ -24,10 +24,10 @@ const searchNameActivity = async (name) => {
 };
 
 //funcion que guarda una sola actividad
-const createActivity = async (name, image, price, included, duration, idPackage) => {
-    
+const createActivity = async (name, image, price, included, duration, idPackage, totalLimit) => {
+   if(!totalLimit)  totalLimit = 0; 
    try{
-    const newActivity = await Activity.create({name, image, price, included, duration, idPackage})
+    const newActivity = await Activity.create({name, image, price, included, duration, idPackage, totalLimit})
    }catch (error) {
     console.error(error.message);
   }

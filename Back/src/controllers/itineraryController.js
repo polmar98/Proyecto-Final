@@ -2,16 +2,7 @@ const axios = require('axios');
 require("dotenv").config();
 const { Itinerary, User, Package} = require('../database');
 
-<<<<<<< HEAD
 const {apiKey} = process.env;
-=======
-const apiKey = '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';
-// const apiKey = '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'; anterior
-
-const generateItinerary = async (req, res) => {
-  const { idPackage, continent, country, city, duration } = req.body;
-  console.log('el body', req.body)
->>>>>>> 9e908d5e483b210f60874f97094cc120566ecdff
 
 const generateItinerary = async (datos) => {
   const { continent, country, city, duration, uidUser, idPackage } = datos;
@@ -71,15 +62,11 @@ const generateItinerary = async (datos) => {
     }
 
     // Guarda el itinerario en la base de datos.
-<<<<<<< HEAD
     const result = await Itinerary.create({ 
         itinerary: JSON.stringify(itineraryArray),
         uidUser,
         idUser: user.id,
         idPackage });
-=======
-    await Itinerary.create({ itinerary: JSON.stringify(itineraryArray),idPackage: idPackage });
->>>>>>> 9e908d5e483b210f60874f97094cc120566ecdff
 
        // Responde con el itinerario al frontend.
       return { itinerary: itineraryArray.map(({ day, itinerary }) => ({ day, itinerary: itinerary.trim() })) };

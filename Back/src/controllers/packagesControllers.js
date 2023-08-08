@@ -6,6 +6,36 @@ const { TypePackage, Package,
         
 const { Op } = require("sequelize");
 
+//funcion para actualizar las calificaciones de los paquetes
+const updateCalification = async() => {
+   try {
+      const paquetes = await Package.findAll({
+         include: [ {model: Comment} ]
+      });
+      paquetes.forEach(async(ele) => {
+         let cal = 0;
+         let suma = 0;
+         let n = 0;
+         const comment = ele.Comments;
+         if(comment.length>0) {
+            comment.forEach(e => {
+               suma+=Number(e.calification);
+               n++;
+            });
+            cal = suma/n;
+         };
+         //actualizamos la calificacion
+         const updateRow = await Package.update({qualification: cal},{where: {id: ele.id}});
+         
+      });    
+   } catch (error) {
+       console.log(error.message);
+   }
+
+};
+
+
+//funcion para crear un nuevo paquete
 const addPackages = async (objeto) => {
   const {
     idTypePackage,
@@ -96,6 +126,8 @@ const addPackages = async (objeto) => {
 
 //Esta funcion devuelve todos los paquetes disponibles en la BD
 const viewPackages = async () => {
+  //primero llamamos a la funcion que actualiza las calificaciones de todos los paquetes
+  await updateCalification();
   const paquetes = await Package.findAll({
     where: { active: true },
     include: [
@@ -111,6 +143,7 @@ const viewPackages = async () => {
       { model: Itinerary }
     ],
   });
+
   return paquetes;
 };
 
