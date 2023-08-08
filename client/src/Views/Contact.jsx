@@ -1,11 +1,53 @@
-import React from "react";
-
+import React, { useState } from "react";
 import ContactTextArea from "../Components/ContactTextArea";
 import ContactInputBox from "../Components/ContactInputBox";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { startSendEmail } from "../Redux/Contact/contactActions";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("formdata", formData);
+    dispatch(
+      startSendEmail(
+        formData.name,
+        formData.email,
+        formData.phone,
+        formData.message
+      )
+    );
+    console.log("formdata", formData);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    });
+
+    toast.success("Mensaje enviado con éxito");
+  };
+
   return (
     <>
       <div className="bg-verdeFooter">
@@ -91,27 +133,34 @@ const Contact = () => {
             </div>
             <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
               <div className="relative p-8 bg-white rounded-lg shadow-lg sm:p-12">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <ContactInputBox
                     type="text"
                     name="name"
                     placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                   <ContactInputBox
                     type="text"
                     name="email"
                     placeholder="Your Email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                   <ContactInputBox
                     type="text"
                     name="phone"
                     placeholder="Your Phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                   <ContactTextArea
                     row="6"
                     placeholder="Your Message"
-                    name="details"
-                    defaultValue=""
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                   />
                   <div>
                     <button
