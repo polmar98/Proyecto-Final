@@ -13,10 +13,6 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      uidUser: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      }
     },
     { timestamps: false }
   );
