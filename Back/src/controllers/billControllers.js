@@ -195,7 +195,7 @@ const emptyShoppingCar = async (id) => {
   const devuelveFecha = () => {
      const mes= Math.floor(Math.random()*12);
      if(mes === 0) mes = 1;
-     const años = ['2020','2021','2022','2023'];
+     const años = ["2021", "2022",'2023'];
      const i= Math.floor(Math.random()*4);
      const año = años[i];
      const dia= Math.floor(Math.random()*28);

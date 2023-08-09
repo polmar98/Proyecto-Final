@@ -2,13 +2,12 @@ const axios = require('axios');
 require("dotenv").config();
 const { Itinerary, User, Package} = require('../database');
 
-const {apiKey} = process.env;
-
+//const apiKey = process.env;
+const apiKey= "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";
 const generateItinerary = async (datos) => {
-  const { continent, country, city, duration, uidUser, idPackage } = datos;
+  const { continent, country, city, duration, idPackage } = datos;
+  console.log(apiKey);
   try {
-    //consultamos si existe el usuario
-    const user =  await User.findOne({where: {uid: uidUser}});
     //consultamos si existe el paquete
     const paquete = await Package.findByPk(idPackage);
     // Construye la pregunta o solicitud al modelo de GPT-3.5 con los datos recibidos.
@@ -64,8 +63,6 @@ const generateItinerary = async (datos) => {
     // Guarda el itinerario en la base de datos.
     const result = await Itinerary.create({ 
         itinerary: JSON.stringify(itineraryArray),
-        uidUser,
-        idUser: user.id,
         idPackage });
 
        // Responde con el itinerario al frontend.

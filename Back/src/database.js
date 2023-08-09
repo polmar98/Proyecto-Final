@@ -121,8 +121,8 @@ Bill.belongsTo(User, { foreignKey: "idUser", targetKey: "id" });
 Bill.hasMany(ItemsBill, { foreignKey: "idBill", sourceKey: "id" });
 ItemsBill.belongsTo(Bill, { foreignKey: "idBill", targetKey: "id" });
 
-User.hasMany(Itinerary, {foreignKey: "idUser", sourceKey: "id"});
-Itinerary.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
+//User.hasMany(Itinerary, {foreignKey: "idUser", sourceKey: "id"});
+//Itinerary.belongsTo(User, {foreignKey: "idUser", targetKey: "id"});
 Package.hasOne(Itinerary, { foreignKey: "idPackage", sourceKey: "id" });
 Itinerary.belongsTo(Package, {foreignKey: "idPackage", targetKey: "id"});
 
