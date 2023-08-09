@@ -48,11 +48,11 @@ function About() {
                 tus sueños viajeros se conviertan en realidad.
               </p>
               <a
-                href="/"
+                href="/home"
                 aria-label=""
                 className="text-textGH inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
               >
-                Learn more
+                Ver mas
               </a>
             </div>
           </div>
