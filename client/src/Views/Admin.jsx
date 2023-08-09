@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import NavBar from "../Components/NavBar";
 import SideBarAdmin from "../Components/SideBarAdmin";
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 function Admin() {
+  const navigate = useNavigate();
+  const admin = useSelector((state) => state.admin.admin);
+
+  useEffect(() => {
+    if (admin !== 2) {
+      navigate("/home");
+      window.alert("que onda guacho donde queres entrar?");
+    }
+  }, []);
+
   return (
     <>
-      <div className="relative bg-red-600 ">
-        <NavBar />
-        <div className="bg-verdeFooter flex justify-start">
-          <span className=" text-xl fonte flex text-gray-100 -my-1 fontPoppins ml-[10%]">
-            <MdOutlineAdminPanelSettings className="mr-1" />
-            Administrador
-          </span>
-        </div>
-      </div>
-      <div className="flex max-h-screen overflow-auto">
-        <SideBarAdmin Admin />
-
-      </div>
+      {admin === 2 ? (
+        <>
+          <div className="relative bg-red-600 ">
+            <NavBar />
+          </div>
+          <div>
+            <SideBarAdmin />
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }

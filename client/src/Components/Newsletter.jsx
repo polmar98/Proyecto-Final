@@ -11,7 +11,8 @@ function Newsletter() {
               Suscríbete a nuestro newsletter.
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-300">
-              Entérate antes de nuestros descuentos, novedades y artículos de interés!
+              Entérate antes de nuestros descuentos, novedades y artículos de
+              interés!
             </p>
             <div className="mt-6 flex max-w-md gap-x-4">
               <label htmlFor="email-address" className="sr-only">
@@ -23,9 +24,10 @@ function Newsletter() {
                 type="email"
                 autoComplete="email"
                 required
-                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 placeholder:text-white/80"
                 placeholder="Ingresa tu email"
               />
+
               <button
                 type="submit"
                 className="flex-none rounded-md bg-green-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
@@ -44,13 +46,16 @@ function Newsletter() {
                   aria-hidden="true"
                 />
               </div>
-              <dt className="mt-4 font-semibold text-white">Artículos semanales</dt>
+              <dt className="mt-4 font-semibold text-white">
+                Artículos semanales
+              </dt>
               <dd className="mt-2 leading-7 text-gray-400 text-center">
                 {" "}
                 {/* text in inglés */}
-                Mantente informado con nuestra selección de artículos semanales sobre destinos imperdibles,
-                información relevante y tips de viaje, todo en un solo lugar!
-                Suscríbete ahora y nunca te pierdas las novedades.
+                Mantente informado con nuestra selección de artículos semanales
+                sobre destinos imperdibles, información relevante y tips de
+                viaje, todo en un solo lugar! Suscríbete ahora y nunca te
+                pierdas las novedades.
               </dd>
             </div>
             <div className="flex flex-col items-center">
@@ -66,8 +71,8 @@ function Newsletter() {
               <dd className="mt-2 leading-7 text-gray-400 text-center">
                 {" "}
                 {/* Alineación de texto centrada aquí */}
-                Te prometemos no spamearte. Solo te enviaremos contenido relevante y
-                podrás cancelar tu suscripción en cualquier momento.
+                Te prometemos no spamearte. Solo te enviaremos contenido
+                relevante y podrás cancelar tu suscripción en cualquier momento.
               </dd>
             </div>
           </dl>

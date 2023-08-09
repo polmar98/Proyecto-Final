@@ -87,7 +87,11 @@ function UserCardGrid() {
                   Promedio de venta por usuario
                 </Text>
 
-                <Metric>${montoPromedioPorUsuario}</Metric>
+                {isNaN(montoPromedioPorUsuario) ? (
+                  <Metric>-</Metric>
+                ) : (
+                  <Metric>${montoPromedioPorUsuario}</Metric>
+                )}
               </div>
               <BadgeDelta
                 className="bg-red-400"

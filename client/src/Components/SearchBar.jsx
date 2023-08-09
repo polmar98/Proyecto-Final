@@ -38,7 +38,7 @@ export default function SearchBar() {
       <div className="flex-grow">
         <input
           type="text"
-          placeholder="Search your next travel..."
+          placeholder="Busca tu próximo destino..."
           className="focus:outline-none border-none bg-white rounded p-2 m-2 text-sm w-full  text-gray-700 fontPoppins"
           value={country}
           onChange={handleInputChange}

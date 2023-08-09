@@ -8,17 +8,29 @@ import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../Context/authContext";
 import UserProfile from "../Views/UserProfile";
 import { useNavigate } from "react-router-dom";
+import { adminTrue } from "../Redux/UserAdmin/userAdminAction";
+import { useDispatch } from "react-redux";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+
 function NavBar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.cart);
+  const admin = useSelector((state) => state.admin.admin);
+  // const user1 = useSelector((state) => state.users.usersList);
   console.log("cartItems", cartItems);
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
-
   const [isOpen, setIsOpen] = useState(false);
+  // const [profileAdmin, setProfileAdmin] = useState(false);
+
+  console.log("ADMIN", admin);
 
   const handleLogoutClick = (event) => {
     event.preventDefault();
+    noAdmin();
+
     logout();
+
     console.log("logout");
     navigate("/home");
   };
@@ -45,12 +57,24 @@ function NavBar() {
       cantidadEnCarro = storedItems.length;
     }
   }
+  function noAdmin() {
+    dispatch(adminTrue(3));
+  }
   return (
     <div className="flex flex-row p-5 h-24 z-50">
-     
-     
-      <div className="mt-0 items-center basis-1/4 logo"> </div> 
-      
+      <div className="flex flex-col">
+        <div className="mt-0 flex h-full w-[280px]    logo"></div>
+        {admin === 2 ? (
+          <div className="flex items-end justify-end ">
+            <span className=" text-xl fonte flex  text-gray-100 -my-1 fontPoppins ml-[10%]">
+              <MdOutlineAdminPanelSettings className="mr-1" />
+              Administrador
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
 
       <div className="basis-1/2">
         <ul className="flex flex-row justify-center">
@@ -119,6 +143,16 @@ function NavBar() {
                   >
                     Perfil
                   </Link>
+                  {admin === 2 ? (
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
+                    >
+                      Administrador
+                    </Link>
+                  ) : (
+                    ""
+                  )}
                   <Link
                     to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
@@ -157,14 +191,18 @@ function NavBar() {
             </>
           )}
           <li className="ml-5 relative">
-            <Link to="/shoppingCart">
-              <BsCart4 className="text-3xl text-white" />
-              {cantidadEnCarro > 0 && (
-                <div className="absolute top-0 right-0 text-white bg-red-400 rounded-full w-6 h-6 flex items-center justify-center fontPoppinsB text-sm border border-solid border-white transform translate-x-1/2 -translate-y-1/2">
-                  {cantidadEnCarro}
-                </div>
-              )}
-            </Link>
+            {admin === 3 || admin === 1 ? (
+              <Link to="/shoppingCart">
+                <BsCart4 className="text-3xl text-white" />
+                {cantidadEnCarro > 0 && (
+                  <div className="absolute top-0 right-0 text-white bg-red-400 rounded-full w-6 h-6 flex items-center justify-center fontPoppinsB text-sm border border-solid border-white transform translate-x-1/2 -translate-y-1/2">
+                    {cantidadEnCarro}
+                  </div>
+                )}
+              </Link>
+            ) : (
+              ""
+            )}
           </li>
         </ul>
       </div>
