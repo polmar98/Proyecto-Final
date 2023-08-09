@@ -9,11 +9,11 @@ const StarRating = ({ rating }) => {
   return (
     <>
       {Array.from({ length: fullStars }, (_, index) => (
-        <FaStar key={index} className="text-yellow-500" />
+        <FaStar key={index} className="text-yellow-500 inline-flex" />
       ))}
-      {hasHalfStar && <FaStarHalfAlt className="text-yellow-500" />}
+      {hasHalfStar && <FaStarHalfAlt className="text-yellow-500 inline-flex" />}
       {Array.from({ length: MAX_STARS - Math.ceil(rating) }, (_, index) => (
-        <FaRegStar key={index} className="text-yellow-500" />
+        <FaRegStar key={index} className="text-yellow-500 inline-flex" />
       ))}
     </>
   );
