@@ -37,6 +37,7 @@ router.get("/:id", async (req, res) => {
 
 router.post('/', async (req, res) => {
     const {name, image, calification, stars, details, idCity} = req.body;
+    console.log(req.body)
 
 try {
     const hotelNew = await createHotel(name, image, calification, stars, details, idCity);
