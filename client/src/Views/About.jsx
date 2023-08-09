@@ -9,7 +9,6 @@ import {
   FaUmbrellaBeach,
 } from "react-icons/fa";
 import Statistic from "../Components/Statistic";
-import Content from "../Components/Content";
 import Footer from "../Components/Footer";
 
 function About() {
