@@ -25,8 +25,7 @@ function DashboardAdmin() {
   
   const salesRaw = useSelector((state) => state.bills);
   const { bills, billsProducts } = salesRaw;
-  console.log(billsProducts);  
-
+  
   useEffect(() => {    
    dispatch(fetchBills());
    dispatch(filterSalesByProducts());        
