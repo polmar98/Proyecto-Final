@@ -1,39 +1,46 @@
-import React, { useContext, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BsCart4 } from "react-icons/bs";
 import { authContext } from "../Context/authContext";
 import { CgProfile } from "react-icons/cg";
-import { useAuth } from "../Context/authContext";
-import UserProfile from "../Views/UserProfile";
+// import { useAuth } from "../Context/authContext";
+// import UserProfile from "../Views/UserProfile";
 import { useNavigate } from "react-router-dom";
-import { adminTrue } from "../Redux/UserAdmin/userAdminAction";
-import { useDispatch } from "react-redux";
+// import { adminTrue } from "../Redux/UserAdmin/userAdminAction";
+// import { useDispatch } from "react-redux";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 function NavBar() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.cart);
-  const admin = useSelector((state) => state.admin.admin);
+  // const admin = useSelector((state) => state.admin.admin);
   // const user1 = useSelector((state) => state.users.usersList);
   console.log("cartItems", cartItems);
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
   const [isOpen, setIsOpen] = useState(false);
   // const [profileAdmin, setProfileAdmin] = useState(false);
-
-  console.log("ADMIN", admin);
+  const getProfileStorage = JSON.parse(localStorage.getItem("profileStorage"));
+  // console.log("ADMIN", admin);
 
   const handleLogoutClick = (event) => {
     event.preventDefault();
-    noAdmin();
-
+    // noAdmin();
+    logOutLocalStorage();
     logout();
 
     console.log("logout");
     navigate("/home");
   };
+
+  function logOutLocalStorage() {
+    // const profileStorage = 3;
+    localStorage.removeItem("profileStorage");
+
+    // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
+  }
 
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
@@ -57,14 +64,15 @@ function NavBar() {
       cantidadEnCarro = storedItems.length;
     }
   }
-  function noAdmin() {
-    dispatch(adminTrue(3));
-  }
+  // function noAdmin() {
+  //   dispatch(adminTrue(3));
+  // }
+  // console.log("ADMIN? ==", getProfileStorage.profile);
   return (
     <div className="flex flex-row p-5 h-24 z-50">
       <div className="flex flex-col">
         <div className="mt-0 flex h-full w-[280px]    logo"></div>
-        {admin === 2 ? (
+        {getProfileStorage && getProfileStorage.profile === 2 ? (
           <div className="flex items-end justify-end ">
             <span className=" text-xl fonte flex  text-gray-100 -my-1 fontPoppins ml-[10%]">
               <MdOutlineAdminPanelSettings className="mr-1" />
@@ -143,7 +151,7 @@ function NavBar() {
                   >
                     Perfil
                   </Link>
-                  {admin === 2 ? (
+                  {getProfileStorage && getProfileStorage.profile === 2 ? (
                     <Link
                       to="/admin"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
@@ -191,7 +199,7 @@ function NavBar() {
             </>
           )}
           <li className="ml-5 relative">
-            {admin === 3 || admin === 1 ? (
+            {!getProfileStorage || getProfileStorage.profile === 1 ? (
               <Link to="/shoppingCart">
                 <BsCart4 className="text-3xl text-white" />
                 {cantidadEnCarro > 0 && (

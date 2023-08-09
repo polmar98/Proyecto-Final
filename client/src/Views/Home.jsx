@@ -12,7 +12,7 @@ import Sale from "../Components/Sale";
 import { authContext } from "../Context/authContext";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 import { fetchUsers } from "../Redux/Users/usersActions";
-
+import { adminTrue } from "../Redux/UserAdmin/userAdminAction";
 function Home() {
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.packages.packagesList);
@@ -22,6 +22,7 @@ function Home() {
 
   const { currentUser } = useContext(authContext);
   console.log(currentUser);
+
   if (currentUser) {
     console.log("el usuario usersList", user1);
     console.log("el usuario userFiltered", user2);
@@ -33,13 +34,16 @@ function Home() {
     console.log("no hay usuario");
   }
 
- 
-
   useEffect(() => {
     dispatch(fetchPackages());
     dispatch(fetchUsers());
     if (currentUser) {
+      const find = user1.find((us) => us.uid === currentUser.uid);
       dispatch(userShopping(currentUser.uid));
+      if (find && find.profile === 2) {
+        adminTrue(2);
+        console.log("es admin");
+      }
     }
 
     if (!currentUser && !localStorage.getItem("carrito")) {
@@ -52,14 +56,14 @@ function Home() {
       localStorage.getItem("carrito").length > 0
     ) {
       const JSstorage = JSON.parse(localStorage.getItem("carrito"));
-      // console.log("ellocalstorageenhome", JSstorage);
+      console.log("ellocalstorageenhome", localStorage);
 
       JSstorage.forEach((el) => {
         // console.log("CADA ELEMENTO", el);
         dispatch(set_item(idCart, el));
       });
-
-      localStorage.clear("carrito");
+      localStorage.removeItem("carrito");
+      // localStorage.clear("carrito");
     }
   }, [dispatch, currentUser]);
 

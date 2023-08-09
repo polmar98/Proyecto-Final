@@ -4,9 +4,9 @@ import SideBarAdmin from "../Components/SideBarAdmin";
 import PackagesList from "../Components/PackagesList";
 
 function PackagesAdmin() {
-  return(
+  return (
     <>
-      <div className="relative bg-verdeFooter">
+      <div className="relative bg-red-600 ">
         <NavBar />
       </div>
       <div className="flex max-h-screen overflow-auto">
@@ -14,7 +14,7 @@ function PackagesAdmin() {
         <PackagesList />
       </div>
     </>
-  )                                 
+  );
 }
 
 export default PackagesAdmin;
