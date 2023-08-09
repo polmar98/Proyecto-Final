@@ -47,7 +47,10 @@ function NavBar() {
   }
   return (
     <div className="flex flex-row p-5 h-24 z-50">
-      <div className="mt-0 items-center basis-1/4 logo"> </div>
+     
+     
+      <div className="mt-0 items-center basis-1/4 logo"> </div> 
+      
 
       <div className="basis-1/2">
         <ul className="flex flex-row justify-center">
@@ -97,6 +100,7 @@ function NavBar() {
                   <img
                     src={currentUser.photoURL}
                     className="rounded-full w-10 h-10"
+                    alt="user"
                   />
                 ) : (
                   <CgProfile className="text-4xl text-white" />
