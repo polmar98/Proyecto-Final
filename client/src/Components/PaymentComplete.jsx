@@ -19,10 +19,10 @@ function PaymentComplete() {
   const state = useSelector((state) => state.carrito.status);
   const idCart = useSelector((state) => state.carrito.idCart);
   // console.log("idcart", idCart);
-  // const cart = useSelector((state) => state.carrito.cart);
+  const cart = useSelector((state) => state.carrito.cart);
   // console.log("el cart", cart);
   const bill = useSelector((state) => state.checkout.bill);
-  // const tours = useSelector((state) => state.packages.packagesList);
+  const tours = useSelector((state) => state.packages.packagesList);
   // console.log("tours", tours);
 
   const [videoEnded, setVideoEnded] = useState(false);
@@ -43,16 +43,26 @@ function PaymentComplete() {
 
   //filtrar solo los paquetes del carrito
   // const packageOnly = cart && cart.filter((el) => el.typeProduct === 1);
-  //sacar el id del paquete
+  // //sacar el id del paquete
   // const idPackage = packageOnly && packageOnly.map((el) => el.idProduct);
-  // console.log("id pack", idPackage);
+  // // console.log("id pack", idPackage);
 
-  //filtrar aquellos paquetes que tengan el id igual a los idPackage, por si compra paquetes distintos
+  // //filtrar aquellos paquetes que tengan el id igual a los idPackage, por si compra paquetes distintos
   // const filteredTours = tours.filter((el) => idPackage.includes(el.id));
-  // console.log("los tours que matchean", filteredTours);
+  // // console.log("los tours que matchean", filteredTours);
   
 
-  //generar los newtotallimit para cada paquete comprado
+  // //generar los newtotallimit para cada paquete comprado
+
+  // const toursmapeados = filteredTours.map(el => {
+  //   return {
+  //     ...el,
+  //     totalLimit: Number(el.totalLimit) - 
+
+  // }}) 
+
+
+
   // const dispatchNewTotalLimitPackage = async (cart) => {
   //   console.log('cart en dispatch', cart)
   //   const updatePromises = filteredTours.forEach(async (tour) => {

@@ -124,6 +124,7 @@ function NavBar() {
                   <img
                     src={currentUser.photoURL}
                     className="rounded-full w-10 h-10"
+                    alt="user"
                   />
                 ) : (
                   <CgProfile className="text-4xl text-white" />
