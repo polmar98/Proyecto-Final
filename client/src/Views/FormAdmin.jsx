@@ -17,13 +17,11 @@ import FormNewHoltel from "../Components/FormNewHotel";
 import FormActivity from "../Components/FormActivitys";
 import NavBar from "../Components/NavBar";
 import SidebarAdmin from "../Components/SideBarAdmin";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 import axios from "axios";
 
 const Form = () => {
-
-
   const continents = useSelector((state) => state.continents.continentsList);
   // console.log("Continents:", continents)
   const countries = useSelector((state) => state.countries.countriesList);
@@ -34,7 +32,6 @@ const Form = () => {
   // const activitys = useSelector((state) => state.activitys.activitysList);
   const cityOrigin = useSelector((state) => state.cities.citiesOrigin);
   // console.log("cityorigin:", cityOrigin)
- 
 
   const dispatch = useDispatch();
 
@@ -46,8 +43,6 @@ const Form = () => {
     dispatch(fetchHotels());
     dispatch(getCityOrigin());
   }, [dispatch]);
-
-  
 
   const [input, setInput] = useState({
     idTypePackage: 1,
@@ -72,8 +67,6 @@ const Form = () => {
     idHotel: 0,
     activitys: [],
   });
-
-
 
   const [filteredCountries, setFilteredCountries] = useState([]);
 
@@ -123,18 +116,18 @@ const Form = () => {
 
   const handleInputChange = (event) => {
     const { name, value, options } = event.target;
-  
+
     if (name === "idCity") {
       const selectedCityId = parseInt(value);
       const selectedCity = cities.find((city) => city.id === selectedCityId);
-  
+
       if (selectedCity) {
         setDestinationCity(selectedCity.name);
-  
+
         const associatedCountry = countries.find(
           (country) => country.id === selectedCity.idCountry
         );
-  
+
         if (associatedCountry) {
           setDestinationCountry(associatedCountry.name);
           setInput({
@@ -155,7 +148,7 @@ const Form = () => {
       const selectedValues = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
-  
+
       setInput({
         ...input,
         [name]: selectedValues,
@@ -167,7 +160,7 @@ const Form = () => {
         [name]: parsedValue,
       });
     }
-  
+
     if (name === "service") {
       setInput({
         ...input,
@@ -175,8 +168,8 @@ const Form = () => {
       });
     }
   };
-  
-  const handleSubmit = async(event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitting package:", input);
     try {
@@ -205,9 +198,9 @@ const Form = () => {
         activitys: [],
       });
       alert("Paquete creado exitosamente");
-      dispatch(fetchPackages())
-      setFormSubmitted(true)
-      setShowActivityForm(true)
+      dispatch(fetchPackages());
+      setFormSubmitted(true);
+      setShowActivityForm(true);
     } catch (error) {
       console.error(error);
       alert("Ocurrio un error en la creación");
@@ -220,7 +213,7 @@ const Form = () => {
     const promotionPrice = standatPrice * (1 - discountpercentage / 100);
     return promotionPrice.toFixed(2);
   };
-  
+
   // Estado para controlar la visibilidad del formulario de nueva ciudad de origen
   const [showNewCityForm, setShowNewCityForm] = useState(false);
 
@@ -281,13 +274,10 @@ const Form = () => {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  
-
-  const handleHideActivityForm  = () => {
+  const handleHideActivityForm = () => {
     setShowActivityForm(false);
   };
 
- 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -318,33 +308,28 @@ const Form = () => {
     }
   };
 
- 
-
   return (
     <div>
-      <div className=" bg-verdeFooter">
+      <div className="relative bg-red-600 ">
         <NavBar />
       </div>
       <div className="grid grid-cols-4  max-h-screen overflow-auto justify-center mb-10  ">
-        <SidebarAdmin className="col-span-1"/>
+        <SidebarAdmin className="col-span-1" />
         <div className="flex justify-center col-span-3 mb-5 mt-5 w-full rounded-xl shadow-xl mr-10">
-        <Tabs className="fontPoppins">
-        
-        <TabList className="font-bold text-lg justify-center rounded-xl bg-verdeFooter  text-white">
+          <Tabs className="fontPoppins">
+            <TabList className="font-bold text-lg justify-center rounded-xl bg-verdeFooter  text-white">
               <Tab>Datos Generales</Tab>
               <Tab>Ubicación</Tab>
               <Tab>Datos de Vuelo</Tab>
               <Tab>Alojamiento y Servicios</Tab>
-              
             </TabList>
-   
-     
+
             <TabPanel className="fontPoppins">
               <div className="mt-10 ml-5 w-full">
                 <h2 className="text-gray-700 text-lg font-bold">
                   ¡Creador de viajes!
                 </h2>
-              
+
                 <div className="mt-10 grid grid-cols-2 gap-4 mr-5">
                   <div className="mb-5">
                     <label
@@ -365,9 +350,12 @@ const Form = () => {
                   </div>
 
                   <div className="mb-5">
-                    <label  className="block mb-2 text-sm font-bold text-gray-600" htmlFor="image">
+                    <label
+                      className="block mb-2 text-sm font-bold text-gray-600"
+                      htmlFor="image"
+                    >
                       Subir imagen:
-                      </label>
+                    </label>
                     <input
                       type="file"
                       name="image"
@@ -378,8 +366,7 @@ const Form = () => {
                     />
                   </div>
 
-                 
-<div className="mb-5">
+                  <div className="mb-5">
                     <label
                       htmlFor="description"
                       className="block mb-2 text-sm font-bold text-gray-600"
@@ -423,8 +410,6 @@ const Form = () => {
                       className="w-3/4  px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
-
-                  
 
                   <div className="mb-5">
                     <label
@@ -498,7 +483,7 @@ const Form = () => {
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
-                 
+
                   <div>
                     <label
                       htmlFor="qualification"
@@ -539,9 +524,9 @@ const Form = () => {
                   </div>
                 </div>
               </div>
-              </TabPanel>
+            </TabPanel>
 
-              <TabPanel className="fontPoppins">
+            <TabPanel className="fontPoppins">
               <div className="mt-10 ml-5 w-full">
                 <div className="mt-10 grid grid-cols-2 gap-4 mr-5 justify-start">
                   <div className="mb-5">
@@ -565,7 +550,7 @@ const Form = () => {
                         </option>
                       ))}
                     </select>
-                    <div >
+                    <div>
                       <button
                         className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
                         onClick={handleShowNewCityOriginForm}
@@ -581,7 +566,7 @@ const Form = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div>
                     <label
                       htmlFor="idCountry"
@@ -671,17 +656,14 @@ const Form = () => {
                       <FormNewCityDestiny
                         onHideForm={handleHideNewCityDestinyForm}
                         selectedCountryId={input.idCountry}
-                     
                       />
                     )}
                   </div>
-                  
-                  
                 </div>
               </div>
-              </TabPanel>
+            </TabPanel>
 
-              <TabPanel className="fontPoppins">
+            <TabPanel className="fontPoppins">
               <div className="mt-10 ml-5 w-full">
                 <div className="mt-10 flex flex-col mr-5 justify-start">
                   <div className="mb-5">
@@ -753,9 +735,9 @@ const Form = () => {
                   </div>
                 </div>
               </div>
-              </TabPanel>
+            </TabPanel>
 
-              <TabPanel className="fontPoppins">
+            <TabPanel className="fontPoppins">
               <div className="mt-10 ml-5 w-full">
                 <div className="mt-10 grid grid-cols-2 gap-4 mr-5 justify-start">
                   <div className="mb-5">
@@ -781,7 +763,7 @@ const Form = () => {
                     </select>
                     <div>
                       <button
-                         className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
+                        className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
                         onClick={handleShowNewHotelForm}
                       >
                         <AiOutlinePlusSquare size={22} color="white" /> Nuevo
@@ -796,7 +778,7 @@ const Form = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="mb-5">
                     <label
                       htmlFor="service"
@@ -815,7 +797,7 @@ const Form = () => {
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
                   </div>
-                 
+
                   <div className="mb-5">
                     <button
                       onClick={handleSubmit}
@@ -825,19 +807,20 @@ const Form = () => {
                       Crear paquete
                     </button>
                   </div>
-                 
                 </div>
               </div>
               {formSubmitted && showActivityForm && (
-            <FormActivity activitys={input.activitys} onHideForm={handleHideActivityForm } />
-          )}
-              </TabPanel>
-         </Tabs>
-         </div>
-         </div>  
+                <FormActivity
+                  activitys={input.activitys}
+                  onHideForm={handleHideActivityForm}
+                />
+              )}
+            </TabPanel>
+          </Tabs>
         </div>
-
+      </div>
+    </div>
   );
-}
+};
 
-export default Form ;
+export default Form;

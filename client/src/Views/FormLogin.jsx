@@ -44,8 +44,15 @@ const LoginPage = () => {
       toast.error(error);
     } else if (currentUser) {
       const find = user1.find((us) => us.uid === currentUser.uid);
+      const profileStorage = find;
+      localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
+      const getProfileStorage = JSON.parse(
+        localStorage.getItem("profileStorage")
+      );
+      console.log("getProfileStorage", getProfileStorage);
 
-      if (find.locked) {
+      //if(profileStorage.locked)  ???
+      if (getProfileStorage.locked) {
         logout();
         navigate("/home");
         toast.error("Usuario bloqueado", {
@@ -53,7 +60,7 @@ const LoginPage = () => {
           autoClose: 3000,
         });
       } else {
-        if (find.profile === 1) {
+        if (getProfileStorage.profile === 1) {
           toast.success(`Bienvenido ${currentUser.displayName}!`);
 
           navigate("/home");

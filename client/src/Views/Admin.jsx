@@ -1,24 +1,40 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useContext, useState } from "react";
 import NavBar from "../Components/NavBar";
 import SideBarAdmin from "../Components/SideBarAdmin";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import { authContext } from "../Context/authContext";
 
 function Admin() {
+  // const { currentUser } = useContext(authContext);
   const navigate = useNavigate();
-  const admin = useSelector((state) => state.admin.admin);
+  // const user1 = useSelector((state) => state.users.usersList);
+  // const find = user1.find((us) => us.uid === currentUser.uid);
+  // const profileStorage = find;
+  // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
+  // const getProfileStorage = localStorage.getItem("profileStorage");
+  const [habilitado, setHabilitado] = useState(false);
 
   useEffect(() => {
-    if (admin !== 2) {
+    // const getProfileStorage = localStorage.getItem("profileStorage");
+    const getProfileStorage = JSON.parse(
+      localStorage.getItem("profileStorage")
+    );
+
+    console.log(getProfileStorage);
+    if (!getProfileStorage || getProfileStorage.profile === 1) {
       navigate("/home");
-      window.alert("que onda guacho donde queres entrar?");
+      window.alert("No tiene permiso");
+    } else {
+      navigate("/admin");
+      setHabilitado(true);
+      console.log("usuario no bloqueado");
     }
   }, []);
 
   return (
     <>
-      {admin === 2 ? (
+      {habilitado ? (
         <>
           <div className="relative bg-red-600 ">
             <NavBar />
