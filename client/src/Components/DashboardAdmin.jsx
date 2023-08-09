@@ -183,7 +183,7 @@ function DashboardAdmin() {
   };
 
   return (
-    <main>
+    <main className=" w-full">
       <Title>Dashboard</Title>
       <Text>Dashboard de ventas</Text>
       <TabList
@@ -194,74 +194,80 @@ function DashboardAdmin() {
         <Tab value="2" text="Ventas por Paquete" />
         <Tab value="3" text="Ventas por Actividad" />
       </TabList>
-      {selectedView === "1" && (
-        <Card>
-          <Text>Ventas totales</Text>
-          <Metric>${totalSales.toLocaleString()}</Metric>
-          <BarChart
-            className="mt-6"
-            data={salesByMonth}
-            index="date"
-            categories={["amount"]}
-            colors={["blue"]}
-            yAxisWidth={48}
-          />
-        </Card>
-      )}
 
-      {selectedView === "2" && (
-        <Card>
-          <Text>Ventas por Paquete</Text>
-          {/* <DateRangePicker
+      <div className="flex items-center justify-center mt-[100px]">
+        {selectedView === "1" && (
+          <Card className="w-[80%] ">
+            <Text>Ventas totales</Text>
+            <Metric>${totalSales.toLocaleString()}</Metric>
+            <BarChart
+              className="mt-6"
+              data={salesByMonth}
+              index="date"
+              categories={["amount"]}
+              colors={["blue"]}
+              yAxisWidth={48}
+            />
+          </Card>
+        )}
+      </div>
+
+      <div className="flex items-center justify-center">
+        {selectedView === "2" && (
+          <Card className="w-[80%]">
+            <Text>Ventas por Paquete</Text>
+            {/* <DateRangePicker
               className="max-w-md mx-auto"
               value={value}
               onValueChange={setValue}
               locale={es}
               dropdownPlaceholder="Seleccionar"
             /> */}
-          <Metric>${totalPackageSales.toLocaleString()}</Metric>
-          <DonutChart
-            className="mt-6 ml-[32%] w-[200px] h-[200px] text-2xl items-center justify-center text-center"
-            data={salesPackages}
-            category="amount"
-            index="title"
-            colors={[
-              "slate",
-              "violet",
-              "indigo",
-              "rose",
-              "cyan",
-              "amber",
-              "emerald",
-              "orange",
-              "pink",
-              "fuchsia",
-              "red",
-              "yellow",
-              "lime",
-              "teal",
-              "purple",
-              "violet",
-              "blue",
-              "neutral",
-            ]}
-            valueFormatter={valueFormatter}
-          />
-        </Card>
-      )}
+            <Metric>${totalPackageSales.toLocaleString()}</Metric>
+            <DonutChart
+              className="mt-6 ml-[32%] w-[400px] h-[400px] text-2xl items-center justify-center text-center"
+              data={salesPackages}
+              category="amount"
+              index="title"
+              colors={[
+                "slate",
+                "violet",
+                "indigo",
+                "rose",
+                "cyan",
+                "amber",
+                "emerald",
+                "orange",
+                "pink",
+                "fuchsia",
+                "red",
+                "yellow",
+                "lime",
+                "teal",
+                "purple",
+                "violet",
+                "blue",
+                "neutral",
+              ]}
+              valueFormatter={valueFormatter}
+            />
+          </Card>
+        )}
+      </div>
 
-      {selectedView === "3" && (
-        <Card>
-          <Text>Ventas por Actividad</Text>
-          {/* <DateRangePicker
+      <div className="flex items-center justify-center">
+        {selectedView === "3" && (
+          <Card className="w-[80%]">
+            <Text>Ventas por Actividad</Text>
+            {/* <DateRangePicker
             className="max-w-md mx-auto"
             value={value}
             onValueChange={setValue}
             locale={es}
             dropdownPlaceholder="Seleccionar"
           /> */}
-          <Metric>${totalActivitiesSales.toLocaleString()}</Metric>
-          {/* <BarChart
+            <Metric>${totalActivitiesSales.toLocaleString()}</Metric>
+            {/* <BarChart
             className="mt-6"
             data={salesActivities}
             index="title"
@@ -270,34 +276,35 @@ function DashboardAdmin() {
             yAxisWidth={48}
           /> */}
 
-<DonutChart
-            className="mt-6 ml-[32%] w-[200px] h-[200px] text-2xl items-center justify-center text-center"
-            data={salesActivities}
-            category="amount"
-            index="title"
-            colors={[
-              "slate",
-              "violet",
-              "indigo",
-              "rose",
-              "cyan",
-              "amber",
-              "emerald",
-              "orange",
-              "pink",
-              "fuchsia",
-              "red",
-              "yellow",
-              "lime",
-              "teal",
-              "purple",
-              "violet",
-              "blue",              
-            ]}
-            valueFormatter={valueFormatter}
-          />
-        </Card>
-      )}
+            <DonutChart
+              className="mt-6 ml-[32%] w-[400px] h-[400px] text-2xl items-center justify-center text-center"
+              data={salesActivities}
+              category="amount"
+              index="title"
+              colors={[
+                "slate",
+                "violet",
+                "indigo",
+                "rose",
+                "cyan",
+                "amber",
+                "emerald",
+                "orange",
+                "pink",
+                "fuchsia",
+                "red",
+                "yellow",
+                "lime",
+                "teal",
+                "purple",
+                "violet",
+                "blue",
+              ]}
+              valueFormatter={valueFormatter}
+            />
+          </Card>
+        )}
+      </div>
     </main>
   );
 }
