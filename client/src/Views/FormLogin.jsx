@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { authContext } from "../Context/authContext";
 import { FcGoogle } from "react-icons/fc";
 import { GrGithub } from "react-icons/gr";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
@@ -12,20 +12,23 @@ import { useAuth } from "../Context/authContext";
 import { toast } from "react-toastify";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
 import { GrFormClose } from "react-icons/gr";
+import { adminTrue } from "../Redux/UserAdmin/userAdminAction";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [emailModal, setEmailModal] = useState("");
-
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formFilled, setFormFilled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { logout } = useContext(authContext);
+
   const user = useSelector((state) => state.users.user);
+  const user1 = useSelector((state) => state.users.usersList);
+  // const user2 = useSelector((state) => state.users.usersFiltered);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const {
     login,
     error,
@@ -35,14 +38,32 @@ const LoginPage = () => {
     resetError,
     resetPassword,
   } = useAuth();
-
   useEffect(() => {
     if (error) {
       setErrorMsg(error);
       toast.error(error);
     } else if (currentUser) {
-      toast.success(`Bienvenido ${currentUser.displayName}!`);
-      navigate("/home"); // redirige a la ruta /home
+      const find = user1.find((us) => us.uid === currentUser.uid);
+
+      if (find.locked) {
+        logout();
+        navigate("/home");
+        toast.error("Usuario bloqueado", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+        });
+      } else {
+        if (find.profile === 1) {
+          toast.success(`Bienvenido ${currentUser.displayName}!`);
+
+          navigate("/home");
+        } else {
+          toast.success(`Bienvenido ${currentUser.displayName}!`);
+
+          dispatch(adminTrue(2));
+          navigate("/admin");
+        }
+      }
     }
     return () => {
       setErrorMsg("");

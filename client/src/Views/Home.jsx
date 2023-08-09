@@ -11,15 +11,21 @@ import { useSelector, useDispatch } from "react-redux";
 import Sale from "../Components/Sale";
 import { authContext } from "../Context/authContext";
 import { userShopping } from "../Redux/ShoppingCart/shoppingCartActions";
+import { fetchUsers } from "../Redux/Users/usersActions";
 
 function Home() {
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.packages.packagesList);
   const idCart = useSelector((state) => state.carrito.idCart);
+  const user1 = useSelector((state) => state.users.usersList);
+  const user2 = useSelector((state) => state.users.usersFiltered);
 
   const { currentUser } = useContext(authContext);
   console.log(currentUser);
   if (currentUser) {
+    console.log("el usuario usersList", user1);
+    console.log("el usuario userFiltered", user2);
+
     //console.log(currentUser.displayName);
     //console.log(currentUser.uid);
     //console.log("hay usuario");
@@ -29,6 +35,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchPackages());
+    dispatch(fetchUsers());
     if (currentUser) {
       dispatch(userShopping(currentUser.uid));
     }

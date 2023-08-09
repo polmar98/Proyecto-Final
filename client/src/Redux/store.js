@@ -13,6 +13,7 @@ import usersReducer from "./Users/usersReducer";
 import shoppingCartReducer from "./ShoppingCart/shoppingCartReducer";
 import checkoutReducer from "./Checkout/checkoutReducer";
 import compReducer from "./Comprado/compReducer";
+import userAdminReducer from "./UserAdmin/userAdminReducer";
 
 const rootReducer = combineReducers({
   packages: packagesReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   carrito: shoppingCartReducer,
   checkout: checkoutReducer,
   comprado: compReducer,
+  admin: userAdminReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
