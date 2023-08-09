@@ -25,7 +25,7 @@ export default function FormNewHoltel({onHideForm,selectedCityId}){
         calification:0,
         stars:0,
         details:"",
-        idCity:0
+        idCity:selectedCityId
       }); 
 
 

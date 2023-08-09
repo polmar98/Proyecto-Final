@@ -7,11 +7,12 @@ import { AiOutlineCloseSquare } from "react-icons/ai";
 export default function FormNewCityDestiny({
   onHideForm,
   selectedCountryId,
-  createCity,
+  setFilteredCities
+  
 }) {
   const dispatch = useDispatch();
   const countries = useSelector((state) => state.countries.countriesList);
-
+  const cities = useSelector((state)=> state.cities.citiesList)
   const [newCityDestinyName, setNewCityDestinyName] = useState({
     name: "",
     idCountry: selectedCountryId,
@@ -19,10 +20,13 @@ export default function FormNewCityDestiny({
     originCity: false,
   }); // Estado para el nombre de la nueva ciudad
 
+
+
   useEffect(() => {
-    dispatch(fetchCountries());
+    dispatch(fetchCountries())
   }, [dispatch]);
 
+ 
   function handleNewCityInputChange(e) {
     setNewCityDestinyName({
       ...newCityDestinyName,
@@ -30,19 +34,52 @@ export default function FormNewCityDestiny({
     });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    dispatch(addCities(newCityDestinyName));
+
+//   async function handleSubmit(e) {
+//     e.preventDefault();
+//    dispatch(addCities(newCityDestinyName))
+//    .then (()=>{setNewCityDestinyName({
+//     name: "",
+//     idCountry: "",
+//     calification: "1",
+//     originCity: false,
+//   });
+// })
+// .then(()=>{
+//   dispatch(fetchCities())
+//   setFilteredCities(cities)
+// })    
+// alert("Ciudad creada correctamente");
+//     // setFilteredCities(cities)
+//     onHideForm()
+//   }
+
+function handleSubmit(e) {
+  e.preventDefault();
+
+  dispatch(addCities(newCityDestinyName))
+    .then(() => {
+      dispatch(fetchCities())
+      
+    })
     setNewCityDestinyName({
       name: "",
-      idCountry: selectedCountryId,
+      idCountry: "",
       calification: "1",
       originCity: false,
     });
-    alert("Ciudad creada correctamente");
+    
     onHideForm();
-    dispatch(fetchCities());
-  }
+    // .then((cities) => {
+    //   // setFilteredCities(cities);
+    //   alert("Ciudad creada correctamente");
+    //   onHideForm();
+    // })
+    // .catch((error) => {
+    //   console.error("Error al crear la ciudad:", error);
+    ;
+}
+
 
   function handleCancel() {
     onHideForm(); // Llama a la función para ocultar el formulario sin enviar datos.

@@ -20,6 +20,7 @@ import SidebarAdmin from "../Components/SideBarAdmin";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import axios from "axios";
+import { validationCreateForm } from "./ValidationAdminForm";
 
 const Form = () => {
   const continents = useSelector((state) => state.continents.continentsList);
@@ -34,6 +35,29 @@ const Form = () => {
   // console.log("cityorigin:", cityOrigin)
 
   const dispatch = useDispatch();
+
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    initialDate: "",
+    finalDate: "",
+    totalLimit: "",
+    standarPrice: "",
+    promotionPrice: "",
+    service: "",
+    duration: "",
+    originCity: "", //salida
+    idAirline: "",
+    outboundFlight: "",
+    returnFlight: "",
+    image: "",
+    qualification: "",
+    idContinent: "",
+    idCountry: "",
+    idCity: "", // destino
+    idHotel: "",
+    activitys: [],
+  });
 
   useEffect(() => {
     dispatch(fetchAirlines());
@@ -82,6 +106,13 @@ const Form = () => {
       idCountry: "", // Reinicia el país seleccionado cuando cambia el continente
       idCity: "", // Reinicia la ciudad seleccionada cuando cambia el continente
     });
+
+    setErrors(
+      validationCreateForm({
+        ...input,
+        idContinent: selectedContinentId,
+      })
+    );
   };
 
   const [filteredCities, setFilteredCities] = useState([]);
@@ -97,6 +128,12 @@ const Form = () => {
       idCountry: selectedCountryId,
       idCity: "", // Reiniciar la ciudad seleccionada cuando cambie el país
     });
+    setErrors(
+      validationCreateForm({
+        ...input,
+        idCountry: selectedCountryId,
+      })
+    );
   };
 
   const [filteredHotels, setFilteredHotels] = useState([]);
@@ -112,10 +149,28 @@ const Form = () => {
       idCity: selectedCityId,
       idHotel: "", // Reiniciar la ciudad seleccionada cuando cambie el país
     });
+    setErrors(
+      validationCreateForm({
+        ...input,
+        idCity: selectedCityId,
+      })
+    );
+  };
+
+  const handleInputPromotionPrice = (event) => {
+    const { value } = event.target;
+    const promotionPrice = calculatePromotionPrice(parseFloat(value));
+    setInput({
+      ...input,
+      promotionPrice: promotionPrice,
+    });
   };
 
   const handleInputChange = (event) => {
-    const { name, value, options } = event.target;
+
+    const { name, value } = event.target;
+    let parsedValue;
+  
 
     if (name === "idCity") {
       const selectedCityId = parseInt(value);
@@ -130,80 +185,101 @@ const Form = () => {
 
         if (associatedCountry) {
           setDestinationCountry(associatedCountry.name);
-          setInput({
+          parsedValue = {
             ...input,
             idCity: selectedCityId,
             idCountry: associatedCountry.id,
-          });
+          };
         }
       }
-    } else if (name === "standarPrice") {
-      const parsedValue = !isNaN(value) ? parseFloat(value) : value;
-      setInput({
+    } else if (
+      name === "qualification" ||
+      name === "originCity" ||
+      name === "idHotel" ||
+      name === "idAirline" ||
+      name === "standarPrice"||
+      name === "duration" ||
+      name === "totalLimit" 
+    ) {
+      parsedValue = {
         ...input,
-        [name]: parsedValue,
-        promotionPrice: calculatePromotionPrice(),
-      });
-    } else if (options && options.multiple) {
-      const selectedValues = Array.from(options)
-        .filter((option) => option.selected)
-        .map((option) => option.value);
 
-      setInput({
-        ...input,
-        [name]: selectedValues,
-      });
-    } else {
-      const parsedValue = !isNaN(value) ? parseFloat(value) : value;
-      setInput({
-        ...input,
-        [name]: parsedValue,
-      });
-    }
+        [name]: !isNaN(value) ? parseFloat(value) : value,
+      };
+    } else if (
+      name === "title" ||
+      name === "outboundFlight" ||
+      name === "returnFlight" ||
+      name === "description" ||
+      name === "initialDate" ||
+      name === "finalDate" ||
+      name === "service"
+    ) {
+      parsedValue = {
 
-    if (name === "service") {
-      setInput({
         ...input,
-        service: value,
-      });
+        [name]: value,
+      };
     }
+  
+     
+    // Establecer los errores en el estado de errores
+    const newErrors = validationCreateForm({
+      ...input,
+      [name]: parsedValue,
+    });
+    setErrors(newErrors)
+    // Actualizar el estado de input después de completar el análisis
+    setInput(parsedValue);
   };
+  
+  
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitting package:", input);
-    try {
-      dispatch(addPackages(input));
-      setInput({
-        idTypePackage: 1,
-        title: "",
-        description: "",
-        initialDate: "",
-        finalDate: "",
-        totalLimit: 0,
-        standarPrice: 0,
-        promotionPrice: 0,
-        service: "",
-        duration: 0,
-        originCity: 0, //salida
-        idAirline: 0,
-        outboundFlight: "",
-        returnFlight: "",
-        image: "",
-        qualification: 0,
-        idContinent: 0,
-        idCountry: 0,
-        idCity: 0, // destino
-        idHotel: 0,
-        activitys: [],
-      });
-      alert("Paquete creado exitosamente");
-      dispatch(fetchPackages());
-      setFormSubmitted(true);
-      setShowActivityForm(true);
-    } catch (error) {
-      console.error(error);
-      alert("Ocurrio un error en la creación");
+
+    // const formErrors = validationCreateForm(input);
+    // setErrors(formErrors);
+
+    // Verificar si existen errores
+    // if (Object.keys(formErrors).length === 0)
+    {
+      try {
+        dispatch(addPackages(input));
+        setInput({
+          idTypePackage: 1,
+          title: "",
+          description: "",
+          initialDate: "",
+          finalDate: "",
+          totalLimit: 0,
+          standarPrice: 0,
+          promotionPrice: 0,
+          service: "",
+          duration: 0,
+          originCity: 0, //salida
+          idAirline: 0,
+          outboundFlight: "",
+          returnFlight: "",
+          image: "",
+          qualification: 0,
+          idContinent: 0,
+          idCountry: 0,
+          idCity: 0, // destino
+          idHotel: 0,
+          activitys: [],
+        });
+        alert("Paquete creado exitosamente");
+        dispatch(fetchPackages());
+        setFormSubmitted(true);
+        setShowActivityForm(true);
+      } catch (error) {
+        console.error(error);
+        alert("Ocurrio un error en la creación");
+      }
+
     }
   };
 
@@ -301,6 +377,13 @@ const Form = () => {
             ...input,
             image: imageUrl,
           });
+          const newErrors = validationCreateForm({
+            ...input,
+            image: imageUrl,
+          });
+
+          // Establecer los errores en el estado de errores
+          setErrors(newErrors);
         })
         .catch((error) => {
           console.error("Error uploading image:", error);
@@ -347,6 +430,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.title}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -364,6 +452,11 @@ const Form = () => {
                       onChange={handleImageChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.image}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -383,6 +476,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 h-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.description}
+                      </p>
+                    </div>
                   </div>
 
                   {input.image && (
@@ -409,6 +507,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4  px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.initialDate}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -428,6 +531,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2  placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.totalLimit}
+                      </p>
+                    </div>
                   </div>
                   <div className="mb-5">
                     <label
@@ -445,6 +553,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.finalDate}
+                      </p>
+                    </div>
                   </div>
                   <div className="mb-5">
                     <label
@@ -463,6 +576,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.duration}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -482,6 +600,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.standarPrice}
+                      </p>
+                    </div>
                   </div>
 
                   <div>
@@ -503,6 +626,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.qualification}
+                      </p>
+                    </div>
                   </div>
                   <div className="mb-5">
                     <label
@@ -518,7 +646,7 @@ const Form = () => {
                       placeholder="Promotion Price"
                       value={calculatePromotionPrice()}
                       readOnly
-                      onChange={handleInputChange}
+                      onChange={handleInputPromotionPrice}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm  text-gray-600"
                     />
                   </div>
@@ -551,6 +679,12 @@ const Form = () => {
                       ))}
                     </select>
                     <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.originCity}
+                      </p>
+                    </div>
+                    <div>
+
                       <button
                         className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins "
                         onClick={handleShowNewCityOriginForm}
@@ -592,6 +726,11 @@ const Form = () => {
                         </option>
                       ))}
                     </select>
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.idCountry}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -618,6 +757,11 @@ const Form = () => {
                         </option>
                       ))}
                     </select>
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.idContinent}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -638,12 +782,22 @@ const Form = () => {
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     >
                       <option value="">Seleccione una ciudad</option>
-                      {filteredCities.map((city) => (
-                        <option key={city.id} value={city.id}>
-                          {city.name}
-                        </option>
-                      ))}
+                      {filteredCities &&
+                        filteredCities.map((city) => {
+                          console.log("Mapping city:", city); // Agrega el console.log aquí
+                          return (
+                            <option key={city.id} value={city.id}>
+                              {city.name}
+                            </option>
+                          );
+                        })}
                     </select>
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.idCity}
+                      </p>
+                    </div>
+
                     <button
                       className="bg-green-400 hover:bg-gray-500  rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
                       onClick={handleShowNewCityDestinyOriginForm}
@@ -656,6 +810,10 @@ const Form = () => {
                       <FormNewCityDestiny
                         onHideForm={handleHideNewCityDestinyForm}
                         selectedCountryId={input.idCountry}
+
+                        filteredCities={filteredCities}
+                        setFilteredCities={setFilteredCities}
+
                       />
                     )}
                   </div>
@@ -688,6 +846,11 @@ const Form = () => {
                       ))}
                     </select>
                     <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.idAirline}
+                      </p>
+                    </div>
+                    <div>
                       <button
                         className="bg-green-400 hover:bg-gray-500 rounded flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-20 fontPoppins"
                         onClick={handleShowNewAirlineForm}
@@ -715,6 +878,11 @@ const Form = () => {
                         onChange={handleInputChange}
                         className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                       />
+                      <div>
+                        <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                          {errors.outboundFlight}
+                        </p>
+                      </div>
 
                       <label
                         htmlFor="returnFlight"
@@ -731,6 +899,11 @@ const Form = () => {
                         onChange={handleInputChange}
                         className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                       />
+                      <div>
+                        <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                          {errors.returnFlight}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -761,6 +934,11 @@ const Form = () => {
                         </option>
                       ))}
                     </select>
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.hotel}
+                      </p>
+                    </div>
                     <div>
                       <button
                         className="bg-green-400 rounded hover:bg-gray-500 flex flex-row justify-between item-center p-2 m-2 mt-3 px-3 py-2 text-white focus:outline-none ml-14 fontPoppins"
@@ -796,6 +974,11 @@ const Form = () => {
                       onChange={handleInputChange}
                       className="w-3/4 px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 fontPoppins text-sm"
                     />
+                    <div>
+                      <p className="text-red-500 text-xs font-bold fontPoppins mt-2 mb-5">
+                        {errors.service}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mb-5">
