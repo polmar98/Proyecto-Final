@@ -1,7 +1,6 @@
 import {
   FETCH_BILLS_REQUEST,
   FILTER_SALES_BY_PRODUCTS,
-  
 } from "./dashboardAction";
 
 const initialState = {
@@ -32,7 +31,7 @@ const billReducer = (state = initialState, action) => {
       const billsRaw = [...action.payload];
       const filteredProducts = billsRaw.map((bill) => {
         const itemsSales = bill.ItemsBills.map((item) => ({
-          date: bill.date,
+          date: bill.date.slice(5,7),
           amount: parseInt(item.totalPrice),
           typeProduct: item.typeProduct,
           title: item.title,
@@ -42,12 +41,11 @@ const billReducer = (state = initialState, action) => {
       });
 
       const mergedItemsSales = [].concat(...filteredProducts);
-      console.log(mergedItemsSales);
-            return {
+      return {
         ...state,
         billsProducts: mergedItemsSales,
       };
-      
+
     default:
       return { ...state };
   }
