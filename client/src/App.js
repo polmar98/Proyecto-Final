@@ -13,7 +13,7 @@ import UserProfile from "./Views/UserProfile";
 import Contact from "./Views/Contact";
 import PaymentComplete from "./Components/PaymentComplete";
 import Checkout from "./Views/Checkout";
-import Agenda from "./Views/Agenda";
+import MyItinerary from "./Views/MyItinerary";
 import { Routes, Route, Form } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -49,7 +49,7 @@ function App() {
         <Route path="/admin/packages/:id" element={<PackageEdit />} />
         <Route path="/paymentcomplete" element={<PaymentComplete />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/agenda" element={<Agenda />} />
+        <Route path="/itinerary/:id/:orderId" element={<MyItinerary />} />
       </Routes>
     </div>
   );

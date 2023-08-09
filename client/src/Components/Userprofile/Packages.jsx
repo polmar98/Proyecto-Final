@@ -20,8 +20,6 @@ const Packages = () => {
     (bill) => bill.uidUser === currentUser.uid
   );
   console.log("userBills", userBills);
-    
-
 
   useEffect(() => {
     if (currentUser) {
@@ -34,6 +32,7 @@ const Packages = () => {
       <div className="text-gray-800 font-bold text-2xl text-left uppercase mb-8">
         <h1>Mis viajes</h1>
       </div>
+
       <div className="flex flex-col items-center space-y-4 w-full">
         {userBills &&
           userBills.map((order, index) => (
@@ -42,8 +41,16 @@ const Packages = () => {
               className="bg-verdeFooter block bg-opacity-80 rounded-xl shadow-xl p-4 w-full"
             >
               {order.ItemsBills.map((item, itemIndex) => (
-                <li key={itemIndex} className="text-gray-200">
+                <li key={itemIndex} className="text-gray-200 mt-2">
                   {item.title}
+                  {item.typeProduct === 1 ? (
+                    <Link
+                      to={`/itinerary/${item.idProduct}/${order.id}`}
+                      className="bg-green-600 text-s p-1 ml-4 mb-2 rounded-md"
+                    >
+                      VER AGENDA
+                    </Link>
+                  ) : null}
                 </li>
               ))}
 
