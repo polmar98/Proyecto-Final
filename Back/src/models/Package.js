@@ -29,27 +29,22 @@ module.exports = (sequelize) => {
       },
       totalLimit: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 100,
       },
       bookings: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 0,
       },
       standarPrice: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
         defaultValue: 0,
       },
       promotionPrice: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
         defaultValue: 0,
       },
       duration: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 0,
       },
       outboundFlight: {
@@ -66,7 +61,6 @@ module.exports = (sequelize) => {
       },
       qualification: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
         defaultValue: 0,
       },
       active: {
