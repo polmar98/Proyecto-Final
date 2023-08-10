@@ -51,11 +51,12 @@ router.get('/:id', async(req, res) => {
 //handler para agregar paquetes
 router.post('/', async(req, res) => {
     const objeto = req.body;
-    console.log(req.body);
     try {
         const result = await addPackages(objeto);
+        console.log(result);
         res.status(200).json(result);
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({message: error.message});        
     }
 });

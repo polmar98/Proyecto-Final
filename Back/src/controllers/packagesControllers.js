@@ -65,18 +65,19 @@ const addPackages = async (objeto) => {
   } = objeto;
 
   //validamos la informacion recibida
-  if (
-    !idTypePackage || !title || !description ||
-    !initialDate || !finalDate || !totalLimit ||
-    !standarPrice || !promotionPrice || !duration ||
-    !originCity || !idAirline || !outboundFlight ||
-    !returnFlight || !image || !idContinent ||
-    !idCountry || !idCity || !idHotel ||
-    !activitys || !qualification || !service) {
-    throw Error("Datos Incompletos " );
-  };
+  if(!title || !description ) throw Error("Titulo o descripcion no definidos");
+  if(!initialDate || !finalDate ) throw Error("Fechas de Inicio o Final no definidas");
+  if(!outboundFlight) throw Error("Datos vuelo ida nod efinidos");
+  if(!returnFlight) throw Error("Datos retorno Vuelo no definidos");
+  if(!service) throw Error("Servicios No definidos");
+  if(!image) throw Error("Imagen del paquete No definida");
 
-  //validamos las llaves foraneas
+  //validamos las llaves foraneas y datos numericos
+  if( typeof idTypePackage !== "number") throw Error("Tipo de paquete No definido");
+  if( typeof duration !== "number") throw Error("Duracion No definida");
+  if( typeof standarPrice !== "number") throw Error("Precio standar No definido");
+  if( typeof promotionPrice !== "number") throw Error("Precio de Promocion No definido");
+  if( typeof totalLimit !== "number") throw Error("Cupo Total No definido");
   if( typeof originCity !== "number") throw Error("Ciudad Origen No definida");
   if( typeof idAirline !== "number") throw Error("Aerolinea No definida");
   if( typeof idHotel !== "number") throw Error("Hotel No definido");
@@ -110,6 +111,7 @@ const addPackages = async (objeto) => {
 
   const packageCreated = await Package.create(newPackage);
   const id = packageCreated.id;
+  if(typeof id !== "number") throw Error("Paquete No pudo ser Creado");
 
   //agregamos las actividades del paquete
   if(activitys.length>0){
