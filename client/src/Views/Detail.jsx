@@ -29,6 +29,7 @@ function Detail() {
   const idCart = useSelector((state) => state.carrito.idCart);
   const car = useSelector((state) => state.carrito.cart);
 
+  console.log('tour', tour)
   // console.log("EL ID", idCart);
   // console.log("EL CART DE MIERDA ", car);
   // console.log('comments', comments)
@@ -129,10 +130,11 @@ function Detail() {
     }
   }
 
-  if (!tour) {
+ 
+  if (!tour.id) {
     return (
-      <div className="flex items-center justify-center h-screen text-4xl text-green-800">
-        Cargando...
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-verdeFooter text-3xl font-bold">Cargando...</p>
       </div>
     );
   }
@@ -168,10 +170,10 @@ function Detail() {
           <Flights tour={tour} />
 
           <div className="text-right w-full flex flex-col justify-between bg-white mt-4 p-4 rounded-lg shadow-xl">
-            <h2 className="text-base">{tour.duration} días</h2>
-            <h2 className="text-base">Salida en {tour.initialDate}</h2>
-            {tour.originCity ? (
-              <h2 className="text-base">desde {tour.originCity} </h2>
+            <h2 className="text-base">{tour.duration} días en {tour.City.name}</h2>
+            <h2 className="text-base">Salida el {tour.initialDate.split("/").reverse().join("/")}</h2>
+            {tour.CityOrigin ? (
+              <h2 className="text-base">desde {tour.CityOrigin.name} </h2>
             ) : null}
            
             {Number(tour.qualification) !== 0 ?

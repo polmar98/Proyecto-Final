@@ -35,7 +35,10 @@ const Packages = () => {
 
       <div className="flex flex-col items-center space-y-4 w-full">
         {userBills &&
-          userBills.map((order, index) => (
+          userBills
+          .slice() // Crea una copia del array original para preservarlo
+          .sort((a, b) => b.createdAt.localeCompare(a.createdAt)) // ordena de manera descendente de mas nuevo a mas viejo
+          .map((order, index) => (
             <div
               key={index}
               className="bg-verdeFooter block bg-opacity-80 rounded-xl shadow-xl p-4 w-full"
