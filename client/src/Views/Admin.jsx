@@ -13,24 +13,24 @@ function Admin() {
   // const profileStorage = find;
   // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
   // const getProfileStorage = localStorage.getItem("profileStorage");
-  const [habilitado, setHabilitado] = useState(false);
+  const [habilitado, setHabilitado] = useState(true);
 
-  useEffect(() => {
-    // const getProfileStorage = localStorage.getItem("profileStorage");
-    const getProfileStorage = JSON.parse(
-      localStorage.getItem("profileStorage")
-    );
+  // useEffect(() => {
+  //   // const getProfileStorage = localStorage.getItem("profileStorage");
+  //   const getProfileStorage = JSON.parse(
+  //     localStorage.getItem("profileStorage")
+  //   );
 
-    console.log(getProfileStorage);
-    if (!getProfileStorage || getProfileStorage.profile === 1) {
-      navigate("/home");
-      window.alert("No tiene permiso");
-    } else {
-      navigate("/admin");
-      setHabilitado(true);
-      console.log("usuario no bloqueado");
-    }
-  }, []);
+  //   console.log(getProfileStorage);
+  //   if (!getProfileStorage || getProfileStorage.profile === 1) {
+  //     navigate("/home");
+  //     window.alert("No tiene permiso");
+  //   } else {
+  //     navigate("/admin");
+  //     setHabilitado(true);
+  //     console.log("usuario no bloqueado");
+  //   }
+  // }, []);
 
   return (
     <>

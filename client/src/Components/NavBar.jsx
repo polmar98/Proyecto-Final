@@ -22,25 +22,25 @@ function NavBar() {
   const { currentUser, setCurrentUser, logout } = useContext(authContext);
   const [isOpen, setIsOpen] = useState(false);
   // const [profileAdmin, setProfileAdmin] = useState(false);
-  const getProfileStorage = JSON.parse(localStorage.getItem("profileStorage"));
+  // const getProfileStorage = JSON.parse(localStorage.getItem("profileStorage"));
   // console.log("ADMIN", admin);
 
   const handleLogoutClick = (event) => {
     event.preventDefault();
     // noAdmin();
-    logOutLocalStorage();
+    // logOutLocalStorage();
     logout();
 
     console.log("logout");
     navigate("/home");
   };
 
-  function logOutLocalStorage() {
-    // const profileStorage = 3;
-    localStorage.removeItem("profileStorage");
+  // function logOutLocalStorage() {
+  //   // const profileStorage = 3;
+  //   localStorage.removeItem("profileStorage");
 
-    // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
-  }
+  //   // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
+  // }
 
   let localStorageJSON = localStorage.getItem("carrito");
   // console.log('JSON', localStorageJSON)
@@ -72,16 +72,14 @@ function NavBar() {
     <div className="flex flex-row p-5 h-24 z-50">
       <div className="flex flex-col">
         <div className="mt-0 flex h-full w-[280px]    logo"></div>
-        {getProfileStorage && getProfileStorage.profile === 2 ? (
-          <div className="flex items-end justify-end ">
-            <span className=" text-xl fonte flex  text-gray-100 -my-1 fontPoppins ml-[10%]">
-              <MdOutlineAdminPanelSettings className="mr-1" />
-              Administrador
-            </span>
-          </div>
-        ) : (
-          ""
-        )}
+        {/* {getProfileStorage && getProfileStorage.profile === 2 ? ( */}
+        <div className="flex items-end justify-end ">
+          <span className=" text-xl fonte flex  text-gray-100 -my-1 fontPoppins ml-[10%]">
+            <MdOutlineAdminPanelSettings className="mr-1" />
+            Administrador
+          </span>
+        </div>
+        {/* // ) : ( // "" // )} */}
       </div>
 
       <div className="basis-1/2">
@@ -151,16 +149,18 @@ function NavBar() {
                   >
                     Perfil
                   </Link>
-                  {getProfileStorage && getProfileStorage.profile === 2 ? (
+                  {
+                    // getProfileStorage && getProfileStorage.profile === 2 ? (
                     <Link
                       to="/admin"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
                     >
                       Administrador
                     </Link>
-                  ) : (
-                    ""
-                  )}
+                    // ) : (
+                    //   ""
+                    // )
+                  }
                   <Link
                     to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-verdeFooter hover:text-white"
@@ -199,7 +199,8 @@ function NavBar() {
             </>
           )}
           <li className="ml-5 relative">
-            {!getProfileStorage || getProfileStorage.profile === 1 ? (
+            {
+              // !getProfileStorage || getProfileStorage.profile === 1 ? (
               <Link to="/shoppingCart">
                 <BsCart4 className="text-3xl text-white" />
                 {cantidadEnCarro > 0 && (
@@ -208,9 +209,10 @@ function NavBar() {
                   </div>
                 )}
               </Link>
-            ) : (
-              ""
-            )}
+              // ) : (
+              //   ""
+              // )
+            }
           </li>
         </ul>
       </div>

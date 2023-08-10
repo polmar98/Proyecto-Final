@@ -38,12 +38,12 @@ function Home() {
     dispatch(fetchPackages());
     dispatch(fetchUsers());
     if (currentUser) {
-      const find = user1.find((us) => us.uid === currentUser.uid);
+      // const find = user1.find((us) => us.uid === currentUser.uid);
       dispatch(userShopping(currentUser.uid));
-      if (find && find.profile === 2) {
-        adminTrue(2);
-        console.log("es admin");
-      }
+      // if (find && find.profile === 2) {
+      //   adminTrue(2);
+      //   console.log("es admin");
+      // }
     }
 
     if (!currentUser && !localStorage.getItem("carrito")) {

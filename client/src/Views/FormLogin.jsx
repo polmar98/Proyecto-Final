@@ -43,34 +43,34 @@ const LoginPage = () => {
       setErrorMsg(error);
       toast.error(error);
     } else if (currentUser) {
-      const find = user1.find((us) => us.uid === currentUser.uid);
-      const profileStorage = find;
-      localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
-      const getProfileStorage = JSON.parse(
-        localStorage.getItem("profileStorage")
-      );
-      console.log("getProfileStorage", getProfileStorage);
+      // const find = user1.find((us) => us.uid === currentUser.uid);
+      // const profileStorage = find;
+      // localStorage.setItem("profileStorage", JSON.stringify(profileStorage));
+      // const getProfileStorage = JSON.parse(
+      //   localStorage.getItem("profileStorage")
+      // );
+      // console.log("getProfileStorage", getProfileStorage);
 
-      //if(profileStorage.locked)  ???
-      if (getProfileStorage.locked) {
-        logout();
-        navigate("/home");
-        toast.error("Usuario bloqueado", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 3000,
-        });
-      } else {
-        if (getProfileStorage.profile === 1) {
-          toast.success(`Bienvenido ${currentUser.displayName}!`);
+      // //if(profileStorage.locked)  ???
+      // if (getProfileStorage.locked) {
+      //   logout();
+      navigate("/home");
+      //   toast.error("Usuario bloqueado", {
+      //     position: toast.POSITION.TOP_CENTER,
+      //     autoClose: 3000,
+      //   });
+      // } else {
+      //   if (getProfileStorage.profile === 1) {
+      //     toast.success(`Bienvenido ${currentUser.displayName}!`);
 
-          navigate("/home");
-        } else {
-          toast.success(`Bienvenido ${currentUser.displayName}!`);
+      //     navigate("/home");
+      //   } else {
+      //     toast.success(`Bienvenido ${currentUser.displayName}!`);
 
-          dispatch(adminTrue(2));
-          navigate("/admin");
-        }
-      }
+      //     dispatch(adminTrue(2));
+      //     navigate("/admin");
+      // }
+      // }
     }
     return () => {
       setErrorMsg("");
