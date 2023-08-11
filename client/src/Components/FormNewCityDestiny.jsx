@@ -7,12 +7,10 @@ import { AiOutlineCloseSquare } from "react-icons/ai";
 export default function FormNewCityDestiny({
   onHideForm,
   selectedCountryId,
-  setFilteredCities
-  
+  onSubmitForm  
 }) {
   const dispatch = useDispatch();
   const countries = useSelector((state) => state.countries.countriesList);
-  const cities = useSelector((state)=> state.cities.citiesList)
   const [newCityDestinyName, setNewCityDestinyName] = useState({
     name: "",
     idCountry: selectedCountryId,
@@ -35,50 +33,25 @@ export default function FormNewCityDestiny({
   }
 
 
-//   async function handleSubmit(e) {
-//     e.preventDefault();
-//    dispatch(addCities(newCityDestinyName))
-//    .then (()=>{setNewCityDestinyName({
-//     name: "",
-//     idCountry: "",
-//     calification: "1",
-//     originCity: false,
-//   });
-// })
-// .then(()=>{
-//   dispatch(fetchCities())
-//   setFilteredCities(cities)
-// })    
-// alert("Ciudad creada correctamente");
-//     // setFilteredCities(cities)
-//     onHideForm()
-//   }
+  async function handleSubmit(e) {
+    e.preventDefault();
+   dispatch(addCities(newCityDestinyName))
+   .then (()=>{setNewCityDestinyName({
+    name: "",
+    idCountry: "",
+    calification: "1",
+    originCity: false,
+  });
+})
+.then(()=>{
+  dispatch(fetchCities())
+})    
+alert("Ciudad creada correctamente");
+    onHideForm()
+  }
 
-function handleSubmit(e) {
-  e.preventDefault();
 
-  dispatch(addCities(newCityDestinyName))
-    .then(() => {
-      dispatch(fetchCities())
-      
-    })
-    setNewCityDestinyName({
-      name: "",
-      idCountry: "",
-      calification: "1",
-      originCity: false,
-    });
-    
-    onHideForm();
-    // .then((cities) => {
-    //   // setFilteredCities(cities);
-    //   alert("Ciudad creada correctamente");
-    //   onHideForm();
-    // })
-    // .catch((error) => {
-    //   console.error("Error al crear la ciudad:", error);
-    ;
-}
+
 
 
   function handleCancel() {
@@ -128,9 +101,10 @@ function handleSubmit(e) {
             </div>
           </div>
           <div className="aling-center justify-center ">
-            <button
+            <button 
               className="bg-green-400 rounded  hover:bg-gray-500 flex flex-row justify-between item-center p-2 mt-3 px-3 py-2 text-white focus:outline-none  ml-56 fontPoppins "
               onClick={handleSubmit}
+           
             >
               Crear
             </button>

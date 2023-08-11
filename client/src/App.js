@@ -24,6 +24,7 @@ import PackagesAdmin from "./Views/PackagesAdmin";
 import Admin from "./Views/Admin";
 import PackageEdit from "./Views/PackageAdminEdit";
 import Dashboard from "./Views/Dashboard";
+import ActivitiesEdit from "./Views/ActivitiesEditAdmin";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
         <Route path="/paymentcomplete" element={<PaymentComplete />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/itinerary/:id/:orderId" element={<MyItinerary />} />
+        <Route path="/admin/activitiesEdit/:id" element={<ActivitiesEdit/>}/>
       </Routes>
     </div>
   );

@@ -3,7 +3,7 @@ import {
   FETCH_ACTIVITYS,
   GET_ACTIVITY_BY_ID,
   SEARCH_ACTIVITYS,
-  ADD_ACTIVITYS
+  ADD_ACTIVITYS,
 } from "./activityActions";
 
 const initialState = {
