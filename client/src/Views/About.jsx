@@ -1,4 +1,3 @@
-import React from "react";
 import NavBar from "../Components/NavBar";
 import {
   FaPlane,
@@ -10,8 +9,29 @@ import {
 } from "react-icons/fa";
 import Statistic from "../Components/Statistic";
 import Footer from "../Components/Footer";
+import React, { useState, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 function About() {
+  const controls2 = useAnimation();
+
+  const [ref2, inView2] = useInView({
+    triggerOnce: true,
+    rootMargin: "-300px 0px",
+  });
+
+  useEffect(() => {
+    if (inView2) {
+      controls2.start("visible");
+    }
+  }, [controls2, , inView2]);
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   return (
     <>
       <div className="bg-verdeFooter shadow-md text-white">
@@ -24,40 +44,48 @@ function About() {
         />
       </div>
       <Statistic />
-      <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 animate-fade-up">
-        <div className="p-8 rounded shadow-xl sm:p-16">
-          <div className="flex flex-col lg:flex-row">
-            <div className="mb-6 lg:mb-0 lg:w-1/2 lg:pr-5">
-              <h2 className="font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
-                Tu aventura comienza aquí
-                <br className="hidden md:block " />
-                <span className="inline-block text-textGH ">
-                  Descubre, viaja y vive
-                </span>{" "}
-                experiencias únicas
-              </h2>
-            </div>
-            <div className="lg:w-1/2 text-left">
-              <p className="mb-4 text-base text-gray-700">
-                En Wanderlust, nos apasiona viajar. Sabemos que cada viaje es
-                una historia que contar, por eso nos dedicamos a garantizar que
-                cada aventura sea única e inolvidable. Desde vuelos económicos,
-                hoteles acogedores hasta actividades emocionantes, cuidamos cada
-                detalle para que tú solo te preocupes de disfrutar. Con años de
-                experiencia y un equipo dedicado, nos esforzamos por hacer que
-                tus sueños viajeros se conviertan en realidad.
-              </p>
-              <a
-                href="/home"
-                aria-label=""
-                className="text-textGH inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
-              >
-                Ver mas
-              </a>
+      <motion.div
+        ref={ref2}
+        initial="hidden"
+        animate={controls2}
+        variants={fadeInUp}
+      >
+        <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 animate-fade-up">
+          <div className="p-8 rounded shadow-xl sm:p-16">
+            <div className="flex flex-col lg:flex-row">
+              <div className="mb-6 lg:mb-0 lg:w-1/2 lg:pr-5">
+                <h2 className="font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+                  Tu aventura comienza aquí
+                  <br className="hidden md:block " />
+                  <span className="inline-block text-textGH ">
+                    Descubre, viaja y vive
+                  </span>{" "}
+                  experiencias únicas
+                </h2>
+              </div>
+              <div className="lg:w-1/2 text-left">
+                <p className="mb-4 text-base text-gray-700">
+                  En Wanderlust, nos apasiona viajar. Sabemos que cada viaje es
+                  una historia que contar, por eso nos dedicamos a garantizar
+                  que cada aventura sea única e inolvidable. Desde vuelos
+                  económicos, hoteles acogedores hasta actividades emocionantes,
+                  cuidamos cada detalle para que tú solo te preocupes de
+                  disfrutar. Con años de experiencia y un equipo dedicado, nos
+                  esforzamos por hacer que tus sueños viajeros se conviertan en
+                  realidad.
+                </p>
+                <a
+                  href="/home"
+                  aria-label=""
+                  className="text-textGH inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
+                >
+                  Ver mas
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       <section className="bg-white py-12 sm:py-16 lg:py-20">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-lg">
           <div className="text-center">
